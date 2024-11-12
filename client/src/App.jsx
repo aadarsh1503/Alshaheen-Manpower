@@ -1,23 +1,27 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import ContactSection from './components/ContactSection/ContactSection';
+import Aviation from './components/Aviation/Aviation';
 
 function App() {
   return (
     <Router>
+      {/* Navbar will be displayed on every page */}
       <Navbar />
-      <div>
       
-        {/* Define your routes here */}
+      {/* Main content area with Routes */}
+      <div className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contactUs" element={<ContactSection />} />
+          <Route path="/aviation" element={<Aviation />} />
         </Routes>
-      <Footer />
-
       </div>
+
+      {/* Footer will be displayed on every page */}
+      <Footer />
     </Router>
   );
 }

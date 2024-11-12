@@ -4,10 +4,12 @@ import ContactUs from './ContactUs';
 import BrochureSection from '../BrochureSection/BrochureSection';
 import Footer from '../Footer/Footer';
 
+
 const ContactSection = () => {
   return (
+    <div className=' w-full min-h-screen'>
     <div
-      className="relative w-full h-[500px] bg-cover bg-center"
+      className=" relative bg-cover h-[500px] bg-center"
       style={{
         backgroundImage: `url('https://www.groupl.ae/images/conct_bnr.jpg')`, 
       }}
@@ -47,9 +49,11 @@ const ContactSection = () => {
           </div>
         </div>
       </div>
-      <ContactUs />
-      <BrochureSection />
-      <Footer />
+
+
+    </div>
+    <ContactUs />
+    <BrochureSection />
     </div>
   );
 };

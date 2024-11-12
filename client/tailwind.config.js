@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         DarkRed: '#c0190f',
+        darkgray:'#e9e9e9',
 
       },
       fontFamily: {

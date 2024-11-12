@@ -1,54 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import i1 from "./i1.jpg";
-import i2 from "./i2.jpg";
-import i3 from "./i3.jpg";
-import i4 from "./i4.jpg";
-import i5 from "./i5.png";
 
+import TalentForYourBusiness from "./TalentForYourBusiness";
+import ProcessSection from "./ProcessSection";
 
-const Hero = () => {
+const Aviation = () => {
   const images = [
     {
-      src: i1,
+      src: "https://www.groupl.ae/images/aviation_bnr.jpg",
       alt: "Image 1",
-      text: "RECRUITMENT EXPERTS: <br /> RATED 4.8 ON GOOGLE",
+      text: "AVIATION",
       description:
         "Our aim is to give back to the society by enabling people to earn a better <br /> livelihood by empowering them with professional skills. Every youth <br /> successfully placed, is one step closer to realising our larger dream.",
-      googleSrc: "https://www.groupl.ae/images/gog.png",
+
     },
-    {
-      src:i2,
-      alt: "Image 2",
-      text: "BRINGING SKILLS <br /> AND OPPORTUNITY TOGETHER",
-      description:
-        "Incorporated 48 years ago, GroupL has been providing ethical <br /> workforce and recruitment solutions across multiple industries in <br /> Europe and the Middle East since 2013.",
-      googleSrc: "",
-    },
-    {
-      src: i3,
-      alt: "Image 3",
-      text: "HIRE SMART, <br /> GROW FAST",
-      description:
-        "Our qualified managers bring you the expertise to deal with a range of <br /> issues including audit of the recruitment processes, labour dispute <br /> resolution, general HR administration.",
-      googleSrc: "",
-    },
-    {
-      src: i4,
-      alt: "Image 4",
-      text: "160,000+ SCREENED <br />CANDIDATES",
-      description:
-        "We have a vast pool of trained and screened candidates to fulfil the <br /> requirements of your business. Our global collaborations with various <br /> technical institutes enable us to train and assess the candidates' <br /> technical and language skills prior to their selection.",
-      googleSrc: "",
-    },
-    {
-      src:i5,
-      alt: "Image 5",
-      text: "FULL SERVICE HR",
-      description:
-        "Our service portfolio looks after your entire human resource cycle. Our <br /> consultancy vertical includes effective advisory - helping you <br /> understand and stay up to date on the current recruitment market -<br /> available talent, salary rates, current hiring complexities, competitor <br /> benchmarking as well as bespoke solutions based on your specific <br /> need.",
-      googleSrc: "",
-    },
+
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -65,12 +31,13 @@ const Hero = () => {
   };
 
   return (
+    <div>
     <div
-      className="relative w-full lg:h-[624px] bg-cover bg-center"
+      className="relative w-full lg:h-[400px] bg-cover bg-center"
       style={{ backgroundImage: `url(${images[currentIndex].src})` }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-0"></div>
 
       {/* Content Wrapper with Framer Motion */}
       <motion.div
@@ -133,18 +100,13 @@ const Hero = () => {
       
 
       {/* Dot Navigation */}
-      <div className="absolute lg:top-[532px] left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-400"}`}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
-      </div>
+
+    </div>
+    <TalentForYourBusiness />
+    <ProcessSection />
     </div>
   );
 };
 
 
-export default Hero;
+export default Aviation;

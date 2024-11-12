@@ -8,9 +8,11 @@ const Footer = () => {
         <div>
           <h2 className="text-DarkRed mt-10 font-bold text-3xl">CONTACT US</h2>
           <p className="mt-4 text-11.2 text-gray-700">
-            Dubai Head Office<br />
-            GroupL Job Centre<br />
-            Romania Office
+           
+204, Garhoud Star Building Dubai - UAE
+<br />
++971 4 256 6333<br />
+info@alshaheen.com
           </p>
         </div>
 
