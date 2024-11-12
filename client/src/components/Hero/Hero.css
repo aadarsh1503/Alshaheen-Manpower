@@ -1,0 +1,5 @@
+/* Custom dark green overlay color */
+.bg-dark-green {
+    background-color: rgba(0, 100, 0, 0.5); /* Adjust opacity as needed */
+  }
+  

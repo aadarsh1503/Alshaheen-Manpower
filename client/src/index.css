@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/index.css or src/styles/globals.css */
+@font-face {
+    font-family: 'Bertioga Sans Medium';
+    src: url('/src/assets/fonts/bertioga_sansmedium.woff2') format('woff2'),
+         url('/src/assets/fonts/bertioga_sansmedium.woff') format('woff'),
+         url('/src/assets/fonts/bertioga_sansmedium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
