@@ -6,8 +6,8 @@ const NewsEventsCarousel = () => {
     {
       src: "https://www.groupl.ae/images/e9.jpg",
       alt: "Event 1",
-      heading:"GroupL ROMANIA LAUNCH",
-      description: "Mihai Turbatu, our Sales Manager, on the occasion of the Romanian office inauguration. After 48+ years of growth, GroupL’s UAE team has branched to a new office space in Romania to service more businesses across the world.",
+      heading:"GVS Bahrain LAUNCH",
+      description: "Mihai Turbatu, our Sales Manager, on the occasion of the Bahrainn office inauguration. After 48+ years of growth, GVS’s UAE team has branched to a new office space in Bahrain to service more businesses across the world.",
     },
     {
       src: "https://www.groupl.ae/images/e7.jpg",
@@ -43,7 +43,7 @@ const NewsEventsCarousel = () => {
         {/* Title Section */}
         <div className="text-left  mb-4">
           <h2 className="text-gray-400 font-thin text-4xl">UPDATES</h2>
-          <h1 className="text-DarkRed font-bold text-4xl">NEWS & EVENTS</h1>
+          <h1 className="text-lightblue font-bold text-4xl">NEWS & EVENTS</h1>
         </div>
 
         {/* Image Carousel */}
@@ -66,7 +66,7 @@ const NewsEventsCarousel = () => {
                   className="w-full h-full object-fill rounded-lg shadow-md"
                 />
                 {/* Description Overlay */}
-                <div className="absolute inset-0 top-40 bg-DarkRed bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
+                <div className="absolute inset-0 top-40 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
   <p className="text-lg font-bold text-left whitespace-pre-line ">{image.heading}</p> {/* Heading */}
   <p className="text-12.8 text-left font-semibold whitespace-pre-line mb-1">{image.description}</p> {/* Description */}
 </div>

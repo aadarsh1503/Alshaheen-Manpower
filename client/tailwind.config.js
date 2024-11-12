@@ -7,8 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        DarkRed: '#c0190f',
+        DarkRed: '#ff0000',
         darkgray:'#e9e9e9',
+        lightblue:'#4ba3ca',
+        lightgreen:'#1a9c2c',
 
       },
       fontFamily: {

@@ -15,11 +15,11 @@ const Navbar = () => {
         <img src="https://alshaheen.pro/wp-content/uploads/2023/09/cropped-AlshaheenManpower_1_page-0001.jpg" alt="Logo" className="h-16 ml-56" />
       </div>
       <div className="flex font- space-x-8">
-        <a href="/" className="hover:underline font-semibold">Home</a>
-        <a href="#about" className="hover:underline font-semibold text-DarkRed">About Us</a>
+        <a href="/" className="hover:underline font-semibold hover:text-lightgreen">Home</a>
+        <a href="#about" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
         <div className="relative">
           <button 
-            className="hover:underline font-semibold text-DarkRed flex items-center" 
+            className="hover:underline font-semibold hover:text-lightgreen text-DarkRed flex items-center" 
             onClick={toggleDropdown}
           >
             Services
@@ -29,16 +29,16 @@ const Navbar = () => {
           {dropdownOpen && (
             <div className="absolute z-50 font-raleway mt-8 bg-white shadow-lg w-48 rounded-md">
               {/* Links inside the dropdown */}
-              <a href="/aviation" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Aviation</a>
-              <a href="#service2" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 2</a>
-              <a href="#service1" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 1</a>
+              <a href="/aviation" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Aviation</a>
+              <a href="#service2" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 2</a>
+              <a href="#service1" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 1</a>
             </div>
           )}
         </div>
-        <a href="#expertise" className="hover:underline font-semibold text-DarkRed">Training</a>
-        <a href="#insights" className="hover:underline font-semibold text-DarkRed">News</a>
-        <a href="#contact" className="hover:underline font-semibold text-DarkRed">Find a Job</a>
-        <a href="/contactUs" className="hover:underline font-semibold text-black">Contact Us</a>
+        <a href="#expertise" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
+        <a href="#insights" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
+        <a href="#contact" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Find a Job</a>
+        <a href="/contactUs" className="hover:underline font-semibold hover:text-lightgreen text-black">Contact Us</a>
       </div>
       <div className="flex space-x-3">
         {/* Social Media Icons */}

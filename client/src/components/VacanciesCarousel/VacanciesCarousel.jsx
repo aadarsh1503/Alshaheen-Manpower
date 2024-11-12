@@ -35,7 +35,7 @@ const VacanciesCarousel = () => {
     <div className="w-full bg-white py-12 px-4 flex justify-center items-center">
       <div className=" flex items-center">
         {/* Current Vacancies Section */}
-        <div className="bg-DarkRed w-[356px] h-[300px] lg:-mt-14 text-white text-left flex flex-col justify-center items-center p-6 text-5xl font-bold mr-4">
+        <div className="bg-lightgreen w-[356px] h-[300px] lg:-mt-14 text-white text-left flex flex-col justify-center items-center p-6 text-5xl font-bold mr-4">
           CURRENT <br /> VACANCIES
         </div>
 

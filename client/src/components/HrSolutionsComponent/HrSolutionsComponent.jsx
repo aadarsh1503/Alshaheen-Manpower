@@ -4,7 +4,7 @@ const HrSolutionsComponent = () => {
   return (
     <div className="flex w-full lg:h-[500px] bg-white">
       {/* Left Side with Images */}
-      <div className="w-1/2 bg-DarkRed font-raleway  ">
+      <div className="w-1/2 bg-lightgreen font-raleway  ">
       <div className=' p-12 space-y-8 grid ml-32 grid-cols-3'>
         {/* Image Items with unique sources */}
         <div className="flex flex-col items-center transform transition duration-300 lg:mt-8 hover:scale-110">
@@ -48,14 +48,14 @@ const HrSolutionsComponent = () => {
 
       {/* Right Side with Content */}
       <div className="w-1/2 bg-gray-100 p-12 flex flex-col justify-center">
-        <h1 className="text-DarkRed text-3xl font-sans font-bold  mb-6">
+        <h1 className="text-lightblue text-3xl font-sans font-bold  mb-6">
           THE UAE'S LEADING<br /> PROVIDER OF UNIQUE AND<br /> INNOVATIVE HR SOLUTIONS
         </h1>
-        <div className="h-2 w-16 bg-DarkRed mb-6"></div>
+        <div className="h-2 w-16 bg-lightgreen mb-6"></div>
         <p className="text-gray-600 mb-6">
           We work with a broad range of industries such as Financial <br /> Services, Aviation, Logistics, Retail, IT, Oil & Gas, Call Centers, <br /> Construction, and can support organizations of any size— <br />start-up or large.
         </p>
-        <button className="bg-DarkRed lg:w-[132px] text-white px-2 py-3 font-semibold uppercase hover:bg-red-700 transition duration-300">
+        <button className="bg-lightgreen lg:w-[132px] text-white px-2 py-3 font-semibold uppercase hover:bg-DarkRed hover:text-white transition duration-300">
           Know More
         </button>
       </div>

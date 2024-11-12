@@ -6,19 +6,21 @@ const Footer = () => {
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Left Section */}
         <div>
-          <h2 className="text-DarkRed mt-10 font-bold text-3xl">CONTACT US</h2>
+          <h2 className="text-lightblue mt-10 font-bold text-3xl">CONTACT US</h2>
           <p className="mt-4 text-11.2 text-gray-700">
            
-204, Garhoud Star Building Dubai - UAE
+          P.O. Box 54121,
+          Kingdom of Bahrain
 <br />
-+971 4 256 6333<br />
-info@alshaheen.com
++97313303301<br />
+info@alshaheen.pro
+
           </p>
         </div>
 
         {/* Right Section */}
         <div className="text-left">
-          <h3 className="text-red-600 font-bold">Follow us</h3>
+          <h3 className="text-lightblue font-bold">Follow us</h3>
           <div className="flex justify-center space-x-4 mt-2">
             <a href="https://facebook.com/gvscargo" target="_blank" rel="noopener noreferrer">
               <FaFacebookF className="text-gray-400 text-2xl hover:text-gray-600" />
