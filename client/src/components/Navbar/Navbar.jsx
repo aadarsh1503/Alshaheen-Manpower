@@ -27,17 +27,11 @@ const Navbar = () => {
             {dropdownOpen ? <FaChevronUp className="ml-2 mt-1" /> : <FaChevronDown className="ml-2 mt-1" />}
           </button>
           {dropdownOpen && (
-            <div className="absolute z-10 font-raleway mt-8 bg-white shadow-lg  w-32 rounded-md">
-              <a href="/aviation" className="block px-4  text-black hover:bg-gray-100">Aviation</a>
-              <a href="#service2" className="block px-4  text-black hover:bg-gray-100">Service 2</a>
-              <a href="#service1" className="block px-4  text-black hover:bg-gray-100">Service 1</a>
-              <a href="#service2" className="block px-4  text-black hover:bg-gray-100">Service 2</a>
-              <a href="#service1" className="block px-4  text-black hover:bg-gray-100">Service 1</a>
-              <a href="#service2" className="block px-4  text-black hover:bg-gray-100">Service 2</a>
-              <a href="#service1" className="block px-4  text-black hover:bg-gray-100">Service 1</a>
-              <a href="#service2" className="block px-4  text-black hover:bg-gray-100">Service 2</a>
-              <a href="#service1" className="block px-4  text-black hover:bg-gray-100">Service 1</a>
-              <a href="#service2" className="block px-4  text-black hover:bg-gray-100">Service 2</a>
+            <div className="absolute z-50 font-raleway mt-8 bg-white shadow-lg w-48 rounded-md">
+              {/* Links inside the dropdown */}
+              <a href="/aviation" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Aviation</a>
+              <a href="#service2" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 2</a>
+              <a href="#service1" className="block px-4 py-2 text-black hover:bg-gray-100" onClick={(e) => e.stopPropagation()}>Service 1</a>
             </div>
           )}
         </div>
