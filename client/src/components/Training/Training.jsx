@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
-import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+import BrochureSection from "../BrochureSection/BrochureSection";
+import ProcessSteps from "./ProcessSteps.JSX";
+import Process from "./Process";
+import TechnicalSkillsTraining from "./TechnicalSkillsTraining";
+
+
+
+
+const Training = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/process_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "TRAINING",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "GVS's training modules have evolved from our <br /> decades of experience of dealing with people across the <br /> board for various sectors. Our candidates are sourced <br /> from 32 countries and placed across start-ups, fast- <br /> growing corporates as well as MNCs and are a crucial <br /> entity to our success.",
     },
   ];
 
@@ -32,11 +37,11 @@ const Construction = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-0"></div>
+        <div className="absolute inset-0 bg-lightgreen opacity-0"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div
@@ -85,26 +90,15 @@ const Construction = () => {
         </motion.div>
 
         {/* Buttons */}
-        <motion.div
-          className="absolute top-2/4 lg:top-2/3 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
-            FIND TALENT
-          </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
-            FIND A JOB
-          </button>
-        </motion.div>
+
       </div>
 
-      <ConstructionMiddle />
-      <ConstructionLast />
+<ProcessSteps />
+<Process />
+<TechnicalSkillsTraining />
       <BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default Training;

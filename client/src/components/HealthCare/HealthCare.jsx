@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
+import HealthCareMiddle from "./HealthCareMiddle";
+import HealthCareLast from "./HealthCareLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+
+const HealthCare = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/healthcare_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "HEALTHCARE",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "Diligently sourced and scrutinised healthcare<br /> professionals for a rapidly growing industry.",
     },
   ];
 
@@ -100,11 +101,12 @@ const Construction = () => {
         </motion.div>
       </div>
 
-      <ConstructionMiddle />
-      <ConstructionLast />
-      <BrochureSection />
+<HealthCareMiddle />
+<HealthCareLast />
+<BrochureSection />
+
     </div>
   );
 };
 
-export default Construction;
+export default HealthCare;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProcessSection = () => {
+const HospitalityLast = () => {
   return (
     <div className="flex items-center justify-center w-full min-h-screen mt-32 bg-white px-4">
       <div className="w-full md:w-3/4 h-full bg-white">
@@ -18,7 +18,7 @@ const ProcessSection = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-[200px] sm:h-[300px] md:h-[350px] lg:h-[438px] mb-4 lg:mb-0">
             <img 
-              src="https://www.groupl.ae/images/ser_pic3.jpg" 
+              src="https://www.groupl.ae/images/ser_pic13.jpg" 
               alt="Process" 
               className="w-full h-full object-cover" 
             />
@@ -48,4 +48,4 @@ const ProcessSection = () => {
   );
 };
 
-export default ProcessSection;
+export default HospitalityLast;

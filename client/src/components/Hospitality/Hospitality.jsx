@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
+import HospitalityMiddle from "./HospitalityMiddle";
+import HospitalityLast from "./HospitalityLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+
+const Hospitality = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/hosptbly_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "HOSPITALITY",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "In an industry where service is king, we provide well <br /> trained personnel who will bring smiles on the faces of <br /> your customers.",
     },
   ];
 
@@ -100,11 +101,11 @@ const Construction = () => {
         </motion.div>
       </div>
 
-      <ConstructionMiddle />
-      <ConstructionLast />
+      <HospitalityMiddle />
+      <HospitalityLast />
       <BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default Hospitality;

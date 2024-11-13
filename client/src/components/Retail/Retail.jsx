@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
-import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+import BrochureSection from "../BrochureSection/BrochureSection";
+import RetailMiddle from "./RetailMiddle";
+import RetailLast from "./RetailLast";
+
+const Retail = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/retail_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "RETAIL",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "Diligently sourced and highly trained HR Solutions for <br /> the industry that is at the heart of Dubai’s identity.",
     },
   ];
 
@@ -99,12 +100,11 @@ const Construction = () => {
           </button>
         </motion.div>
       </div>
-
-      <ConstructionMiddle />
-      <ConstructionLast />
+      <RetailMiddle />
+      <RetailLast />
       <BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default Retail;

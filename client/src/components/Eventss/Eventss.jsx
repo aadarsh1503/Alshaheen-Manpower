@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
+import EventssMiddle from "./EventssMiddle";
+import ConstructionLast from "./EventssLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+
+const Eventss = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/events_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "EVENTS",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "Industry leading skills and talent to fuel the biggest and <br /> safest return to normal in the Events industry.",
     },
   ];
 
@@ -100,11 +101,11 @@ const Construction = () => {
         </motion.div>
       </div>
 
-      <ConstructionMiddle />
-      <ConstructionLast />
-      <BrochureSection />
+<EventssMiddle />
+<ConstructionLast />
+<BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default Eventss;

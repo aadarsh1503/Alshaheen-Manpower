@@ -3,25 +3,24 @@ import { FaFacebookF, FaLinkedinIn, FaInstagram, FaTwitter } from 'react-icons/f
 const Footer = () => {
   return (
     <footer className="bg-white max-w-5xl mx-auto lg:h-[220px]">
-      <div className="container mx-auto flex justify-between items-center px-4">
+      <div className="container mx-auto flex lg:flex-row flex-col lg:justify-between lg:items-center px-4">
+        
         {/* Left Section */}
-        <div>
-          <h2 className="text-lightblue mt-10 font-bold text-3xl">CONTACT US</h2>
-          <p className="mt-4 text-11.2 text-gray-700">
-           
-          P.O. Box 54121,
-          Kingdom of Bahrain
-<br />
-+97313303301<br />
-info@alshaheen.pro
-
+        <div className="text-center lg:text-left mb-4 lg:mb-0"> {/* Center text for mobile */}
+          <h2 className="text-lightblue mt-6 lg:mt-10 font-bold text-2xl lg:text-3xl">CONTACT US</h2>
+          <p className="mt-2 lg:mt-4 text-sm lg:text-base text-gray-700"> {/* Adjust font size for mobile */}
+            P.O. Box 54121, Kingdom of Bahrain
+            <br />
+            +97313303301
+            <br />
+            info@alshaheen.pro
           </p>
         </div>
 
         {/* Right Section */}
-        <div className="text-left">
-          <h3 className="text-lightblue font-bold">Follow us</h3>
-          <div className="flex justify-center space-x-4 mt-2">
+        <div className="text-center lg:text-left"> {/* Center text for mobile */}
+          <h3 className="text-lightblue font-bold mt-4 lg:mt-0">Follow us</h3>
+          <div className="flex justify-center lg:justify-start space-x-4 mt-2">
             <a href="https://facebook.com/gvscargo" target="_blank" rel="noopener noreferrer">
               <FaFacebookF className="text-gray-400 text-2xl hover:text-gray-600" />
             </a>
@@ -35,7 +34,7 @@ info@alshaheen.pro
               <FaTwitter className="text-gray-400 text-2xl hover:text-gray-600" />
             </a>
           </div>
-          <p className="text-gray-500 text-sm mt-2">Privacy Policy</p>
+          <p className="text-gray-500 text-xs lg:text-sm mt-2">Privacy Policy</p>
         </div>
       </div>
     </footer>

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
-import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+import BrochureSection from "../BrochureSection/BrochureSection";
+import SecurityMiddle from "./SecurityMiddle";
+import SecurityLast from "./SecurityLast";
+
+
+const Security = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/security_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "SECURITY",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "With a talent pool that is reliably sourced and rigorously <br /> trained, we are committed to the operative excellence of <br /> our clients in the Security sector.",
     },
   ];
 
@@ -32,7 +34,7 @@ const Construction = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
@@ -86,7 +88,7 @@ const Construction = () => {
 
         {/* Buttons */}
         <motion.div
-          className="absolute top-2/4 lg:top-2/3 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
+          className="absolute top-2/4 lg:top-2/4 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
@@ -99,12 +101,11 @@ const Construction = () => {
           </button>
         </motion.div>
       </div>
-
-      <ConstructionMiddle />
-      <ConstructionLast />
+      <SecurityLast />
+<SecurityMiddle />
       <BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default Security;

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import ConstructionMiddle from "./ConstructionMiddle";
-import ConstructionLast from "./ConstructionLast";
+import ManufacturingMiddle from "./ManufacturingMiddle";
+import ManufacturingLast from "./ManufacturingLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Construction = () => {
+
+
+const ManuFacturing = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: "https://www.groupl.ae/images/manfryl_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "MANUFACTURING",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "Talent solutions to power one the world’s biggest <br /> Manufacturing hubs.",
     },
   ];
 
@@ -99,12 +101,11 @@ const Construction = () => {
           </button>
         </motion.div>
       </div>
-
-      <ConstructionMiddle />
-      <ConstructionLast />
-      <BrochureSection />
+< ManufacturingMiddle />
+< ManufacturingLast />
+<BrochureSection />
     </div>
   );
 };
 
-export default Construction;
+export default ManuFacturing;

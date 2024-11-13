@@ -2,31 +2,34 @@ import React from 'react';
 
 const ConstructionLast = () => {
   return (
-    <div className="flex items-center justify-center w-full h-screen mt-32 bg-white">
-      <div className="w-3/4 h-3/4 bg-white">
+    <div className="flex items-center justify-center w-full h-auto lg:h-screen py-20 lg:py-0  lg:mt-32 bg-white px-4">
+      <div className="w-full lg:w-3/4 h-auto lg:h-3/4 bg-white">
         
         {/* Heading with large underline */}
-        <div className="text-left mb-8">
-          <h2 className="text-4xl font-raleway font-bold text-DarkRed pb-2 relative inline-block">
+        <div className="text-left mb-4 lg:mb-8">
+          <h2 className="text-2xl lg:text-4xl font-raleway font-bold text-lightblue pb-1 lg:pb-2 relative inline-block">
             PROCESS
             {/* Large underline */}
-            <div className="absolute bottom-0 lg:w-[972px] left-40  border-b-4 border-DarkRed"></div>
+            <div className="absolute bottom-0 w-28 lg:w-[956px] left-0 lg:left-40 border-b-4 border-lightblue"></div>
           </h2>
         </div>
 
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row">
           {/* Left side: Image */}
-          <div className="w-1/2 lg:h-[438px]">
-            <img src="https://www.groupl.ae/images/ser_pic3.jpg" alt="Process" className="w-full h-full object-cover" />
+          <div className="w-full lg:w-1/2 h-48 lg:h-[406px] mb-4 lg:mb-0">
+            <img
+              src="https://www.groupl.ae/images/ser_pic7.jpg"
+              alt="Process"
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* Right side: Heading and Text */}
-          <div className="w-1/2 h-full flex flex-col justify-start">
+          <div className="w-full lg:w-1/2  h-auto lg:h-full flex flex-col justify-start">
             
             {/* Red Block with Text */}
-            <div className="bg-DarkRed text-white p-16">
-              <ul className="space-y-3 text-lg">
-                <li><span className="text-white">|</span> English Test</li>
+            <div className="bg-lightgreen text-white p-6 lg:p-20">
+              <ul className="space-y-2 text-sm lg:text-lg">
                 <li><span className="text-white">|</span> Demand for workers is raised</li>
                 <li><span className="text-white">|</span> Source potential candidates</li>
                 <li><span className="text-white">|</span> Pre-screening</li>
@@ -36,7 +39,6 @@ const ConstructionLast = () => {
                 <li><span className="text-white">|</span> Mobilisation to country of employment</li>
               </ul>
             </div>
-
           </div>
         </div>
       </div>

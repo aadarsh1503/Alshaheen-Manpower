@@ -2,17 +2,17 @@ import React from "react";
 
 const BrochureSection = () => {
   return (
-    <div className="flex items-center justify-center h-[300px] mb-10 bg-lightgreen">
-      <div className="text-white text-4xl font-bold">
+    <div className="flex flex-col lg:flex-row items-center justify-center h-auto lg:h-[300px] mb-10 bg-lightgreen px-4 py-6 lg:py-0">
+      <div className="text-white text-2xl lg:text-4xl font-bold text-center lg:text-left mb-4 lg:mb-0">
         RECEIVE COMPANY BROCHURE
       </div>
-      <div className="ml-8 flex flex-col space-y-2">
-        <div className="bg-white text-xl hover:bg-DarkRed hover:text-white text-black font-semibold py-2 px-4 rounded-md shadow-md w-52"> {/* Decreased width for first button */}
+      <div className="flex flex-col lg:ml-8 space-y-2 w-full lg:w-auto">
+        <button className="bg-white text-lg lg:text-xl hover:bg-DarkRed hover:text-white text-black font-semibold py-2 px-4 rounded-md shadow-md w-full lg:w-52">
           Corporate Hiring
-        </div>
-        <div className="bg-white text-xl  hover:bg-DarkRed hover:text-white text-black font-semibold py-2 px-4 rounded-md shadow-md w-full"> {/* Full width for second button */}
+        </button>
+        <button className="bg-white text-lg lg:text-xl hover:bg-DarkRed hover:text-white text-black font-semibold py-2 px-4 rounded-md shadow-md w-full">
           Manpower Recruitment
-        </div>
+        </button>
       </div>
     </div>
   );
