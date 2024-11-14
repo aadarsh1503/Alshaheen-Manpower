@@ -22,16 +22,16 @@ const Footer = () => {
           <h3 className="text-lightblue font-bold mt-4 lg:mt-0">Follow us</h3>
           <div className="flex justify-center lg:justify-start space-x-4 mt-2">
             <a href="https://facebook.com/gvscargo" target="_blank" rel="noopener noreferrer">
-              <FaFacebookF className="text-gray-400 text-2xl hover:text-gray-600" />
+              <FaFacebookF className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
             <a href="https://instagram.com/gvscargo" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="text-gray-400 text-2xl hover:text-gray-600" />
+              <FaInstagram className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
             <a href="https://www.linkedin.com/company/gvsbahrain/" target="_blank" rel="noopener noreferrer">
-              <FaLinkedinIn className="text-gray-400 text-2xl hover:text-gray-600" />
+              <FaLinkedinIn className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
             <a href="https://twitter.com/gvscargo" target="_blank" rel="noopener noreferrer">
-              <FaTwitter className="text-gray-400 text-2xl hover:text-gray-600" />
+              <FaTwitter className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
           </div>
           <p className="text-gray-500 text-xs lg:text-sm mt-2">Privacy Policy</p>

@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <nav className="relative bg-white lg:flex max-w-7xl mx-auto justify-end items-center p-4 lg:py-6 text-black">
       {/* Logo positioned to the left and partially outside navbar */}
-      <div className="absolute left-64 top-1 z-20 hidden lg:block">
+      <div className="absolute left-1 top-1 z-20 hidden lg:block">
         <img
           src="https://alshaheen.pro/wp-content/uploads/2023/09/cropped-AlshaheenManpower_1_page-0001.jpg"
           alt="Logo"
@@ -38,7 +38,7 @@ const Navbar = () => {
       {/* Navbar Links for Desktop */}
       <div className="hidden lg:flex space-x-8">
         <a href="/" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Home</a>
-        <a href="/" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
+        <a href="/about" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
         <div className="relative">
           <button
             className="hover:underline font-semibold hover:text-lightgreen text-DarkRed flex items-center"
@@ -58,7 +58,7 @@ const Navbar = () => {
           )}
         </div>
         <a href="/training" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
-        <a href="/" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
+        <a href="/newsEvents" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
         <a href="#contact" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Find a Job</a>
         <a href="/contactUs" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Contact Us</a>
       </div>

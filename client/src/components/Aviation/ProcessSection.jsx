@@ -1,4 +1,5 @@
 import React from 'react';
+import i1 from "./i1.png"
 
 const ProcessSection = () => {
   return (
@@ -18,7 +19,7 @@ const ProcessSection = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-[200px] sm:h-[300px] md:h-[350px] lg:h-[438px] mb-4 lg:mb-0">
             <img 
-              src="https://www.groupl.ae/images/ser_pic3.jpg" 
+              src={i1} 
               alt="Process" 
               className="w-full h-full object-cover" 
             />

@@ -1,4 +1,6 @@
 import React from 'react';
+import i10 from "./i10.png"
+import i11 from "./i11.png"
 
 const HealthCareMiddle = () => {
   return (
@@ -7,7 +9,7 @@ const HealthCareMiddle = () => {
         {/* Left Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
           <img
-            src="https://www.groupl.ae/images/healthcare1.jpg"
+            src={i10}
             alt="Cabin Crew"
             className="w-full h-full lg:h-[532px] object-cover"
           />
@@ -24,8 +26,10 @@ const HealthCareMiddle = () => {
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
-              <span>| Doctors</span>
-              <span>| Radiologist</span>
+              <span>| Visa and Immigration Services</span>
+              <span>| Work Permit Assistance</span>
+              <span>| Legal Requirements Support</span>
+              <span>| Foreign Worker Integration</span>
 
             </div>
           </div>
@@ -43,8 +47,10 @@ const HealthCareMiddle = () => {
           Skill up your business with trained professionals who can streamline  recruitment, enhancing your workforce's capabilities. We help you navigate the complexities of hiring and managing talent for growth and success."</p> 
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">
-              <span>| Nurses</span>
-              <span>| Assistants</span>
+              <span>| Trained Nurses</span>
+              <span>| Healthcare Assistants</span>
+              <span>| Talent Acquisition</span>
+              <span>| Workforce Management</span>
      
             </div>
           
@@ -54,7 +60,7 @@ const HealthCareMiddle = () => {
         {/* Right Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
           <img
-            src="https://www.groupl.ae/images/healthcare2.jpg"
+            src={i11}
             alt="Cabin Crew"
             className="w-full h-full object-cover"
           />

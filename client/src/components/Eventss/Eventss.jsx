@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import EventssMiddle from "./EventssMiddle";
 import ConstructionLast from "./EventssLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i17 from "./i17.png"
 
 
 const Eventss = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/events_bnr.jpg",
+      src: i17,
       alt: "Image 1",
       text: "PLACEMENTS OF CANDIDATES IN <br /> SUITABLE JOBS",
       description:
@@ -33,7 +34,7 @@ const Eventss = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[532px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
@@ -92,10 +93,10 @@ const Eventss = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed  mb-2 lg:mb-0 lg:mr-4">
             FIND TALENT
           </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed">
             FIND A JOB
           </button>
         </motion.div>

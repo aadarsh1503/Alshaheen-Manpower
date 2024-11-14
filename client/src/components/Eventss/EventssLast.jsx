@@ -1,4 +1,5 @@
 import React from 'react';
+import i9 from "./i9.png"
 
 const ConstructionLast = () => {
   return (
@@ -18,7 +19,7 @@ const ConstructionLast = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-48 lg:h-[406px] mb-4 lg:mb-0">
             <img
-              src="https://www.groupl.ae/images/ser_pic12.jpg"
+              src={i9}
               alt="Process"
               className="w-full h-full object-cover"
             />

@@ -1,4 +1,5 @@
 import React from 'react';
+import i1 from "./i1.png"
 
 const ProcessSteps = () => {
   const steps = [
@@ -16,7 +17,7 @@ const ProcessSteps = () => {
       {/* Background overlay image */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-100"
-        style={{ backgroundImage: "url('https://www.groupl.ae/images/traning_bg.jpg')" }}
+        style={{ backgroundImage: `url(${i1})` }}
       ></div>
 
       <div className="relative z-10 flex items-center justify-center lg:mt-32 space-x-3 px-6">

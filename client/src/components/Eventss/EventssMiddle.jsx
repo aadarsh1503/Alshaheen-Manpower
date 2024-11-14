@@ -1,4 +1,6 @@
 import React from 'react';
+import i7 from "./i7.png"
+import i8 from "./i8.png"
 
 const EventssMiddle = () => {
   return (
@@ -7,7 +9,7 @@ const EventssMiddle = () => {
         {/* Left Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
           <img
-            src="https://www.groupl.ae/images/events1.jpg"
+            src={i7}
             alt="Cabin Crew"
             className="w-full h-full lg:h-[532px] object-cover"
           />
@@ -24,13 +26,13 @@ const EventssMiddle = () => {
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
-              <span>| Host</span>
-              <span>| Venue Crew</span>
-              <span>| Ushers</span>
-              <span>| Admin</span>
+              <span>| Placement Process</span>
+              <span>| Employment Terms</span>
+              <span>| Payroll & Benefits</span>
+              <span>| Legal Compliance</span>
             </div>
             <div className="flex flex-col space-y-2">
-              <span>| HSE</span>
+              <span>| Ushers</span>
               <span>| Production</span>
               <span>| Operations</span>
               <span>| Site Management</span>
@@ -53,9 +55,9 @@ const EventssMiddle = () => {
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">
-              <span>| Security</span>
-              <span>| Cleaners</span>
-              <span>| Maintenance</span>
+              <span>| Security Services Management</span>
+              <span>| Operational Support</span>
+              <span>| Compliance & Regulation Handling</span>
             </div>
           
           </div>
@@ -64,7 +66,7 @@ const EventssMiddle = () => {
         {/* Right Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
           <img
-            src="https://www.groupl.ae/images/events2.jpg"
+            src={i8}
             alt="Cabin Crew"
             className="w-full h-full object-cover"
           />

@@ -1,4 +1,6 @@
 import React from 'react';
+import i4 from "./i4.png"
+import i5 from "./i5.png"
 
 const ConstructionMiddle = () => {
   return (
@@ -7,7 +9,7 @@ const ConstructionMiddle = () => {
         {/* Left Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
           <img
-            src="https://www.groupl.ae/images/ser_pic5.jpg"
+            src={i4}
             alt="Cabin Crew"
             className="w-full h-full lg:h-[532px] object-cover"
           />
@@ -26,14 +28,14 @@ const ConstructionMiddle = () => {
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
-              <span>| Project</span>
-              <span>| Management</span>
-              <span>| Engineers</span>
+              <span>| Project Planning</span>
+              <span>| Engineering Expertise</span>
+              <span>| Estimating Accuracy</span>
             </div>
             <div className="flex flex-col space-y-2">
-              <span>| Estimation</span>
-              <span>| Contacts</span>
-              <span>| Architect</span>
+              <span>| Contract Management</span>
+              <span>| Architectural Design</span>
+     
             </div>
           </div>
         </div>
@@ -51,7 +53,7 @@ const ConstructionMiddle = () => {
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">
-              <span>| MEP</span>
+              <span>| MEP Training</span>
               <span>| Civil</span>
             </div>
             <div className="flex flex-col space-y-2">
@@ -64,7 +66,7 @@ const ConstructionMiddle = () => {
         {/* Right Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
           <img
-            src="https://www.groupl.ae/images/ser_pic6.jpg"
+            src={i5}
             alt="Cabin Crew"
             className="w-full h-full object-cover"
           />

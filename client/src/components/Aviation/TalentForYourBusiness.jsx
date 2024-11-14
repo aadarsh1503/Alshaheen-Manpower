@@ -1,4 +1,6 @@
 import React from 'react';
+import i2 from "./i2.png"
+import i3 from "./i3.png"
 
 
 const TalentForYourBusiness = () => {
@@ -8,7 +10,7 @@ const TalentForYourBusiness = () => {
       {/* Left Side - Image */}
       <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
         <img
-          src="https://www.groupl.ae/images/ser_pic1.jpg"
+          src={i2}
           alt="Cabin Crew"
           className="w-full h-full lg:h-[532px] object-cover"
         />
@@ -26,12 +28,12 @@ const TalentForYourBusiness = () => {
         </p>
         <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
-            <span>| Customer service</span>
-            <span>| Check in</span>
+            <span>| Requirement Analysis</span>
+            <span>| Candidate Sourcing</span>
           </div>
           <div className="flex flex-col space-y-2">
-            <span>| Cabin crew</span>
-            <span>| Security</span>
+            <span>| Screening and Interviews</span>
+            <span>| Onboarding Support</span>
           </div>
         </div>
       </div>
@@ -49,12 +51,12 @@ const TalentForYourBusiness = () => {
     </p>
     <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
     <div className="flex flex-col space-y-2">
-        <span>Customer service</span>
-        <span>Check in</span>
+        <span>Candidate Sourcing</span>
+        <span>Skill Assessment</span>
       </div>
       <div className="flex flex-col space-y-2">
-        <span>Cabin crew</span>
-        <span>Security</span>
+        <span>Screening Process</span>
+        <span>Quality Assurance</span>
       </div>
     </div>
   </div>
@@ -62,7 +64,7 @@ const TalentForYourBusiness = () => {
   {/* Right Side - Image */}
   <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
     <img
-      src="https://www.groupl.ae/images/ser_pic2.jpg"
+      src={i3}
       alt="Cabin Crew"
       className="w-full h-full object-cover"
     />

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import i6 from "./i6.png"
 const ConstructionLast = () => {
   return (
     <div className="flex items-center justify-center w-full h-auto lg:h-screen py-20 lg:py-0  lg:mt-32 bg-white px-4">
@@ -18,7 +18,7 @@ const ConstructionLast = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-48 lg:h-[406px] mb-4 lg:mb-0">
             <img
-              src="https://www.groupl.ae/images/ser_pic7.jpg"
+              src={i6}
               alt="Process"
               className="w-full h-full object-cover"
             />

@@ -88,19 +88,7 @@ const About = () => {
         </motion.div>
 
         {/* Buttons */}
-        <motion.div
-          className="absolute top-2/3 lg:right-96 lg:ml-0 ml-20  transform -translate-y-1/2 space-x-2 lg:space-x-4 z-10 flex flex-col lg:flex-row items-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0">
-            FIND TALENT
-          </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
-            FIND A JOB
-          </button>
-        </motion.div>
+      
       </div>
 <CEOSpeaks />
 <TheTeam />

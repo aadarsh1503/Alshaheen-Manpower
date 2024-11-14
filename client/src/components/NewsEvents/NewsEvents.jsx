@@ -14,7 +14,7 @@ const NewsEvents = () => {
       alt: "Image 1",
       text: "NEWS & EVENTS",
       description:
-        "Recent news and updates from GroupL on company <br /> activities and job openings.",
+        "Recent news and updates from GVS on company <br /> activities and job openings.",
     },
   ];
 

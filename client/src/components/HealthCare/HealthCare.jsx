@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import HealthCareMiddle from "./HealthCareMiddle";
 import HealthCareLast from "./HealthCareLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i4 from "./i4.jpg"
 
 
 const HealthCare = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/healthcare_bnr.jpg",
+      src: i4,
       alt: "Image 1",
       text: "VISA AND IMMIGRATION SERVICES",
       description:
@@ -33,7 +34,7 @@ const HealthCare = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}

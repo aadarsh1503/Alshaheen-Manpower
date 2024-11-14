@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import i11 from "./i11.jpg"
 
 import TalentForYourBusiness from "./TalentForYourBusiness";
 import ProcessSection from "./ProcessSection";
@@ -8,7 +9,7 @@ import BrochureSection from "../BrochureSection/BrochureSection";
 const Aviation = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/aviation_bnr.jpg",
+      src: i11,
       alt: "Image 1",
       text: "RECRUITMENT AND SELECTION OF CANDIDATES",
       description:
@@ -92,10 +93,10 @@ const Aviation = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0">
             FIND TALENT
           </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed">
             FIND A JOB
           </button>
         </motion.div>

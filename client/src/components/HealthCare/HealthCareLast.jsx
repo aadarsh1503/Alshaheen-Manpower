@@ -1,4 +1,5 @@
 import React from 'react';
+import i12 from "./i12.png"
 
 const HealthCareLast = () => {
   return (
@@ -18,7 +19,7 @@ const HealthCareLast = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-48 lg:h-[406px] mb-4 lg:mb-0">
             <img
-              src="https://www.groupl.ae/images/ser_pic18.jpg"
+              src={i12}
               alt="Process"
               className="w-full h-full object-cover"
             />

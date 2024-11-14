@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import ConstructionMiddle from "./ConstructionMiddle";
 import ConstructionLast from "./ConstructionLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i15 from "./i15.jpg"
 
 const Construction = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/construction_bnr.jpg",
+      src: i15,
       alt: "Image 1",
       text: "PRE-EMPLOYMENT SCREENING AND TESTING",
       description:
@@ -91,10 +92,10 @@ const Construction = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0 lg:mr-4">
             FIND TALENT
           </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed">
             FIND A JOB
           </button>
         </motion.div>
