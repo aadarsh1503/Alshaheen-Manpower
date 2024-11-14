@@ -9,7 +9,7 @@ const Construction = () => {
     {
       src: "https://www.groupl.ae/images/construction_bnr.jpg",
       alt: "Image 1",
-      text: "CONSTRUCTION",
+      text: "PRE-EMPLOYMENT SCREENING AND TESTING",
       description:
         "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
     },
@@ -32,7 +32,7 @@ const Construction = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}

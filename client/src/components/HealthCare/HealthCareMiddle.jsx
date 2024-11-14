@@ -20,7 +20,7 @@ const HealthCareMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          Adept at curative, preventive, rehabilitative, and palliative<br /> functions , our candidates are a perfect match for your <br /> requirements.
+          Our professional, and compassionate candidates are trained in all <br /> can provide visa and immigration services to help navigate the <br />complex process of bringing foreign workers into the country. <br /> This" can include assistance with visa applications, work permits,<br /> and other legal requirements.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -40,8 +40,7 @@ const HealthCareMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          Our professional, and compassionate candidates are trained in all <br /> clinical processes as well as industry service standards to help <br />facilitate smooth functioning of your business.
-          </p>
+          Skill up your business with trained professionals who can streamline  recruitment, enhancing your workforce's capabilities. We help you navigate the complexities of hiring and managing talent for growth and success."</p> 
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">
               <span>| Nurses</span>

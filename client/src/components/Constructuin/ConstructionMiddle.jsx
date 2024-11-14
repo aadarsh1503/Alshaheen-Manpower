@@ -20,7 +20,9 @@ const ConstructionMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-            The greatest structures are built on quality. Your business is no <br /> different. We help you find professionals who are trained in all <br /> processes involved in buildings, infrastructure, and industrial <br /> facilities, and associated activities.
+          Manpower agencies also provide pre-employment screening and <br /> testing services to help employers make informed hiring decisions.
+          
+            
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -45,7 +47,7 @@ const ConstructionMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-            We provide the best trained candidates for building, maintaining, <br /> and repairing structures, as required by your business.
+          Manpower agencies provide tailored training programs to enhance your workforce's skills, helping your business grow <br /> and meet industry demands.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

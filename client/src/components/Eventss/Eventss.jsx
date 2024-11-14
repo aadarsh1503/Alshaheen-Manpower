@@ -10,7 +10,7 @@ const Eventss = () => {
     {
       src: "https://www.groupl.ae/images/events_bnr.jpg",
       alt: "Image 1",
-      text: "EVENTS",
+      text: "PLACEMENTS OF CANDIDATES IN <br /> SUITABLE JOBS",
       description:
         "Industry leading skills and talent to fuel the biggest and <br /> safest return to normal in the Events industry.",
     },
@@ -33,7 +33,7 @@ const Eventss = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}

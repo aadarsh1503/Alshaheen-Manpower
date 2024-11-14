@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-import TalentForYourBusiness from "./TalentForYourBusiness";
-import ProcessSection from "./ProcessSection";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import RecruitmentDays from "./RecruitmentDays";
+import Life from "./Life";
+import NewsEventsCarousel from "../NewsEventsCarousel/NewsEventsCarousel";
 
-const Aviation = () => {
+
+
+const NewsEvents = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/aviation_bnr.jpg",
+      src: "https://www.groupl.ae/images/news_bnr.jpg",
       alt: "Image 1",
-      text: "RECRUITMENT AND SELECTION OF CANDIDATES",
+      text: "NEWS & EVENTS",
       description:
-        "Providing world class talent solutions for world leading <br /> airlines.",
+        "Recent news and updates from GroupL on company <br /> activities and job openings.",
     },
   ];
 
@@ -33,7 +35,7 @@ const Aviation = () => {
   return (
     <div>
       <div
-        className="relative w-full lg:h-[500px] h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
@@ -45,9 +47,9 @@ const Aviation = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           key={currentIndex}
-          className="relative z-10 flex items-center px-4 lg:px-8 py-10 lg:py-16 text-white"
+          className="relative z-10 flex flex-col lg:flex-row items-center px-4 lg:px-8 py-8 lg:py-16 text-white"
         >
-          <div className="w-full lg:w-1/2 font-raleway max-w-3xl lg:mt-24 ml-8 lg:ml-32">
+          <div className="w-full lg:w-1/2 font-raleway max-w-3xl lg:mt-24 lg:ml-32 text-center lg:text-left">
             <motion.h1
               className="text-3xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight"
               dangerouslySetInnerHTML={{ __html: images[currentIndex].text }}
@@ -58,9 +60,9 @@ const Aviation = () => {
 
             {/* Red Line */}
             <motion.div
-              className="h-2 w-10 lg:w-16 bg-lightgreen mb-4 lg:mb-6"
+              className="h-1 lg:h-2 w-16 bg-lightgreen mb-4 lg:mb-6 mx-auto lg:mx-0"
               initial={{ width: 0 }}
-              animate={{ width: "2.5rem" }}
+              animate={{ width: "4rem" }}
               transition={{ duration: 0.6 }}
             ></motion.div>
 
@@ -76,7 +78,7 @@ const Aviation = () => {
               <motion.img
                 src={images[currentIndex].googleSrc}
                 alt="Google Reviews"
-                className="mx-auto lg:ml-0 lg:-ml-2 mb-4"
+                className="mx-auto mb-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
@@ -87,12 +89,12 @@ const Aviation = () => {
 
         {/* Buttons */}
         <motion.div
-          className="absolute top-2/3 lg:right-96 lg:ml-0 ml-20  transform -translate-y-1/2 space-x-2 lg:space-x-4 z-10 flex flex-col lg:flex-row items-center"
+          className="absolute top-2/4 lg:top-2/3 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
             FIND TALENT
           </button>
           <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
@@ -100,11 +102,12 @@ const Aviation = () => {
           </button>
         </motion.div>
       </div>
-      <TalentForYourBusiness />
-      <ProcessSection />
-      <BrochureSection />
+<RecruitmentDays />
+<NewsEventsCarousel />
+<Life />
+<BrochureSection />
     </div>
   );
 };
 
-export default Aviation;
+export default NewsEvents;

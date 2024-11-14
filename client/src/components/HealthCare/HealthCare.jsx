@@ -10,7 +10,7 @@ const HealthCare = () => {
     {
       src: "https://www.groupl.ae/images/healthcare_bnr.jpg",
       alt: "Image 1",
-      text: "HEALTHCARE",
+      text: "VISA AND IMMIGRATION SERVICES",
       description:
         "Diligently sourced and scrutinised healthcare<br /> professionals for a rapidly growing industry.",
     },
@@ -33,7 +33,7 @@ const HealthCare = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}

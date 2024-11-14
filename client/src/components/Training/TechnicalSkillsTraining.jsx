@@ -14,7 +14,7 @@ const TechnicalSkillsTraining = () => {
       
       <div className="grid grid-cols-3 gap-10">
         <div className=''>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">HOSPITALITY <br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Housekeeper</span></h3>
+          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">HOSPITALITY <br /><span className='text-black font-normal'>Waiter</span><br /><span className='text-black font-normal'>Housekeeper</span></h3>
          
         </div>
 
@@ -24,22 +24,22 @@ const TechnicalSkillsTraining = () => {
         </div>
 
         <div>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">LOGISTICS <br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span></h3>
+          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">LOGISTICS <br /><span className='text-black font-normal'>Warehouse Worker</span><br /><span className='text-black font-normal'>Aviation</span></h3>
          
         </div>
 
         <div>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">MEP<br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span></h3>
+          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">MEP<br /><span className='text-black font-normal'>Electrical</span><br /><span className='text-black font-normal'>HVAC</span><br /><span className='text-black font-normal'>Plumbing</span></h3>
           
         </div>
 
         <div>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">FACILITY MANAGEMENT<br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span></h3>
+          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">FACILITY MANAGEMENT<br /><span className='text-black font-normal'>Carpenter</span><br /><span className='text-black font-normal'>Cleaner</span><br /><span className='text-black font-normal'>Office Boy</span></h3>
          
         </div>
 
         <div>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">CIVIL<br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span><br /><span className='text-black'>Waiter</span></h3>
+          <h3 className="text-DarkRed font-bold  border-l-4 border-DarkRed pl-2">CIVIL<br /><span className='text-black font-normal'>Mason</span><br /><span className='text-black font-normal'>Steel Fixer</span><br /><span className='text-black font-normal'>Shuttering Carpenter</span></h3>
         
         </div>
       </div>

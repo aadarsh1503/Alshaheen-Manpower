@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-import TalentForYourBusiness from "./TalentForYourBusiness";
-import ProcessSection from "./ProcessSection";
-import BrochureSection from "../BrochureSection/BrochureSection";
 
-const Aviation = () => {
+import BrochureSection from "../BrochureSection/BrochureSection";
+import CEOSpeaks from "./CEOSpeaks";
+import TheTeam from "./TheTeam";
+import Methodology from "./Methodology";
+
+const About = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/aviation_bnr.jpg",
+      src: "https://www.groupl.ae/images/about_bnr.jpg",
       alt: "Image 1",
-      text: "RECRUITMENT AND SELECTION OF CANDIDATES",
+      text: "ABOUT US",
       description:
-        "Providing world class talent solutions for world leading <br /> airlines.",
+        "",
     },
   ];
 
@@ -33,7 +35,7 @@ const Aviation = () => {
   return (
     <div>
       <div
-        className="relative w-full lg:h-[500px] h-[400px] bg-cover bg-center"
+        className="relative w-full lg:h-[400px] h-[300px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
@@ -100,11 +102,12 @@ const Aviation = () => {
           </button>
         </motion.div>
       </div>
-      <TalentForYourBusiness />
-      <ProcessSection />
+<CEOSpeaks />
+<TheTeam />
+<Methodology />
       <BrochureSection />
     </div>
   );
 };
 
-export default Aviation;
+export default About;

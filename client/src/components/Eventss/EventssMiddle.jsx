@@ -20,7 +20,7 @@ const EventssMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          During the creation of small or large-scale personal or<br /> corporate events, finding efficient management help can be <br /> an arduous task almost every single time. We have brought our <br /> experience and expertise to hand-pick just the right people for <br />your event.
+          The agency handles the placement process and negotiate the <br /> terms of employment, managing payroll and benefits, and ensuring <br /> an arduous task almost every single time. We have brought our <br /> legal compliance with labour laws and regulations.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -47,7 +47,9 @@ const EventssMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          The staff for an event affects the entire experience, and we ensure <br /> that our candidates are trained only for positive experiences.
+      
+
+ Agencies manage the entire placement process, from negotiating employment terms to handling payroll and benefits, ensuring legal compliance with labor laws. Skill up your business by streamlining these processes, enabling focus oN growth and development."
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

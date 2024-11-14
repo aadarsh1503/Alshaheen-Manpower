@@ -15,7 +15,7 @@ const Hero = () => {
       text: "RECRUITMENT EXPERTS: <br /> RATED 4.8 ON GOOGLE",
       description:
         "Our aim is to give back to the society by enabling people to earn a better <br /> livelihood by empowering them with professional skills. Every youth <br /> successfully placed, is one step closer to realising our larger dream.",
-      googleSrc: "https://www.GVS.ae/images/gog.png",
+      googleSrc: "https://www.groupl.ae/images/gog.png",
     },
     {
       src:i2,

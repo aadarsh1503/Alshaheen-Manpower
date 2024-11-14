@@ -5,6 +5,7 @@ import BrochureSection from "../BrochureSection/BrochureSection";
 import ProcessSteps from "./ProcessSteps.JSX";
 import Process from "./Process";
 import TechnicalSkillsTraining from "./TechnicalSkillsTraining";
+import TechnicalSkills from "./TechnicalSkills";
 
 
 
@@ -96,6 +97,7 @@ const Training = () => {
 <ProcessSteps />
 <Process />
 <TechnicalSkillsTraining />
+<TechnicalSkills />
       <BrochureSection />
     </div>
   );

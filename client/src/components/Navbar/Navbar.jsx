@@ -38,7 +38,7 @@ const Navbar = () => {
       {/* Navbar Links for Desktop */}
       <div className="hidden lg:flex space-x-8">
         <a href="/" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Home</a>
-        <a href="#about" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
+        <a href="/" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
         <div className="relative">
           <button
             className="hover:underline font-semibold hover:text-lightgreen text-DarkRed flex items-center"
@@ -49,20 +49,16 @@ const Navbar = () => {
           </button>
           {dropdownOpen && (
             <div className="absolute z-50 font-raleway mt-2 bg-white shadow-lg w-48 rounded-md">
-              <a href="/aviation" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Aviation</a>
-              <a href="/construction" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Construction</a>
-              <a href="/events" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Events</a>
-              <a href="/healthCare" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">HealthCare</a>
-              <a href="/hospitality" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Hospitality</a>
-              <a href="/logistics" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Logistics</a>
-              <a href="/manufacturing" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Manufacturing</a>
-              <a href="/retail" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Retail</a>
-              <a href="/security" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Security</a>
+              <a href="/aviation" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Recruitment</a>
+              <a href="/construction" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Pre-Employment</a>
+              <a href="/events" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Placements</a>
+              <a href="/healthCare" className="block px-4 py-2 text-black hover:text-lightgreen hover:bg-gray-100">Visas</a>
+
             </div>
           )}
         </div>
-        <a href="/" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
-        <a href="#insights" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
+        <a href="/training" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
+        <a href="/" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
         <a href="#contact" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Find a Job</a>
         <a href="/contactUs" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Contact Us</a>
       </div>
@@ -98,7 +94,7 @@ const Navbar = () => {
               </ul>
             )}
           </li>
-          <li><a href="/" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">Training</a></li>
+          <li><a href="/training" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">Training</a></li>
           <li><a href="#insights" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">News</a></li>
           <li><a href="#contact" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">Find a Job</a></li>
           <li><a href="/contactUs" className="text-DarkRed font-semibold hover:text-lightgreen text-2xl">Contact Us</a></li>

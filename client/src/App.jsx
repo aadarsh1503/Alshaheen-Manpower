@@ -13,6 +13,8 @@ import ManuFacturing from './components/ManuFacturing/Manufacturing';
 import Retail from './components/Retail/Retail';
 import Security from './components/Security/Security';
 import Training from './components/Training/Training';
+import NewsEvents from './components/NewsEvents/NewsEvents';
+import About from './components/About/AboutUs';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           <Route path="/retail" element={<Retail />} />
           <Route path="/security" element={<Security />} />
           <Route path="/training" element={<Training />} />
+          <Route path="/newsEvents" element={<NewsEvents />} />
+          <Route path="/about" element={<About />} />
     
         </Routes>
       </div>

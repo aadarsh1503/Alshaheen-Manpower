@@ -30,7 +30,7 @@ const ContactUs = () => {
   <div className="flex items-center space-x-2">
     <FaPhoneAlt className="text-red-600" />
     <div>
-      <p className="text-gray-600 font-bold">Romania Office</p>
+      <p className="text-gray-600 font-bold">Bahrain Office</p>
       <p className="text-gray-600">+40 741 555 566</p>
     </div>
   </div> 
@@ -38,7 +38,7 @@ const ContactUs = () => {
 
   <div className="w-full mt-4  flex items-center space-x-2">
     <FaWhatsapp className="text-red-600" />
-    <p className="text-gray-600">Click here to WhatsApp us:<br /> +971 547015672</p>
+    <p className="text-gray-600 font-bold">Click here to WhatsApp us:<br /> <span className='font-normal'>+973 17491222</span> </p>
   </div>
 
 

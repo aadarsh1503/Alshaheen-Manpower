@@ -7,7 +7,7 @@ const Process = () => {
         {/* Text section */}
         <div className="lg:w-1/2 w-full flex flex-col justify-center px-8 space-y-4">
           <h2 className="text-4xl font-bold uppercase">The Process</h2>
-          <div className="w-12 h-2 bg-black mb-4"></div>
+          <div className="w-12 h-2 bg-white mb-4"></div>
           <p className="text-lg leading-relaxed">
             GroupL delivers a diverse range of training services keeping in mind the needs of clients looking for job-ready candidates. That serves as a two-way process, empowering the youth with the best industry skills and knowledge and filling the talent gap in industries.
           </p>
