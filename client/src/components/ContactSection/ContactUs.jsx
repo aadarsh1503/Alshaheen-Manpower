@@ -53,7 +53,7 @@ const ContactUs = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/contact', {
+      const response = await fetch('https://gvs-services-b46k.vercel.app/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
