@@ -84,7 +84,7 @@ const TheTeam = () => {
           {/* Display Three Images */}
           <div className="flex space-x-4 transition-transform duration-500 ease-in-out">
             {visibleImages.map((image, index) => (
-              <div key={index} className="relative group w-60 lg:w-[306px] lg:h-[300px] h-40">
+              <div key={index} className="relative group w-60 lg:w-[306px] lg:h-[332px] h-40">
                 <img
                   src={image.src}
                   alt={image.alt}

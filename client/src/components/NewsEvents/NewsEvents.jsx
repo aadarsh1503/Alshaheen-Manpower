@@ -4,13 +4,14 @@ import BrochureSection from "../BrochureSection/BrochureSection";
 import RecruitmentDays from "./RecruitmentDays";
 import Life from "./Life";
 import NewsEventsCarousel from "../NewsEventsCarousel/NewsEventsCarousel";
+import i11 from "./i11.png"
 
 
 
 const NewsEvents = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/news_bnr.jpg",
+      src: i11,
       alt: "Image 1",
       text: "NEWS & EVENTS",
       description:
@@ -35,11 +36,11 @@ const NewsEvents = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-0"></div>
+        <div className="absolute inset-0 bg-black opacity-30"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div
@@ -94,10 +95,10 @@ const NewsEvents = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0 lg:mr-4">
             FIND TALENT
           </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
+          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed ">
             FIND A JOB
           </button>
         </motion.div>

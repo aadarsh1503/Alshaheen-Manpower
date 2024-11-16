@@ -35,26 +35,29 @@ const VacanciesCarousel = () => {
     <div className="w-full bg-white py-12 px-4 flex justify-center items-center">
       <div className=" flex items-center">
         {/* Current Vacancies Section */}
-        <div className="bg-lightgreen w-[356px] h-[300px] lg:-mt-14 text-white text-left flex flex-col justify-center items-center p-6 text-5xl font-bold mr-4">
-          CURRENT <br /> VACANCIES
-        </div>
+        <div className="bg-lightgreen hidden w-[356px] h-[300px] lg:-mt-14 text-white text-left  flex-col justify-center items-center p-6 text-5xl font-bold mr-4 grid grid-cols-1 lg:flex">
+  CURRENT <br /> VACANCIES
+</div>
+
 
         {/* Image Carousel */}
         <div className="relative flex flex-col items-center space-y-4">
-          {/* Display Two Images */}
-          <div className="flex space-x-4 transition-transform duration-500 ease-in-out">
-            {visibleImages.map((src, index) => (
-              <img
-                key={index}
-                src={src}
-                alt={`Vacancy ${index + 1}`}
-                className="w-80 h-80 object-cover lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
-              />
-            ))}
-          </div>
+  {/* Display Two Images */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 lg:flex-row transition-transform duration-500 ease-in-out">
+  <div className='p-12 text-4xl font-raleway text-white mb-4 lg:hidden  bg-lightgreen'>Current Vacancies</div>
+    {visibleImages.map((src, index) => (
+      <img
+        key={index}
+        src={src}
+        alt={`Vacancy ${index + 1}`}
+        className="w-80 h-80 object-cover lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
+      />
+    ))}
+  </div>
+
 
           {/* Navigation Buttons Below Images */}
-          <div className="flex space-x-4 ml-[596px] mt-4">
+          <div className="flex space-x-4 ml-0 lg:ml-[596px] mt-4">
             <button
               onClick={handlePrev}
               className="bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"

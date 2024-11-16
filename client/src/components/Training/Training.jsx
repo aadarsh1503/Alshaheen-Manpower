@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import i87 from "./i87.png"
 
 import BrochureSection from "../BrochureSection/BrochureSection";
 import ProcessSteps from "./ProcessSteps.JSX";
@@ -13,7 +14,7 @@ import TechnicalSkills from "./TechnicalSkills";
 const Training = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/process_bnr.jpg",
+      src: i87,
       alt: "Image 1",
       text: "TRAINING",
       description:
@@ -42,7 +43,7 @@ const Training = () => {
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-lightgreen opacity-0"></div>
+        <div className="absolute inset-0 bg-black opacity-40"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div

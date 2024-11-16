@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import HealthCareMiddle from "./HealthCareMiddle";
 import HealthCareLast from "./HealthCareLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
-import i4 from "./i4.jpg"
+import i4 from "./i4.png"
 
 
 const HealthCare = () => {
@@ -34,7 +34,7 @@ const HealthCare = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
@@ -93,12 +93,19 @@ const HealthCare = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen mb-2 lg:mb-0 lg:mr-4">
-            FIND TALENT
-          </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-white hover:text-lightgreen">
-            FIND A JOB
-          </button>
+          <button
+  className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0"
+  onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
+>
+  FIND TALENT
+</button>
+<button
+  className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed"
+  onClick={() => window.open("https://www.talentportal.bh/#pills-home", "_blank")}
+>
+  FIND A JOB
+</button>
+
         </motion.div>
       </div>
 

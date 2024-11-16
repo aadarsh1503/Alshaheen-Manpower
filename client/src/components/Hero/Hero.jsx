@@ -66,83 +66,93 @@ const Hero = () => {
 
   return (
     <div
-      className="relative w-full lg:h-[624px] bg-cover bg-center"
-      style={{ backgroundImage: `url(${images[currentIndex].src})` }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+  className="relative w-full h-[532px] lg:h-[624px] bg-cover bg-center"
+  style={{ backgroundImage: `url(${images[currentIndex].src})` }}
+>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      {/* Content Wrapper with Framer Motion */}
+  {/* Content Wrapper with Framer Motion */}
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    key={currentIndex}
+    className="relative z-10 flex flex-col items-center lg:flex-row lg:items-center lg:px-8 lg:py-16 text-white text-center lg:text-left"
+  >
+    <div className="w-full lg:w-1/2 font-raleway max-w-3xl lg:mt-24 mt-12 lg:ml-32  px-4 sm:px-6 md:px-12 lg:px-0">
+      <motion.h1
+        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight"
+        dangerouslySetInnerHTML={{ __html: images[currentIndex].text }}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+      />
+
+      {/* Red Line */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
+        className="h-2 w-12 sm:w-14 lg:w-16 bg-lightgreen mb-6 mx-auto lg:mx-0"
+        initial={{ width: 0 }}
+        animate={{ width: "4rem" }}
+        transition={{ duration: 0.6 }}
+      ></motion.div>
+
+      <motion.p
+        className="text-sm sm:text-base lg:text-lg mb-6 break-words"
+        dangerouslySetInnerHTML={{ __html: images[currentIndex].description }}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
-        key={currentIndex}
-        className="relative z-10 flex items-center px-8 py-16 text-white"
-      >
-        <div className="w-1/2 font-raleway max-w-3xl lg:mt-24 ml-32">
-          <motion.h1
-            className="text-5xl font-bold mb-4 leading-tight"
-            dangerouslySetInnerHTML={{ __html: images[currentIndex].text }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          />
+      />
 
-          {/* Red Line */}
-          <motion.div
-            className="h-2 w-16 bg-lightgreen mb-6"
-            initial={{ width: 0 }}
-            animate={{ width: "4rem" }}
-            transition={{ duration: 0.6 }}
-          ></motion.div>
-
-          <motion.p
-            className="text-12.8 mb-6 break-words"
-            dangerouslySetInnerHTML={{ __html: images[currentIndex].description }}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-          />
-
-          {images[currentIndex].googleSrc && (
-            <motion.img
-              src={images[currentIndex].googleSrc}
-              alt="Google Reviews"
-              className="mx-auto ml-0 lg:-ml-2 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-            />
-          )}
-        </div>
-      </motion.div>
-      <motion.div
-        className="absolute top-2/3 right-96 transform -translate-y-1/2 space-x-4 z-10"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        <button className="bg-lightgreen text-white px-6 py-3 font-raleway hover:bg-DarkRed hover:text-white">
-          FIND TALENT
-        </button>
-        <button className="bg-lightgreen text-white px-6 py-3 font-raleway hover:bg-DarkRed hover:text-white">
-          FIND A JOB
-        </button>
-      </motion.div>
-      
-
-      {/* Dot Navigation */}
-      <div className="absolute lg:top-[532px] left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            className={`w-3 h-3 rounded-full ${currentIndex === index ? "bg-white" : "bg-gray-400"}`}
-            onClick={() => handleDotClick(index)}
-          />
-        ))}
-      </div>
+      {images[currentIndex].googleSrc && (
+        <motion.img
+          src={images[currentIndex].googleSrc}
+          alt="Google Reviews"
+          className="mx-auto hidden lg:block lg:mx-0 mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        />
+      )}
     </div>
+  </motion.div>
+
+  {/* Buttons */}
+  <motion.div
+    className="absolute bottom-12 lg:left-1/2 left-24 transform -translate-x-1/2 space-y-4 lg:space-x-4 lg:space-y-0 lg:bottom-auto lg:top-2/3 lg:right-96 lg:transform lg:-translate-y-1/2 z-10 flex flex-col lg:flex-row"
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.8, delay: 0.5 }}
+  >
+    <button
+      className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0"
+      onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
+    >
+      FIND TALENT
+    </button>
+    <button
+      className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed"
+      onClick={() => window.open("https://www.talentportal.bh/#pills-home", "_blank")}
+    >
+      FIND A JOB
+    </button>
+  </motion.div>
+
+  {/* Dot Navigation */}
+  <div className="absolute bottom-4 sm:bottom-6 lg:top-[532px] left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+    {images.map((_, index) => (
+      <button
+        key={index}
+        className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${
+          currentIndex === index ? "bg-white" : "bg-gray-400"
+        }`}
+        onClick={() => handleDotClick(index)}
+      />
+    ))}
+  </div>
+</div>
+
   );
 };
 

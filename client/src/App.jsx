@@ -27,10 +27,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contactUs" element={<ContactSection />} />
-          <Route path="/aviation" element={<Aviation />} />
-          <Route path="/construction" element={<Construction />} />
-          <Route path="/events" element={<Eventss />} />
-          <Route path="/healthcare" element={<HealthCare />} />
+          <Route path="/recruitment" element={<Aviation />} />
+          <Route path="/pre-employment" element={<Construction />} />
+          <Route path="/placements" element={<Eventss />} />
+          <Route path="/visas" element={<HealthCare />} />
           <Route path="/hospitality" element={<Hospitality />} />
           <Route path="/logistics" element={<Logistics />} />
           <Route path="/manufacturing" element={<ManuFacturing />} />

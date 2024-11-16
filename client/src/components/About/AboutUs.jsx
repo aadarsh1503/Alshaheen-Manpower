@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import about from "./about.png"
 
 
 import BrochureSection from "../BrochureSection/BrochureSection";
@@ -10,7 +11,7 @@ import Methodology from "./Methodology";
 const About = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/about_bnr.jpg",
+      src: about,
       alt: "Image 1",
       text: "ABOUT US",
       description:
@@ -35,11 +36,11 @@ const About = () => {
   return (
     <div>
       <div
-        className="relative w-full lg:h-[400px] h-[300px] bg-cover bg-center"
+        className="relative w-full lg:h-[500px] h-[300px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-0"></div>
+        <div className="absolute inset-0 bg-black opacity-30"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div

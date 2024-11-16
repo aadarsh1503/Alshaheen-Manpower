@@ -39,9 +39,9 @@ const NewsEventsCarousel = () => {
 
   return (
     <div className="w-full bg-gray-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Title Section */}
-        <div className="text-left  mb-4">
+        <div className="text-left mb-4">
           <h2 className="text-gray-400 font-thin text-4xl">UPDATES</h2>
           <h1 className="text-lightblue font-bold text-4xl">NEWS & EVENTS</h1>
         </div>
@@ -51,34 +51,35 @@ const NewsEventsCarousel = () => {
           {/* Left Arrow */}
           <button
             onClick={handlePrev}
-            className="absolute -left-40 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+            className="absolute lg:-left-40 left-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
           >
             <BsChevronLeft className="text-gray-600" size={24} />
           </button>
 
-          {/* Display Three Images */}
-          <div className="flex space-x-4 transition-transform duration-500 ease-in-out">
-            {visibleImages.map((image, index) => (
-              <div key={index} className="relative group w-60 lg:w-[356px] lg:h-[300px] h-40">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-fill rounded-lg shadow-md"
-                />
-                {/* Description Overlay */}
-                <div className="absolute inset-0 top-40 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
-  <p className="text-lg font-bold text-left whitespace-pre-line ">{image.heading}</p> {/* Heading */}
-  <p className="text-12.8 text-left font-semibold whitespace-pre-line mb-1">{image.description}</p> {/* Description */}
-</div>
-
-              </div>
-            ))}
+          {/* Display Three Images on large screens, one image at a time on mobile */}
+          <div className="flex space-x-4 transition-transform duration-500 ease-in-out overflow-hidden">
+            <div className="flex sm:block lg:flex space-x-4">
+              {visibleImages.map((image, index) => (
+                <div key={index} className="relative group sm:w-full lg:w-[356px] lg:h-[300px] h-40">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-fill rounded-lg shadow-md"
+                  />
+                  {/* Description Overlay */}
+                  <div className="absolute inset-0 top-40 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
+                    <p className="text-lg font-bold text-left whitespace-pre-line">{image.heading}</p> {/* Heading */}
+                    <p className="text-12.8 text-left font-semibold whitespace-pre-line mb-1">{image.description}</p> {/* Description */}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right Arrow */}
           <button
             onClick={handleNext}
-            className="absolute -right-44 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+            className="absolute lg:-right-44 right-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
           >
             <BsChevronRight className="text-gray-600" size={24} />
           </button>

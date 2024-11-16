@@ -15,11 +15,11 @@ const TechnicalSkills = () => {
 
       {/* Right Side - Content */}
       <div className="md:w-1/2 p-8 text-gray-700">
-      <div className="flex items-start pl-6 border-l-4 border-red-600 mb-12">
+      <div className="flex items-start pl-6 border-l-4 border-DarkRed mb-12">
   <div>
-    <h2 className="text-3xl font-bold font-raleway text-red-600 mb-4">SOFT SKILLS TRAINING</h2>
+    <h2 className="text-3xl font-bold font-raleway text-lightblue mb-4">SOFT SKILLS TRAINING</h2>
     <div className="mb-1">
-      <h3 className="text-xl font-semibold font-raleway text-red-600">ENGLISH BASICS COMMUNICATION</h3>
+      <h3 className="text-xl font-semibold font-raleway text-DarkRed">ENGLISH BASICS COMMUNICATION</h3>
       <ul className="text-gray-600 space-y-1 font-raleway list-none">
         <li className="relative ">Social Skills</li>
         <li className="relative ">Customer Care</li>
