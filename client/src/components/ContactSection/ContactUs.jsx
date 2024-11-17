@@ -227,7 +227,7 @@ const ContactUs = () => {
             {/* ReCAPTCHA */}
             <div className="flex justify-center mt-4">
               <ReCAPTCHA
-                sitekey="6LeqpnkqAAAAAHNUm3Ey9gx-ly1-GdqlwWfrtn3O"
+                sitekey="6LemkoEqAAAAAFg7UoUcEltWZ94w_RqBwA08doE7"
                 onChange={handleRecaptcha}
               />
             </div>
