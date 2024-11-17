@@ -1,4 +1,6 @@
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaTwitter } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
   return (
@@ -30,9 +32,14 @@ const Footer = () => {
             <a href="https://www.linkedin.com/company/gvsbahrain/" target="_blank" rel="noopener noreferrer">
               <FaLinkedinIn className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
-            <a href="https://twitter.com/gvscargo" target="_blank" rel="noopener noreferrer">
-              <FaTwitter className="text-gray-400 text-2xl hover:text-DarkRed" />
-            </a>
+            <a
+  href="https://twitter.com/gvscargo"
+  className="text-gray-400 text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+<FontAwesomeIcon icon={faXTwitter} />
+</a>
           </div>
           <p className="text-gray-500 text-xs lg:text-sm mt-2">Privacy Policy</p>
         </div>

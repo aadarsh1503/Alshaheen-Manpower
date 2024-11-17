@@ -59,18 +59,9 @@ const Navbar = () => {
         </div>
         <a href="/training" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
         <a href="/newsEvents" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
-        <ul class="list-none">
-  <li>
-    <a 
-      href="https://www.talentportal.bh/#pills-home" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="text-red-500 font-raleway  hover:underline"
-    >
-      Find a Job
-    </a>
-  </li>
-</ul>
+ 
+    <a href="https://www.talentportal.bh/#pills-home" target="_blank"  className="text-DarkRed hover:text-lightgreen font-semibold hover:underline">Find a Job</a>
+
 
         <a href="/contactUs" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Contact Us</a>
       </div>
@@ -109,7 +100,7 @@ const Navbar = () => {
       href="https://www.talentportal.bh/#pills-home" 
       target="_blank" 
       rel="noopener noreferrer"
-      class="text-red-500 font-raleway  hover:underline"
+      class="text-DarkRed font-semibold font-raleway  hover:underline"
     >
       Find a Job
     </a>

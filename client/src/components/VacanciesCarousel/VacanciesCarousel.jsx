@@ -43,15 +43,23 @@ const VacanciesCarousel = () => {
         {/* Image Carousel */}
         <div className="relative flex flex-col items-center space-y-4">
   {/* Display Two Images */}
-  <div className="grid grid-cols-1 lg:grid-cols-2 lg:flex-row transition-transform duration-500 ease-in-out">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:flex-row transition-transform duration-500 ease-in-out">
   <div className='p-12 text-4xl font-raleway text-white mb-4 lg:hidden  bg-lightgreen'>Current Vacancies</div>
     {visibleImages.map((src, index) => (
+       <a
+       key={index}
+       href="https://www.talentportal.bh/#pills-home"
+       target="_blank" // Opens link in a new tab
+       rel="noopener noreferrer" // For security
+       className=""
+     >
       <img
         key={index}
         src={src}
         alt={`Vacancy ${index + 1}`}
-        className="w-80 h-80 object-cover lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
+        className="w-80 h-80 object-cover  lg:p-0 lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
       />
+      </a>
     ))}
   </div>
 

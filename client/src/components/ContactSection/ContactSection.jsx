@@ -2,7 +2,10 @@ import React from 'react';
 import { FaFacebookF, FaLinkedinIn, FaInstagram, FaTwitter } from 'react-icons/fa'; // Added FaTwitter
 import ContactUs from './ContactUs';
 import BrochureSection from '../BrochureSection/BrochureSection';
-import i1 from "./i1.png"
+import i1 from "./i1.png";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
 const ContactSection = () => {
   return (
@@ -20,16 +23,16 @@ const ContactSection = () => {
         <div className="relative z-10 flex items-center h-full px-8 lg:px-32">
           <div className="text-white max-w-lg">
             {/* Title */}
-            <h1 className="text-5xl font-bertioga font-bold mb-4">CONTACT US</h1>
+            <h1 className="lg:text-5xl text-2xl font-bertioga font-bold mb-4">CONTACT US</h1>
 
             {/* Description */}
-            <p className="text-16 mb-8">
+            <p className="text-16 lg:w-full w-1/2 mb-8">
               We intend our collaboration with you to deliver more<br /> than just a workforce - we aim to add an asset to your<br />
               business. Find the best talent for your business across<br /> all sectors.
             </p>
 
             {/* Social Icons */}
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap space-x-4">
               <a
                 href="https://facebook.com/gvscargo"
                 className="text-white text-2xl hover:text-DarkRed transition duration-300"
@@ -56,17 +59,18 @@ const ContactSection = () => {
               </a>
               <a
                 href="https://twitter.com/gvscargo"
-                className="text-white text-2xl hover:text-DarkRed transition duration-300"
+                className="text-white text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <FaTwitter />
+                <FontAwesomeIcon icon={faXTwitter} />
               </a>
             </div>
           </div>
         </div>
       </div>
 
+      {/* ContactUs and BrochureSection */}
       <ContactUs />
       <BrochureSection />
     </div>

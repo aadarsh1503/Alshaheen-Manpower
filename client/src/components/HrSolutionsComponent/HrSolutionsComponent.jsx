@@ -55,9 +55,11 @@ const HrSolutionsComponent = () => {
         <p className="text-gray-600 text-sm sm:text-base lg:text-lg mb-4 lg:mb-6">
           We work with a broad range of industries such as Financial <br /> Services, Aviation, Logistics, Retail, IT, Oil & Gas, Call Centers, <br /> Construction, and can support organizations of any size— <br />start-up or large.
         </p>
+        <a href='/about'>
         <button className="bg-lightgreen w-[132px] sm:w-auto lg:w-[196px]  text-white px-4 py-2 sm:px-6 sm:py-3 font-semibold uppercase hover:bg-DarkRed hover:text-white transition duration-300">
           Know More
         </button>
+        </a>
       </div>
     </div>
   );

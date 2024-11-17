@@ -120,7 +120,7 @@ const Hero = () => {
 
   {/* Buttons */}
   <motion.div
-    className="absolute bottom-12 lg:left-1/2 left-24 transform -translate-x-1/2 space-y-4 lg:space-x-4 lg:space-y-0 lg:bottom-auto lg:top-2/3 lg:right-96 lg:transform lg:-translate-y-1/2 z-10 flex flex-col lg:flex-row"
+    className="absolute bottom-12 lg:left-1/2 left-32 transform -translate-x-1/2 space-y-4 lg:space-x-4 lg:space-y-0 lg:bottom-auto lg:top-2/3 lg:right-96 lg:transform lg:-translate-y-1/2 z-10 flex flex-col lg:flex-row"
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.8, delay: 0.5 }}

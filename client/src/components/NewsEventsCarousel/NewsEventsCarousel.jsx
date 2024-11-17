@@ -12,12 +12,14 @@ const NewsEventsCarousel = () => {
     {
       src: "https://www.groupl.ae/images/e7.jpg",
       alt: "Event 2",
-      description: "Description for Event 2",
+      heading:"LAUNCH OF GVS AT ROMANIA",
+      description: "We are committed to matching the best talent from across the world with the boom of opportunities across Europe and the Middle East. Now, we have an office in Romania.",
     },
     {
       src: "https://www.groupl.ae/images/e6.jpg",
       alt: "Event 3",
-      description: "Description for Event 3",
+      heading:"GVS LAUNCHES WORKA",
+      description: "Worka has been built with a dream to assist people all over the world to hire and get hired. We aim at bringing best-suited profiles to employers, and relevant jobs to job seekers across all industries, experience levels, and geographies.",
     },
   ];
 
@@ -51,7 +53,7 @@ const NewsEventsCarousel = () => {
           {/* Left Arrow */}
           <button
             onClick={handlePrev}
-            className="absolute lg:-left-40 left-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+            className="absolute lg:-left-24 left-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
           >
             <BsChevronLeft className="text-gray-600" size={24} />
           </button>
@@ -79,7 +81,7 @@ const NewsEventsCarousel = () => {
           {/* Right Arrow */}
           <button
             onClick={handleNext}
-            className="absolute lg:-right-44 right-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+            className="absolute lg:-right-24 right-4 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
           >
             <BsChevronRight className="text-gray-600" size={24} />
           </button>
