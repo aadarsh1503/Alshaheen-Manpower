@@ -9,7 +9,7 @@ const TechnicalSkills = () => {
         <img
           src={i13} // replace with your image path
           alt="Soft Skills Training"
-          className="w-full h-[600px] object-cover"
+          className="lg:w-full w-72 h-[600px] object-cover"
         />
       </div>
 

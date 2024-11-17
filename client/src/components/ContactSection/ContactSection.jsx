@@ -34,7 +34,7 @@ const ContactSection = () => {
             {/* Social Icons */}
             <div className="flex flex-wrap space-x-4">
               <a
-                href="https://facebook.com/gvscargo"
+                href="https://www.facebook.com/Alshaheen.pro/"
                 className="text-white text-2xl hover:text-DarkRed transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -42,7 +42,7 @@ const ContactSection = () => {
                 <FaFacebookF />
               </a>
               <a
-                href="https://linkedin.com/company/gvsbahrain/"
+                href="https://www.linkedin.com/in/alshaheen-manpower-144096339/"
                 className="text-white text-2xl hover:text-DarkRed transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -50,7 +50,7 @@ const ContactSection = () => {
                 <FaLinkedinIn />
               </a>
               <a
-                href="https://instagram.com/gvscargo"
+                href="https://www.instagram.com/alshaheen_manpower/"
                 className="text-white text-2xl hover:text-DarkRed transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -58,7 +58,7 @@ const ContactSection = () => {
                 <FaInstagram />
               </a>
               <a
-                href="https://twitter.com/gvscargo"
+                href="https://x.com/Alshaheen_Pro"
                 className="text-white text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
                 target="_blank"
                 rel="noopener noreferrer"

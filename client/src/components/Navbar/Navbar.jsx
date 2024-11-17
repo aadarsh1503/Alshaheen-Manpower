@@ -94,18 +94,10 @@ const Navbar = () => {
           </li>
           <li><a href="/training" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">Training</a></li>
           <li><a href="/newsEvents" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">News</a></li>
-          <ul class="list-none">
-  <li>
-    <a 
-      href="https://www.talentportal.bh/#pills-home" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="text-DarkRed font-semibold font-raleway  hover:underline"
-    >
-      Find a Job
-    </a>
-  </li>
-</ul>
+         
+
+    <a href="https://www.talentportal.bh/#pills-home" target="_blank" rel="noopener noreferrer" className="text-DarkRed text-2xl font-semibold hover:text-lightgreen hover:underline">Find a Job</a>
+
 
           <li><a href="/contactUs" className="text-DarkRed font-semibold hover:text-lightgreen text-2xl">Contact Us</a></li>
         </ul>

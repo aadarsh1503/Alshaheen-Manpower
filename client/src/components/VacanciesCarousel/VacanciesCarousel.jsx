@@ -57,7 +57,7 @@ const VacanciesCarousel = () => {
         key={index}
         src={src}
         alt={`Vacancy ${index + 1}`}
-        className="w-80 h-80 object-cover  lg:p-0 lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
+        className="w-80 h-80 object-cover ml-4 lg:p-0 lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
       />
       </a>
     ))}

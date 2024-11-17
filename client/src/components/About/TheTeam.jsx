@@ -72,7 +72,7 @@ const TheTeam = () => {
         </div>
 
         {/* Image Carousel */}
-        <div className="relative flex items-center justify-center space-x-4">
+        <div className="relative flex items-center justify-center space-x-4 lg:flex hidden">
           {/* Left Arrow */}
           <button
             onClick={handlePrev}
@@ -106,6 +106,27 @@ const TheTeam = () => {
           >
             <BsChevronRight className="text-gray-600" size={24} />
           </button>
+        </div>
+
+        {/* Grid Layout for Mobile */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:hidden">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`relative group ${index === 5 ? 'order-first' : ''}`}  // Ensure i6 is first on mobile
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-fill rounded-lg shadow-md"
+              />
+              {/* Description Overlay */}
+              <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
+                <p className="text-lg font-bold text-left">{image.heading}</p> {/* Heading */}
+                <p className="text-12.8 text-left font-semibold whitespace-pre-line">{image.description}</p> {/* Description */}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

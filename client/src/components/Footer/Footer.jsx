@@ -23,17 +23,17 @@ const Footer = () => {
         <div className="text-center lg:text-left"> {/* Center text for mobile */}
           <h3 className="text-lightblue font-bold mt-4 lg:mt-0">Follow us</h3>
           <div className="flex justify-center lg:justify-start space-x-4 mt-2">
-            <a href="https://facebook.com/gvscargo" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/Alshaheen.pro/" target="_blank" rel="noopener noreferrer">
               <FaFacebookF className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
-            <a href="https://instagram.com/gvscargo" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/alshaheen_manpower/" target="_blank" rel="noopener noreferrer">
               <FaInstagram className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
-            <a href="https://www.linkedin.com/company/gvsbahrain/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/in/alshaheen-manpower-144096339/" target="_blank" rel="noopener noreferrer">
               <FaLinkedinIn className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
             <a
-  href="https://twitter.com/gvscargo"
+  href="https://x.com/Alshaheen_Pro"
   className="text-gray-400 text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
   target="_blank"
   rel="noopener noreferrer"
