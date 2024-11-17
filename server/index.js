@@ -1,6 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import emailRouter from './email.js'; // Import the email handler
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Handle ES module __dirname workaround
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -16,5 +22,13 @@ app.get('/status', (req, res) => {
   res.status(200).json({ message: 'Server is running' });
 });
 
-// Export the app for Vercel
+// Get the port from environment variables or use 5000 as a default
+const PORT = process.env.PORT || 5000;
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Export the app for Vercel or other environments
 export default app;

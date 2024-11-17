@@ -18,57 +18,70 @@ const ContactUs = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);  
   const [loading, setLoading] = useState(false);  
   const [referenceId, setReferenceId] = useState(''); // To store the reference ID
+  const [file, setFile] = useState(null); // Store the file here
 
   const handleRecaptcha = (value) => {
     setRecaptchaValue(value);
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]); // Set the file selected by the user
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     if (!companyType) {
       alert("Please select a company type.");
       setLoading(false);
       return;
     }
-
+  
     if (!recaptchaValue) {
       alert("Please complete the reCAPTCHA verification.");
       setLoading(false);
       return;
     }
-
-    const formData = {
-      firstName,
-      lastName,
-      email,
-      company,
-      companyType,
-      website,
-      phone: phoneNumber,
-      countryCode,
-      message,
-      recaptchaValue,
-    };
-
+  
+    if (!file) {
+      alert("Please upload a document.");
+      setLoading(false);
+      return;
+    }
+  
+    // Prepare form data to send as multipart/form-data
+    const formData = new FormData();
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('company', company);
+    formData.append('companyType', companyType);
+    formData.append('website', website);
+    formData.append('phone', phoneNumber);
+    formData.append('countryCode', countryCode);
+    formData.append('message', message);
+    formData.append('recaptchaValue', recaptchaValue);
+    formData.append('document', file); // Append the document file
+  
     try {
-      const response = await fetch('https://gvs-services-b46k.vercel.app/contact', {
+      const response = await fetch('http://localhost:5000/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formData, // Send the FormData with file
       });
-
-      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+  
+      const result = await response.json(); // Try parsing the JSON response
       if (result.success) {
-        setReferenceId(result.referenceId); // Save reference ID
+        setReferenceId(result.referenceId);
         setFormSubmitted(true);
         setLoading(false);
-
+  
         setTimeout(() => {
-          setFormSubmitted(false); 
+          setFormSubmitted(false);
           setFirstName('');
           setLastName('');
           setEmail('');
@@ -79,7 +92,8 @@ const ContactUs = () => {
           setCountryCode('973');
           setMessage('');
           setRecaptchaValue(null);
-          setReferenceId(''); // Clear reference ID
+          setReferenceId('');
+          setFile(null);
         }, 3000);
       } else {
         alert('Error submitting form. Please try again later.');
@@ -87,14 +101,13 @@ const ContactUs = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again later.');
+      alert('Error submitting form. File is Larger than 5Mb ');
       setLoading(false);
     }
   };
 
   return (
-<div className="flex flex-wrap max-w-7xl mx-auto font-raleway bg-gray-100 p-4 md:p-8">
-  {/* Left side: Contact Info */}
+    <div className="flex flex-wrap max-w-7xl mx-auto font-raleway bg-gray-100 p-4 md:p-8">
   <div className="w-full md:w-1/2 p-4 text-center sm:text-left">
     <h2 className="text-3xl sm:text-4xl font-bold text-lightblue">REACH OUT <br /> TO US!</h2>
     <p className="text-gray-600 mt-4 text-sm sm:text-base">
@@ -131,10 +144,8 @@ const ContactUs = () => {
     </div>
     <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-lightblue text-2xl sm:text-4xl underline font-bold mt-10 sm:mt-32 inline-block">
       Apply here for jobs
-    </a>
+    </a>
   </div>
-
-  {/* Right side: Contact Form */}
   {!formSubmitted ? (
     <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl mt-8 sm:mt-0">
       <h3 className="text-lg sm:text-xl font-semibold text-gray-800 text-center sm:text-left">HOW CAN WE HELP YOU?</h3>
@@ -178,6 +189,21 @@ const ContactUs = () => {
         <div className="flex justify-center sm:justify-start mt-4">
           <ReCAPTCHA sitekey="6LeqpnkqAAAAAHNUm3Ey9nv2T0hmhl0Ym4L_yaTS" onChange={handleRecaptcha} />
         </div>
+
+        {/* File Upload Input: Only show if job seeker is selected */}
+        {companyType === 'I am a job seeker looking for jobs' && (
+         <div className="mt-4">
+         <p className="text-sm text-gray-600 mb-2">File should not exceed 5MB in size. Only .pdf, .doc, and .docx files are allowed.</p>
+         <input
+           type="file"
+           className="w-full border border-gray-300 p-2 rounded-md text-sm sm:text-base"
+           onChange={handleFileChange}
+           accept=".pdf,.doc,.docx" // Restrict to allowed file types
+         />
+       </div>
+       
+        )}
+
         <div className="mt-4 text-center sm:text-left">
           <button type="submit" className="w-full sm:w-auto bg-lightblue text-white font-semibold py-2 px-4 rounded-md hover:bg-DarkRed focus:outline-none focus:ring focus:ring-lightblue" disabled={loading}>
             {loading ? 'Submitting...' : 'Submit'}

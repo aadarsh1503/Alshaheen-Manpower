@@ -15,6 +15,7 @@ import Security from './components/Security/Security';
 import Training from './components/Training/Training';
 import NewsEvents from './components/NewsEvents/NewsEvents';
 import About from './components/About/AboutUs';
+import CT from './components/CT/CT';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/training" element={<Training />} />
           <Route path="/newsEvents" element={<NewsEvents />} />
           <Route path="/about" element={<About />} />
+          <Route path="/ct" element={<CT />} />
     
         </Routes>
       </div>
