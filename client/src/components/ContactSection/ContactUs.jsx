@@ -17,7 +17,7 @@ const ContactUs = () => {
   const [recaptchaValue, setRecaptchaValue] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false);  
   const [loading, setLoading] = useState(false);  
-  const [referenceId, setReferenceId] = useState('');
+  const [referenceId, setReferenceId] = useState(''); // To store the reference ID
 
   const handleRecaptcha = (value) => {
     setRecaptchaValue(value);
@@ -63,7 +63,7 @@ const ContactUs = () => {
 
       const result = await response.json();
       if (result.success) {
-        setReferenceId(result.referenceId); 
+        setReferenceId(result.referenceId); // Save reference ID
         setFormSubmitted(true);
         setLoading(false);
 
@@ -79,7 +79,7 @@ const ContactUs = () => {
           setCountryCode('973');
           setMessage('');
           setRecaptchaValue(null);
-          setReferenceId('');
+          setReferenceId(''); // Clear reference ID
         }, 3000);
       } else {
         alert('Error submitting form. Please try again later.');
@@ -93,18 +93,18 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row max-w-7xl mx-auto font-raleway bg-gray-100 p-8">
+    <div className="flex max-w-7xl mx-auto font-raleway bg-gray-100 p-8">
       {/* Left side: Contact Info */}
-      <div className=" md:w-1/2 w-full lg:ml-0 ml- p-4 text-center md:text-left">
+      <div className="w-full md:w-1/2 p-4 text-center md:text-left">
         <h2 className="text-4xl font-bold text-lightblue">REACH OUT <br />TO US!</h2>
         <p className="text-gray-600 mt-4">
           If you wish to speak to a GVS representative, kindly fill the form or contact an office close to you.
         </p>
-        <div className="mt-8 flex flex-wrap justify-center md:justify-start space-x-8">
+        <div className="mt-8 flex flex-wrap space-x-8">
           <div className="flex items-center space-x-2">
-            <FaPhoneAlt className="text-lightblue text-2xl mt-0  lg:-mt-4" />
+            <FaPhoneAlt className="text-lightblue text-2xl mt-0 lg:-mt-4" />
             <div>
-              <p className="text-gray-600 ml-8 lg:ml-0 font-bold">Head Office</p>
+              <p className="text-gray-600 font-bold">Head Office</p>
               <p className="text-black">+973 1330 3301</p>
             </div>
           </div>
@@ -122,21 +122,21 @@ const ContactUs = () => {
         </div>
 
         <div className="w-full mt-4 flex items-center space-x-2">
-          <FaGlobe className="text-lightblue text-2xl mt-0 lg:ml-0 ml-20 lg:-mt-4" />
-          <p className="text-gray-600  font-bold">
+          <FaGlobe className="text-lightblue text-2xl mt-0 lg:-mt-4" />
+          <p className="text-gray-600 font-bold">
             Website<br />
-            <a href="https://www.alshaheen.pro" target="_blank" className=" text-black  font-normal hover:underline">www.alshaheen.pro</a>
+            <a href="https://www.alshaheen.pro" target="_blank" className=" text-black font-normal hover:underline">www.alshaheen.pro</a>
           </p>
         </div>
 
-        <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-lightblue text-4xl underline font-bold mt-32 inline-block">
+        <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-lightblue text-4xl underline font-bold mt-32 ml-10 inline-block">
           Apply here for jobs
         </a>
       </div>
 
       {/* Right side: Contact Form */}
       {!formSubmitted ? (
-        <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl mt-8 md:mt-0">
+        <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl">
           <h3 className="text-xl font-semibold text-gray-800">HOW CAN WE HELP YOU?</h3>
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             {/* Company Type Dropdown */}
@@ -174,18 +174,18 @@ const ContactUs = () => {
               </>
             )}
 
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <div className="flex space-x-4">
               <input
                 type="text"
                 placeholder="First Name"
-                className="w-full md:w-1/2 border border-gray-300 p-2 rounded-md"
+                className="w-1/2 border border-gray-300 p-2 rounded-md"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
               <input
                 type="text"
                 placeholder="Last Name"
-                className="w-full md:w-1/2 border border-gray-300 p-2 rounded-md"
+                className="w-1/2 border border-gray-300 p-2 rounded-md"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
@@ -199,8 +199,8 @@ const ContactUs = () => {
             />
 
             {/* Phone Input */}
-            <div className="flex flex-col md:flex-row space-x-2 items-center">
-              <div className="w-full md:w-1/3">
+            <div className="flex space-x-2 items-center">
+              <div className="w-1/3">
                 <PhoneInput
                   country={'us'}
                   value={countryCode}
@@ -220,22 +220,21 @@ const ContactUs = () => {
                 placeholder="Phone Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full md:w-2/3 border border-gray-300 p-2 rounded-md"
+                className="w-full border border-gray-300 p-2 rounded-md"
               />
             </div>    
-
             {/* ReCAPTCHA */}
             <div className="flex justify-center mt-4">
               <ReCAPTCHA
-                sitekey="6LemkoEqAAAAAFg7UoUcEltWZ94w_RqBwA08doE7"
+                sitekey="6LeqpnkqAAAAAHNUm3Ey9nv2T0hmhl0Ym4L_yaTS"
                 onChange={handleRecaptcha}
               />
             </div>
-
-            <div className="flex justify-center mt-6">
+            
+            <div className="mt-4 text-center">
               <button
                 type="submit"
-                className={`w-full md:w-1/2 bg-lightblue text-white py-2 rounded-md ${loading ? 'cursor-not-allowed' : ''}`}
+                className="w-full bg-lightblue text-white font-semibold py-2 rounded-md hover:bg-DarkRed focus:outline-none focus:ring focus:ring-lightblue"
                 disabled={loading}
               >
                 {loading ? 'Submitting...' : 'Submit'}
@@ -244,9 +243,11 @@ const ContactUs = () => {
           </form>
         </div>
       ) : (
-        <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl mt-8 md:mt-0 flex flex-col items-center justify-center text-center">
-          <h3 className="text-xl font-semibold text-gray-800">Thank you for contacting us!</h3>
-          <p className="text-gray-600 mt-4">We have received your inquiry. A representative will contact you shortly.</p>
+        <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl flex items-center justify-center flex-col">
+          <FaCheckCircle className="text-green-500 text-6xl" />
+          <h3 className="text-xl font-semibold text-gray-800 mt-4">Thank You for Contacting Us!</h3>
+          <p className="mt-2 text-gray-600">Your reference ID is: <strong>{referenceId}</strong></p>
+          <p className="mt-2 text-gray-600">We will get back to you as soon as possible.</p>
         </div>
       )}
     </div>
