@@ -13,7 +13,7 @@ const ProcessSteps = () => {
   ];
 
   return (
-    <div className="relative lg:h-[500px] h-[1200px] py-10">
+    <div className="relative lg:h-[500px] h-[1300px] py-10">
       {/* Background overlay image for large screens, black background for small screens */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-100 hidden sm:block"
@@ -21,20 +21,24 @@ const ProcessSteps = () => {
       ></div>
       <div className="absolute inset-0 bg-lightblue opacity-80 sm:hidden"></div>
 
-      <div className="relative z-10 flex flex-wrap items-center justify-center lg:mt-32 space-x-3 space-y-2 px-6">
+      {/* Steps grid */}
+      <div className="relative z-10 grid grid-cols-1 mt-32 sm:grid-cols-3 lg:grid-cols-7 gap-6 px-6">
         {steps.map((step, index) => (
-          <React.Fragment key={index}>
-            <div className="flex flex-col items-center max-w-[140px]">
-              {/* Set uniform width and height to keep images aligned */}
+          <div
+            key={index}
+            className="flex flex-col items-center text-center"
+          >
+            {/* Image with right arrow */}
+            <div className="flex items-center justify-center">
               <img src={step.icon} alt={step.text} className="w-28 h-28 object-contain" />
-              <p className="text-center font-bold mt-2 text-sm text-white leading-tight">{step.text}</p>
+              {/* Right arrow, hidden on small screens and after the last item */}
+              {index < steps.length - 1 && (
+                <p className="text-white font-bold text-lg ml-2 hidden sm:block">{`→`}</p>
+              )}
             </div>
-
-            {/* Arrow between steps, except after the last one, but hide on mobile */}
-            {index < steps.length - 1 && (
-              <div className="text-white text-2xl hidden sm:block">&#8594;</div>
-            )}
-          </React.Fragment>
+            {/* Text */}
+            <p className="text-white font-bold mt-2 text-sm leading-tight">{step.text}</p>
+          </div>
         ))}
       </div>
     </div>

@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import i1 from "./i1.png";
+import i2 from "./i2.png";
+import i3 from "./i3.png";
+import i4 from "./i4.png";
+import i5 from "./i5.png";
+import i6 from "./i6.png";
+
 
 const RecruitmentDays = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
-    'https://www.groupl.ae/images/31_a.jpg', // Replace with your image paths
-    'https://www.groupl.ae/images/31_b.jpg',
-    'https://www.groupl.ae/images/vacancies2_4.jpg', // Add more images as needed
-    'https://www.groupl.ae/images/vacancies2_4.jpg'
+    i1,
+    i2,
+i3,
+i4,
+i5,
+i6,
 
   ];
 

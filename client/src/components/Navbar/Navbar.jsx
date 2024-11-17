@@ -72,7 +72,15 @@ const Navbar = () => {
           menuOpen ? 'translate-y-0' : '-translate-y-full'
         } transition-transform duration-300 ease-in-out z-40`}
       >
+
+
         <ul className="flex flex-col items-center justify-center h-full space-y-6 p-4">
+        <img
+          src="https://alshaheen.pro/wp-content/uploads/2023/09/cropped-AlshaheenManpower_1_page-0001.jpg"
+          alt="Logo"
+          className="h-28 "
+        />
+          
           <li><a href="/" className="text-DarkRed font-semibold hover:text-lightgreen text-2xl">Home</a></li>
           <li><a href="/about" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">About Us</a></li>
           <li className="relative w-full text-center">

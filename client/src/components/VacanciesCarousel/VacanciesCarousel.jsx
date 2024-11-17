@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import i1 from "./i1.png";
+import i2 from "./i2.png";
+import i3 from "./i3.png";
+import i4 from "./i4.png";
+import i5 from "./i5.png";
+import i6 from "./i6.png";
+
 
 const VacanciesCarousel = () => {
   const images = [
-    "https://www.groupl.ae/images/OA1.png",
-    "https://www.groupl.ae/images/EKCD1.png",
-    "https://www.groupl.ae/images/PSBD1.png",
-    "https://www.groupl.ae/images/MEP1.png",
-    "https://www.groupl.ae/images/_COM1.png",
-    "https://www.groupl.ae/images/_COM2.png",
-    "https://www.groupl.ae/images/_com3.png",
+    i1,
+    i2,
+i3,
+i4,
+i5,
+i6,
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,7 +63,7 @@ const VacanciesCarousel = () => {
         key={index}
         src={src}
         alt={`Vacancy ${index + 1}`}
-        className="w-80 h-80 object-cover ml-4 lg:p-0 lg:w-[356px] lg:h-[300px] rounded-lg shadow-md"
+        className="w-80 h-80 object-cover ml-4 lg:p-0 lg:w-[356px] lg:h-[338px] rounded-lg shadow-md"
       />
       </a>
     ))}
