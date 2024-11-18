@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/contact', emailRouter); // Handling POST requests from the contact form
 
 // Server status route
-app.get('/', (req, res) => {
+app.get('/status', (req, res) => {
   res.status(200).json({ message: 'Server is running' });
 });
 

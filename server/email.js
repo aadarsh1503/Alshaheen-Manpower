@@ -40,7 +40,7 @@ const upload = multer({
 router.post('/', upload, async (req, res) => {
   const { firstName, lastName, email, company, website, phone, countryCode, companyType } = req.body;
   const referenceId = uuidv4().split('-')[0]; // Unique reference ID
-  
+
   // Create transporter for nodemailer
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -62,8 +62,8 @@ router.post('/', upload, async (req, res) => {
 
   // Create the email message content
   const mailOptions = {
-    from: 'dzero169@gmail.com', // Sender email
-    to: 'dzero169@gmail.com', // Your recipient email
+    from: 'dzero169@gmail.com',
+    to: 'dzero169@gmail.com',
     subject: `New Contact Form Submission from ${email}`,
     text: `Reference ID: ${referenceId}
            Name: ${firstName} ${lastName}
@@ -72,12 +72,14 @@ router.post('/', upload, async (req, res) => {
            Company: ${company}
            Website: ${website}
            Phone: ${countryCode} ${phone}`,
-    attachments: [
-      {
-        filename: req.file.filename, // The uploaded document file name
-        path: path.join(__dirname, 'uploads', req.file.filename), // Path to the uploaded file
-      },
-    ],
+    attachments: req.file
+      ? [
+          {
+            filename: req.file.filename,
+            path: path.join(__dirname, 'uploads', req.file.filename),
+          },
+        ]
+      : [], // No attachment if no file uploaded
   };
 
   // Send email

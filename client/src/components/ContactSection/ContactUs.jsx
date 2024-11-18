@@ -44,7 +44,7 @@ const ContactUs = () => {
       return;
     }
   
-    if (!file) {
+    if (companyType === 'I am a job seeker looking for jobs' && !file) {
       alert("Please upload a document.");
       setLoading(false);
       return;
