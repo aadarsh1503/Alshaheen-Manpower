@@ -65,7 +65,7 @@ const ContactUs = () => {
     formData.append('document', file); // Append the document file
   
     try {
-      const response = await fetch('http://localhost:5000/contact', {
+      const response = await fetch('https://gvs-services-b46k.vercel.app/contact', {
         method: 'POST',
         body: formData, // Send the FormData with file
       });
