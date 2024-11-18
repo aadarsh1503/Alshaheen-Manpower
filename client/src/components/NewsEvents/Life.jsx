@@ -35,8 +35,8 @@ const Life = () => {
     <div className="w-full bg-white py-12 px-4 flex justify-center items-center">
       <div className="flex flex-col lg:flex-row items-center">
         {/* Current Vacancies Section */}
-        <div className="bg-lightgreen w-72 lg:w-[356px] h-[300px] lg:-mt-14 text-white text-left flex flex-col p-12 text-6xl font-bold mb-4 lg:mb-0 lg:mr-4">
-          LIFE<br /> AT <br /> GVS
+        <div className="bg-lightgreen w-72 lg:w-[356px] h-[300px] lg:-mt-14 text-white text-left flex flex-col p-12 text-5xl font-bold mb-4 lg:mb-0 lg:mr-4">
+          LIFE<br /> AT <br /> ALSHAHEEN
         </div>
 
         {/* Image Carousel */}
