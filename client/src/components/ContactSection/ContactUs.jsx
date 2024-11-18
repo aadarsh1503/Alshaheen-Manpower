@@ -101,7 +101,7 @@ const ContactUs = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Error submitting form. File is Larger than 5Mb ');
+      alert('Error submitting form. File is Larger than 5Mb ',error);
       setLoading(false);
     }
   };
