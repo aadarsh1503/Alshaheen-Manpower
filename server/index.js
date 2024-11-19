@@ -18,9 +18,17 @@ app.use(express.json());
 app.use('/contact', emailRouter); // Handling POST requests from the contact form
 
 // Server status route
-app.get('/', (req, res) => {
+app.get('/status', (req, res) => {
   res.status(200).json({ message: 'Server is running' });
 });
 
-// Export the app for Vercel
+// Get the port from environment variables or use 5000 as a default
+const PORT = process.env.PORT || 5000;
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Export the app for Vercel or other environments
 export default app;

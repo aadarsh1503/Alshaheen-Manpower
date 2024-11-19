@@ -65,7 +65,7 @@ const ContactUs = () => {
     formData.append('document', file); // Append the document file
   
     try {
-      const response = await fetch('https://gvs-services-b46k.vercel.app/contact', {
+      const response = await fetch('http://localhost:5000/contact', {
         method: 'POST',
         body: formData, // Send the FormData with file
       });
@@ -101,7 +101,7 @@ const ContactUs = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Error submitting form. File is Larger than 5Mb ',error);
+      alert('Error submitting form. File is Larger than 5Mb ');
       setLoading(false);
     }
   };

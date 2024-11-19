@@ -34,11 +34,13 @@ i6,
     <div className="flex lg:ml-32 flex-col md:flex-row  p-8 items-center">
       {/* Left Side - Carousel Image */}
       <div className="relative w-full md:w-[400px] flex items-center justify-center">
+      <a href="https://www.talentportal.bh/#pills-home" target="_blank">
         <img
           src={images[currentIndex]}
           alt="Recruitment Slide"
           className="w-full object-cover"
         />
+        </a>
       </div>
 
       {/* Carousel Controls Below Image */}

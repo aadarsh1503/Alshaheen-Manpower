@@ -4,11 +4,12 @@ import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
 // Handle ES module __dirname workaround
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+dotenv.config();
 const router = express.Router();
 
 // Multer setup to handle file uploads
@@ -45,11 +46,11 @@ router.post('/', upload, async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'dzero169@gmail.com', // Your email here
-      pass: 'dycx vdlj rbcp kjlj',   // Your email password or app password
+      user: process.env.EMAIL_USER, // Use environment variable
+      pass: process.env.EMAIL_PASS, // Use environment variable
     },
   });
-
+  
   // Determine company type text
   let companyTypeText = '';
   if (companyType === 'I am an employer looking to Hire') {
@@ -59,11 +60,11 @@ router.post('/', upload, async (req, res) => {
   } else if (companyType === 'I am a Supplier') {
     companyTypeText = 'I am a Supplier';
   }
-
+  
   // Create the email message content
   const mailOptions = {
-    from: 'dzero169@gmail.com',
-    to: 'dzero169@gmail.com',
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
     subject: `New Contact Form Submission from ${email}`,
     text: `Reference ID: ${referenceId}
            Name: ${firstName} ${lastName}
