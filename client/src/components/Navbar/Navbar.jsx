@@ -4,16 +4,20 @@ import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from 'react-icons/fa';
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('Industries');
 
-  // Fetch persisted dropdown button text on mount
-  const [dropdownButtonText, setDropdownButtonText] = useState(
-    localStorage.getItem('dropdownButtonText') || 'Industries'
-  );
+  const defaultText = 'Industries'; // Default text to show initially
+  const serviceRoutes = ['/recruitment', '/pre-employment', '/placements', '/visas'];
 
   useEffect(() => {
-    // Update localStorage whenever the button text changes
-    localStorage.setItem('dropdownButtonText', dropdownButtonText);
-  }, [dropdownButtonText]);
+    // Check the current route and set the state accordingly
+    const currentPath = window.location.pathname;
+    if (serviceRoutes.includes(currentPath)) {
+      setSelectedValue('Services'); // Set "Services" if on a service-related page
+    } else {
+      setSelectedValue('Industries'); // Set "Industries" for all other routes
+    }
+  }, [window.location.pathname]); // Re-run the effect when the pathname changes
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -27,10 +31,11 @@ const Navbar = () => {
   };
 
   const handleSelection = (value) => {
-    setDropdownButtonText('Services'); // Change the button text to "Services"
+    // Forcefully set 'Services' as the selected value no matter what
+    setSelectedValue('Services');
     setDropdownOpen(false); // Close the dropdown
     // Navigate to the selected page
-    window.location.href = value; 
+    window.location.href = value;
   };
 
   return (
@@ -62,7 +67,7 @@ const Navbar = () => {
             className="hover:underline font-semibold hover:text-lightgreen text-DarkRed flex items-center"
             onClick={toggleDropdown}
           >
-            {dropdownButtonText}
+            {selectedValue} {/* Always show 'Services' as the selected value */}
             {dropdownOpen ? <FaChevronUp className="ml-2 mt-1" /> : <FaChevronDown className="ml-2 mt-1" />}
           </button>
           {dropdownOpen && (
@@ -102,9 +107,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 left-0 w-full h-full bg-white shadow-lg transform ${
-          menuOpen ? 'translate-y-0' : '-translate-y-full'
-        } transition-transform duration-300 ease-in-out z-40`}
+        className={`lg:hidden fixed top-0 left-0 w-full h-full bg-white shadow-lg transform ${menuOpen ? 'translate-y-0' : '-translate-y-full'} transition-transform duration-300 ease-in-out z-40`}
       >
         <ul className="flex flex-col items-center justify-center h-full space-y-6 p-4">
           <img
@@ -119,15 +122,15 @@ const Navbar = () => {
               className="font-semibold hover:text-lightgreen text-DarkRed flex items-center justify-center w-full text-2xl"
               onClick={toggleDropdown}
             >
-              {dropdownButtonText} {/* Use the same button text for mobile */}
+              {selectedValue} {/* Always show 'Services' for mobile */}
               {dropdownOpen ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
             </button>
             {dropdownOpen && (
               <ul className="mt-2 space-y-2 text-lg">
-                <li><a href="/recruitment" className="block text-black hover:text-lightgreen" onClick={handleSelection}>Recruitment</a></li>
-                <li><a href="/pre-employment" className="block text-black hover:text-lightgreen" onClick={handleSelection}>Pre-Employment</a></li>
-                <li><a href="/placements" className="block text-black hover:text-lightgreen" onClick={handleSelection}>Placements</a></li>
-                <li><a href="/visas" className="block text-black hover:text-lightgreen" onClick={handleSelection}>Visas</a></li>
+                <li><a href="/recruitment" className="block text-black hover:text-lightgreen" onClick={() => handleSelection('/recruitment')}>Recruitment</a></li>
+                <li><a href="/pre-employment" className="block text-black hover:text-lightgreen" onClick={() => handleSelection('/pre-employment')}>Pre-Employment</a></li>
+                <li><a href="/placements" className="block text-black hover:text-lightgreen" onClick={() => handleSelection('/placements')}>Placements</a></li>
+                <li><a href="/visas" className="block text-black hover:text-lightgreen" onClick={() => handleSelection('/visas')}>Visas</a></li>
               </ul>
             )}
           </li>
