@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaPhoneAlt, FaEnvelope, FaGlobe, FaCheckCircle } from 'react-icons/fa';
 import ReCAPTCHA from 'react-google-recaptcha';
 import PhoneInput from 'react-phone-input-2';
@@ -12,45 +12,60 @@ const ContactUs = () => {
   const [companyType, setCompanyType] = useState('');
   const [website, setWebsite] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('973');
+  const [countryCode, setCountryCode] = useState('');
   const [message, setMessage] = useState('');
   const [recaptchaValue, setRecaptchaValue] = useState(null);
-  const [formSubmitted, setFormSubmitted] = useState(false);  
-  const [loading, setLoading] = useState(false);  
-  const [referenceId, setReferenceId] = useState(''); // To store the reference ID
-  const [file, setFile] = useState(null); // Store the file here
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [referenceId, setReferenceId] = useState('');
+  const [file, setFile] = useState(null);
+
+  // Fetch user country code using a geolocation service
+  useEffect(() => {
+    const fetchCountryCode = async () => {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        setCountryCode(data.country_calling_code.replace('+', '') || '1'); // Default to US if unavailable
+      } catch (error) {
+        console.error('Error fetching country code:', error);
+        setCountryCode('1'); // Default to US on error
+      }
+    };
+
+    fetchCountryCode();
+  }, []);
 
   const handleRecaptcha = (value) => {
     setRecaptchaValue(value);
   };
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]); // Set the file selected by the user
+    setFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
+
     if (!companyType) {
-      alert("Please select a company type.");
+      alert('Please select a company type.');
       setLoading(false);
       return;
     }
-  
+
     if (!recaptchaValue) {
-      alert("Please complete the reCAPTCHA verification.");
+      alert('Please complete the reCAPTCHA verification.');
       setLoading(false);
       return;
     }
-  
+
     if (companyType === 'I am a job seeker looking for jobs' && !file) {
-      alert("Please upload a document.");
+      alert('Please upload a document.');
       setLoading(false);
       return;
     }
-  
-    // Prepare form data to send as multipart/form-data
+
     const formData = new FormData();
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
@@ -62,24 +77,24 @@ const ContactUs = () => {
     formData.append('countryCode', countryCode);
     formData.append('message', message);
     formData.append('recaptchaValue', recaptchaValue);
-    formData.append('document', file); // Append the document file
-  
+    formData.append('document', file);
+
     try {
       const response = await fetch('http://localhost:5000/contact', {
         method: 'POST',
-        body: formData, // Send the FormData with file
+        body: formData,
       });
-  
+
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
       }
-  
-      const result = await response.json(); // Try parsing the JSON response
+
+      const result = await response.json();
       if (result.success) {
         setReferenceId(result.referenceId);
         setFormSubmitted(true);
         setLoading(false);
-  
+
         setTimeout(() => {
           setFormSubmitted(false);
           setFirstName('');
@@ -89,7 +104,6 @@ const ContactUs = () => {
           setCompanyType('');
           setWebsite('');
           setPhoneNumber('');
-          setCountryCode('973');
           setMessage('');
           setRecaptchaValue(null);
           setReferenceId('');
@@ -101,11 +115,10 @@ const ContactUs = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('Error submitting form. File is Larger than 5Mb ');
+      alert('Error submitting form. Please try again later.');
       setLoading(false);
     }
   };
-
   return (
     <div className="flex flex-wrap max-w-7xl mx-auto font-raleway bg-gray-100 p-4 md:p-8">
   <div className="w-full md:w-1/2 p-4 text-center sm:text-left">
@@ -171,18 +184,18 @@ const ContactUs = () => {
         <input type="email" placeholder="Email" className="w-full border border-gray-300 p-2 rounded-md text-sm sm:text-base" value={email} onChange={(e) => setEmail(e.target.value)} />
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-2 items-center">
           <div className="w-full sm:w-1/3">
-            <PhoneInput
-              country={'us'}
-              value={countryCode}
-              onChange={(value) => setCountryCode(value || '+1')}
-              placeholder="Select Country Code"
-              inputStyle={{
-                width: '100%',
-                height: '40px',
-                border: '1px solid #D1D5DB',
-                color: '#4B5563',
-              }}
-            />
+          <PhoneInput
+            country={'us'}
+            value={countryCode}
+            onChange={(value) => setCountryCode(value || '1')}
+            placeholder="Select Country Code"
+            inputStyle={{
+              width: '100%',
+              height: '40px',
+              border: '1px solid #D1D5DB',
+              color: '#4B5563',
+            }}
+          />
           </div>
           <input type="text" placeholder="Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="w-full sm:w-2/3 border border-gray-300 p-2 rounded-md text-sm sm:text-base" />
         </div>

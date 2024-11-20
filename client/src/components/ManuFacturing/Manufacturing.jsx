@@ -3,13 +3,14 @@ import { motion } from "framer-motion";
 import ManufacturingMiddle from "./ManufacturingMiddle";
 import ManufacturingLast from "./ManufacturingLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i1 from "./i1.png"
 
 
 
 const ManuFacturing = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/manfryl_bnr.jpg",
+      src: i1,
       alt: "Image 1",
       text: "MANUFACTURING",
       description:
@@ -34,11 +35,11 @@ const ManuFacturing = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-0"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div

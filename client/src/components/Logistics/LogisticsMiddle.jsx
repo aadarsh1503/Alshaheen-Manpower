@@ -1,4 +1,6 @@
 import React from 'react';
+import i2 from "./i2.png"
+import i3 from "./i3.png"
 
 const LogisticsMiddle = () => {
   return (
@@ -7,7 +9,7 @@ const LogisticsMiddle = () => {
         {/* Left Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
           <img
-            src="https://www.groupl.ae/images/logistc1.jpg"
+            src={i2}
             alt="Cabin Crew"
             className="w-full h-full lg:h-[532px] object-cover"
           />
@@ -64,7 +66,7 @@ const LogisticsMiddle = () => {
         {/* Right Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
           <img
-            src="https://www.groupl.ae/images/logistc2.jpg"
+            src={i3}
             alt="Cabin Crew"
             className="w-full h-full object-cover"
           />

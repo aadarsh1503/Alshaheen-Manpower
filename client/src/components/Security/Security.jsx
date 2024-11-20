@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
+import i1 from "./i1.png"
 import BrochureSection from "../BrochureSection/BrochureSection";
 import SecurityMiddle from "./SecurityMiddle";
 import SecurityLast from "./SecurityLast";
@@ -9,7 +9,7 @@ import SecurityLast from "./SecurityLast";
 const Security = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/security_bnr.jpg",
+      src: i1,
       alt: "Image 1",
       text: "SECURITY",
       description:

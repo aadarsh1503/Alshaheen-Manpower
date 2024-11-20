@@ -1,4 +1,6 @@
 import React from 'react';
+import i4 from "./i4.png";
+import i3 from "./i3.png";
 
 const SecurityMiddle = () => {
   return (
@@ -18,7 +20,7 @@ const SecurityMiddle = () => {
           {/* Left side: Image */}
           <div className="w-full lg:w-1/2 h-[200px] sm:h-[300px] md:h-[350px] lg:h-[438px] mb-4 lg:mb-0">
             <img 
-              src="https://www.groupl.ae/images/ser_pic17.jpg" 
+              src={i4} 
               alt="Process" 
               className="w-full h-full object-cover" 
             />

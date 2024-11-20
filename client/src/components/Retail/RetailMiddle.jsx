@@ -1,13 +1,14 @@
 import React from 'react';
-
+import i2 from "./i2.png"
+import i33 from "./i33.png"
 const RetailMiddle = () => {
   return (
     <div>
       <section className="flex flex-col lg:flex-row">
         {/* Left Side - Image */}
-        <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[700px]">
+        <div className="w-full lg:w-1/2 h-[300px] md:h-[500px] lg:h-[700px]">
           <img
-            src="https://www.groupl.ae/images/retail1.jpg"
+            src={i2}
             alt="Cabin Crew"
             className="w-full h-full lg:h-[532px] object-cover"
           />
@@ -58,7 +59,7 @@ const RetailMiddle = () => {
         {/* Right Side - Image */}
         <div className="w-full lg:w-1/2 h-[300px] md:h-[400px] lg:h-[500px] lg:-mt-48">
           <img
-            src="https://www.groupl.ae/images/retail2.jpg"
+            src={i33}
             alt="Cabin Crew"
             className="w-full h-full object-cover"
           />

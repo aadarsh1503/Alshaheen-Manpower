@@ -15,6 +15,10 @@ import Security from './components/Security/Security';
 import Training from './components/Training/Training';
 import NewsEvents from './components/NewsEvents/NewsEvents';
 import About from './components/About/AboutUs';
+import Aviation2 from './components/Aviation2/Aviation2';
+import Construction2 from './components/Construction2/Construction2';
+import Events2 from './components/Events2/Events2';
+import HealthCare2 from './components/Healthcare2/Healthcare2';
 
 
 function App() {
@@ -40,6 +44,10 @@ function App() {
           <Route path="/training" element={<Training />} />
           <Route path="/newsEvents" element={<NewsEvents />} />
           <Route path="/about" element={<About />} />
+          <Route path="/aviation" element={<Aviation2 />} />
+          <Route path="/construction" element={<Construction2 />} />
+          <Route path="/events" element={<Events2 />} />
+          <Route path="/healthcare" element={<HealthCare2 />} />
     
         </Routes>
       </div>

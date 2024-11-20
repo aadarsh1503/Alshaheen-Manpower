@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import HospitalityMiddle from "./HospitalityMiddle";
 import HospitalityLast from "./HospitalityLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i1 from "./i1.png"
 
 
 const Hospitality = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/hosptbly_bnr.jpg",
+      src: i1,
       alt: "Image 1",
       text: "HOSPITALITY",
       description:
@@ -33,11 +34,11 @@ const Hospitality = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-0"></div>
+        <div className="absolute inset-0 bg-black opacity-30"></div>
 
         {/* Content Wrapper with Framer Motion */}
         <motion.div

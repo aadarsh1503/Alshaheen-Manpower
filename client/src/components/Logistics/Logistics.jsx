@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import LogisticsMiddle from "./LogisticsMiddle";
 import LogisticsLast from "./LogisticsLast";
 import BrochureSection from "../BrochureSection/BrochureSection";
+import i1 from "./i1.png"
 
 
 const Logistics = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/lgistc_bnr.jpg",
+      src: i1,
       alt: "Image 1",
       text: "LOGISTICS",
       description:
@@ -33,7 +34,7 @@ const Logistics = () => {
   return (
     <div>
       <div
-        className="relative w-full h-[400px] lg:h-[400px] bg-cover bg-center"
+        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
         style={{ backgroundImage: `url(${images[currentIndex].src})` }}
       >
         {/* Overlay */}
