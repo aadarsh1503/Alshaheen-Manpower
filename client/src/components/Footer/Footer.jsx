@@ -13,7 +13,7 @@ const Footer = () => {
           <p className="mt-2 lg:mt-4 text-sm lg:text-base text-gray-700"> {/* Adjust font size for mobile */}
             P.O. Box 54121, Kingdom of Bahrain
             <br />
-            +97313303301
+            +973 13303301
             <br />
             info@alshaheen.pro
           </p>
