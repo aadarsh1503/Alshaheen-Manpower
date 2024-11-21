@@ -26,7 +26,7 @@ const ContactUs = () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        setCountryCode(data.country_calling_code.replace('+', '') || '1'); // Default to US if unavailable
+        setCountryCode(data.country_calling_code.replace('+', '') || '+973'); // Default to US if unavailable
       } catch (error) {
         console.error('Error fetching country code:', error);
         setCountryCode('1'); // Default to US on error

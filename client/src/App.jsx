@@ -19,6 +19,7 @@ import Aviation2 from './components/Aviation2/Aviation2';
 import Construction2 from './components/Construction2/Construction2';
 import Events2 from './components/Events2/Events2';
 import HealthCare2 from './components/Healthcare2/Healthcare2';
+import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <Route path="/construction" element={<Construction2 />} />
           <Route path="/events" element={<Events2 />} />
           <Route path="/healthcare" element={<HealthCare2 />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
     
         </Routes>
       </div>

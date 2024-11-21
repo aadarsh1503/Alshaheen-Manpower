@@ -41,7 +41,9 @@ const Footer = () => {
 <FontAwesomeIcon icon={faXTwitter} />
 </a>
           </div>
-          <p className="text-gray-500 text-xs lg:text-sm mt-2">Privacy Policy</p>
+          <a href='/privacy-policy'>
+          <p className="text-gray-500 hover:text-DarkRed text-xs lg:text-sm mt-2">Privacy Policy</p>
+          </a>
         </div>
       </div>
     </footer>
