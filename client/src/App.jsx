@@ -20,6 +20,8 @@ import Construction2 from './components/Construction2/Construction2';
 import Events2 from './components/Events2/Events2';
 import HealthCare2 from './components/Healthcare2/Healthcare2';
 import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
+import ChatWidget from './components/ChatWidget/ChatWidget';
+import WhatsAppWidget from './components/WhatsappWidget/WhatsappWidget';
 
 
 function App() {
@@ -27,7 +29,8 @@ function App() {
     <Router>
       {/* Navbar will be displayed on every page */}
       <Navbar />
-      
+      <ChatWidget />
+      <WhatsAppWidget />
       {/* Main content area with Routes */}
       <div className="min-h-screen">
         <Routes>

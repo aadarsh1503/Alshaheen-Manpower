@@ -13,7 +13,7 @@ const Retail = () => {
       alt: "Image 1",
       text: "RETAIL",
       description:
-        "Diligently sourced and highly trained HR Solutions for <br /> the industry that is at the heart of Dubai’s identity.",
+        "Carefully sourced and expertly trained HR solutions for the industry central to Kingdom of Bahrain's identity.",
     },
   ];
 

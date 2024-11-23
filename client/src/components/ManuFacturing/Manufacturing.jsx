@@ -14,7 +14,7 @@ const ManuFacturing = () => {
       alt: "Image 1",
       text: "MANUFACTURING",
       description:
-        "Talent solutions to power one the world’s biggest <br /> Manufacturing hubs.",
+        "Talent solutions driving one of the world’s largest manufacturing hubs.",
     },
   ];
 

@@ -13,7 +13,7 @@ const HealthCare2 = () => {
       alt: "Image 1",
       text: "HEALTHCARE",
       description:
-        "Diligently sourced and scrutinised healthcare <br /> professionals for a rapidly growing industry.",
+        "Meticulously sourced and assessed healthcare professionals for a rapidly evolving industry.",
     },
   ];
 

@@ -11,7 +11,7 @@ const HealthCareLast = () => {
           <h2 className="text-2xl lg:text-4xl font-raleway font-bold text-lightblue pb-1 lg:pb-2 relative inline-block">
             PROCESS
             {/* Large underline */}
-            <div className="absolute bottom-0 w-28 lg:w-[956px] left-0 lg:left-40 border-b-4 border-lightblue"></div>
+            <div className="absolute bottom-0 w-28 lg:w-[956px] left-0 lg:left-14 border-b-4 border-lightblue"></div>
           </h2>
         </div>
 

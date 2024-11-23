@@ -11,7 +11,7 @@ const ConstructionLast = () => {
           <h2 className="text-2xl lg:text-4xl font-raleway font-bold text-lightblue pb-1 lg:pb-2 relative inline-block">
             PROCESS
             {/* Large underline */}
-            <div className="absolute bottom-0 w-28 lg:w-[956px] left-0 lg:left-40 border-b-4 border-lightblue"></div>
+            <div className="absolute bottom-0 w-28 lg:w-[956px] left-0 lg:left-14 border-b-4 border-lightblue"></div>
           </h2>
         </div>
 
@@ -29,15 +29,15 @@ const ConstructionLast = () => {
           <div className="w-full lg:w-1/2  h-auto lg:h-full flex flex-col justify-start">
             
             {/* Red Block with Text */}
-            <div className="bg-lightgreen text-white p-6 lg:p-20">
-              <ul className="space-y-2 text-sm lg:text-lg">
-                <li><span className="text-white">|</span> Demand for workers is raised</li>
-                <li><span className="text-white">|</span> Source potential candidates</li>
-                <li><span className="text-white">|</span> Pre-screening</li>
-                <li><span className="text-white">|</span> Interview by employer</li>
-                <li><span className="text-white">|</span> Training of selected staff</li>
-                <li><span className="text-white">|</span> Visas</li>
-                <li><span className="text-white">|</span> Mobilisation to country of employment</li>
+            <div className="bg-lightgreen text-white p-4 sm:p-8 md:p-12  lg:py-[100px]">
+              <ul className="space-y-2 sm:space-y-2 text-sm sm:text-base md:text-lg">
+                <li><span className="text-white">|</span> Application & Registration</li>
+                <li><span className="text-white">|</span> Initial Screening & Review</li>
+                <li><span className="text-white">|</span> Interview & Assessment</li>
+                <li><span className="text-white">|</span> Training & Development</li>
+                <li><span className="text-white">|</span> Onboarding & Integration</li>
+                <li><span className="text-white ">|</span> Ongoing Support & Career Advancement</li>
+
               </ul>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaBars, FaTimes } from 'react-icons/fa';
-
+import i1 from "./i1.jpg"
 const Navbar = () => {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [industryDropdownOpen, setIndustryDropdownOpen] = useState(false);
@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative bg-white lg:flex max-w-7xl mx-auto justify-end items-center p-4 lg:py-6 text-black">
+    <nav className="relative bg-white lg:flex max-w-7xl mx-auto justify-end items-center p-6 lg:py-4 text-black">
       {/* Logo positioned to the left and partially outside navbar */}
       <div className="absolute left-1 top-1 z-20 hidden lg:block">
         <img
@@ -51,8 +51,8 @@ const Navbar = () => {
 
       {/* Navbar Links for Desktop */}
       <div className="hidden lg:flex space-x-8">
-        <a href="/" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Home</a>
-        <a href="/about" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">About Us</a>
+        <a href="/" className="hover:underline text-DarkRed lg:mt-2 mt-0 font-semibold hover:text-lightgreen">Home</a>
+        <a href="/about" className="hover:underline font-semibold lg:mt-2 mt-0 hover:text-lightgreen text-DarkRed">About Us</a>
         
         {/* Services Dropdown */}
         {/* <div className="relative">
@@ -96,7 +96,7 @@ const Navbar = () => {
         {/* Industry Dropdown */}
         <div className="relative">
           <button
-            className="hover:underline font-semibold hover:text-lightgreen text-DarkRed flex items-center"
+            className="hover:underline font-semibold hover:text-lightgreen lg:mt-2 mt-0 text-DarkRed flex items-center"
             onClick={toggleIndustryDropdown}
           >
             Industries
@@ -162,10 +162,22 @@ const Navbar = () => {
           )}
         </div>
 
-        <a href="/training" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">Training</a>
-        <a href="/newsEvents" className="hover:underline font-semibold hover:text-lightgreen text-DarkRed">News</a>
-        <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-DarkRed hover:text-lightgreen font-semibold hover:underline">Find a Job</a>
-        <a href="/contactUs" className="hover:underline text-DarkRed font-semibold hover:text-lightgreen">Contact Us</a>
+        <a href="/training" className="hover:underline font-semibold hover:text-lightgreen lg:mt-2 mt-0 text-DarkRed">Training</a>
+
+
+        <a href="/contactUs" className="hover:underline text-DarkRed font-semibold lg:mt-2 mt-0 hover:text-lightgreen">Contact Us</a>
+        <a href="/newsEvents" className="hover:underline font-semibold hover:text-lightgreen lg:mt-2 mt-0 text-DarkRed">News</a>
+        <a 
+  href="https://www.talentportal.bh/#pills-home" 
+  target="_blank" 
+  className="flex items-center space-x-2 text-DarkRed hover:text-lightgreen font-semibold hover:underline"
+>
+  <img 
+    src={i1}
+    alt="Find a Job" 
+    className="w-6 h-6 lg:w-44 rounded-full lg:h-10 object-cover"
+  />
+</a>
       </div>
 
       {/* Mobile Menu */}

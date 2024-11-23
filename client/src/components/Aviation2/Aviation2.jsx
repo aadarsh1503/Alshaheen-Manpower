@@ -13,7 +13,7 @@ const Aviation2 = () => {
       alt: "Image 1",
       text: "AVIATION",
       description:
-        "Providing world class talent solutions for world leading <br /> airlines.",
+        "Offering exceptional talent solutions to the world's foremost<br /> airlines..",
     },
   ];
 

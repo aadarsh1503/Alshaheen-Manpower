@@ -6,20 +6,20 @@ const NewsEventsCarousel = () => {
     {
       src: "https://www.groupl.ae/images/e9.jpg",
       alt: "Event 1",
-      heading:"GVS Bahrain LAUNCH",
-      description: "Mihai Turbatu, our Sales Manager, on the occasion of the Bahrainn office inauguration. After 48+ years of growth, GVS’s UAE team has branched to a new office space in Bahrain to service more businesses across the world.",
+      heading:"AL SHAHEEN MANPOWER Dubai LAUNCH",
+      description: "We are thrilled to announce our Healthcare Wellness Day on [Date], taking place at [Location]! This special event is designed to promote healthier living, provide valuable resources, and offer support for all of our community members.",
     },
     {
       src: "https://www.groupl.ae/images/e7.jpg",
       alt: "Event 2",
-      heading:"LAUNCH OF GVS AT ROMANIA",
-      description: "We are committed to matching the best talent from across the world with the boom of opportunities across Europe and the Middle East. Now, we have an office in Romania.",
+      heading:"LAUNCH OF AL SHAHEEN MANPOWER AT DUBAI",
+      description: "We are thrilled to announce the official launch of our brand-new office in Dubai! This marks an exciting milestone in our journey as we continue to grow and extend our reach in the heart of one of the world’s most dynamic and thriving business hubs.",
     },
     {
       src: "https://www.groupl.ae/images/e6.jpg",
       alt: "Event 3",
-      heading:"GVS LAUNCHES WORKA",
-      description: "Worka has been built with a dream to assist people all over the world to hire and get hired. We aim at bringing best-suited profiles to employers, and relevant jobs to job seekers across all industries, experience levels, and geographies.",
+      heading:"AL SHAHEEN MANPOWER LAUNCHES WORKA",
+      description: "Worka was founded with the mission of empowering people worldwide to connect with the right job opportunities and talent. We strive to match employers with the best-fit candidates and provide job seekers with relevant roles across various industries, experience levels, and regions.",
     },
   ];
 
@@ -69,7 +69,7 @@ const NewsEventsCarousel = () => {
                     className="w-full h-full object-fill rounded-lg shadow-md"
                   />
                   {/* Description Overlay */}
-                  <div className="absolute inset-0 top-40 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
+                  <div className="absolute inset-0 top-32 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
                     <p className="text-lg font-bold text-left whitespace-pre-line">{image.heading}</p> {/* Heading */}
                     <p className="text-12.8 text-left font-semibold whitespace-pre-line mb-1">{image.description}</p> {/* Description */}
                   </div>

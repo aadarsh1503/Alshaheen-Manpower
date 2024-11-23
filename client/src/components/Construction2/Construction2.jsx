@@ -13,7 +13,7 @@ const Construction2 = () => {
       alt: "Image 1",
       text: "CONSTRUCTION",
       description:
-        "Skills and talent to build the world’s fastest growing <br /> economy. Ethically sourced. Impeccably trained..",
+        "Equipping the world’s fastest-growing economy with skilled and talented professionals, ethically sourced and thoroughly trained.",
     },
   ];
 

@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="container mx-auto flex lg:flex-row flex-col lg:justify-between lg:items-center px-4">
         
         {/* Left Section */}
-        <div className="text-center lg:text-left mb-4 lg:mb-0"> {/* Center text for mobile */}
+        <div className="text-center lg:text-left mb-4 lg:mb-0">
           <h2 className="text-lightblue mt-6 lg:mt-10 font-bold text-2xl lg:text-3xl">CONTACT US</h2>
-          <p className="mt-2 lg:mt-4 text-sm lg:text-base text-gray-700"> {/* Adjust font size for mobile */}
+          <p className="mt-2 lg:mt-4 text-sm lg:text-base text-gray-700">
             P.O. Box 54121, Kingdom of Bahrain
             <br />
             +973 13303301
@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
 
         {/* Right Section */}
-        <div className="text-center lg:text-left"> {/* Center text for mobile */}
+        <div className="text-center lg:text-left">
           <h3 className="text-lightblue font-bold mt-4 lg:mt-0">Follow us</h3>
           <div className="flex justify-center lg:justify-start space-x-4 mt-2">
             <a href="https://www.facebook.com/Alshaheen.pro/" target="_blank" rel="noopener noreferrer">
@@ -33,17 +33,20 @@ const Footer = () => {
               <FaLinkedinIn className="text-gray-400 text-2xl hover:text-DarkRed" />
             </a>
             <a
-  href="https://x.com/Alshaheen_Pro"
-  className="text-gray-400 text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
-  target="_blank"
-  rel="noopener noreferrer"
->
-<FontAwesomeIcon icon={faXTwitter} />
-</a>
+              href="https://x.com/Alshaheen_Pro"
+              className="text-gray-400 text-2xl mt-0 lg:-mt-1 hover:text-DarkRed transition duration-300"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FontAwesomeIcon icon={faXTwitter} />
+            </a>
           </div>
           <a href='/privacy-policy'>
-          <p className="text-gray-500 hover:text-DarkRed text-xs lg:text-sm mt-2">Privacy Policy</p>
+            <p className="text-gray-500 hover:text-DarkRed text-xs lg:text-sm mt-2">Privacy Policy</p>
           </a>
+
+          {/* Download Button */}
+       
         </div>
       </div>
     </footer>

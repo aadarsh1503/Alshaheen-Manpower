@@ -15,7 +15,7 @@ const NewsEvents = () => {
       alt: "Image 1",
       text: "NEWS & EVENTS",
       description:
-        "Recent news and updates from GVS on company <br /> activities and job openings.",
+        "Recent news and updates from AL SHAHEEN MANPOWER on company <br /> activities and job openings.",
     },
   ];
 

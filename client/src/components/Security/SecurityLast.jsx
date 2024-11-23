@@ -21,7 +21,7 @@ const SecurityLast = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          We provide comprehensive safety solutions for all kinds of <br /> infrastructures & establishments.
+          At AL SHAHEEN MANPOWER, we recognize that effective security solutions depend not only on cutting-edge technology but also on the expertise and dedication of a highly skilled workforce. Our team is composed of experienced security professionals, each trained to address a wide range of security challenges with precision and reliability.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -42,7 +42,7 @@ const SecurityLast = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          Our candidates are customer-service focussed while being trained <br /> in skills to keep their sales, inventory and managerial objectives in <br /> the forefront.
+          Our candidates are customer-service focussed while being trained  in skills to keep their sales, inventory and managerial objectives in the forefront.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

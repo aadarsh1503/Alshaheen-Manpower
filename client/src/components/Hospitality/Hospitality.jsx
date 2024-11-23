@@ -13,7 +13,7 @@ const Hospitality = () => {
       alt: "Image 1",
       text: "HOSPITALITY",
       description:
-        "In an industry where service is king, we provide well <br /> trained personnel who will bring smiles on the faces of <br /> your customers.",
+        "In an industry where exceptional service is essential, we offer highly skilled personnel dedicated to creating outstanding customer experiences",
     },
   ];
 

@@ -18,7 +18,7 @@ const Training = () => {
       alt: "Image 1",
       text: "TRAINING",
       description:
-        "GVS's training modules have evolved from our <br /> decades of experience of dealing with people across the <br /> board for various sectors. Our candidates are sourced <br /> from 32 countries and placed across start-ups, fast- <br /> growing corporates as well as MNCs and are a crucial <br /> entity to our success.",
+        "AL SHAHEEN MANPOWER's training modules have evolved from our <br /> decades of experience of dealing with people across the <br /> board for various sectors. Our candidates are sourced <br /> from 32 countries and placed across start-ups, fast- <br /> growing corporates as well as MNCs and are a crucial <br /> entity to our success.",
     },
   ];
 

@@ -35,7 +35,7 @@ const TechnicalSkills = () => {
   <div>
     <h3 className="text-xl font-semibold font-raleway text-red-600">PERSONAL GROOMING</h3>
     <p className="text-gray-600 text-lg font-raleway">
-      Every employer has rules and policies about employee <br /> hygiene and grooming, and because you may interact with <br /> customers, you must present a clean, positive, and <br /> professional image. At GVS, these finer nuances of <br /> Personal Grooming are taken care of.
+    Employers emphasize the importance of hygiene and grooming, particularly for employees who engage with customers. A clean, professional appearance is crucial to creating a positive impression. At AL SHAHEEN MANPOWER, we ensure that these key aspects of personal grooming are meticulously addressed, preparing our candidates to uphold the highest standards of professionalism
     </p>
   </div>
 </div>

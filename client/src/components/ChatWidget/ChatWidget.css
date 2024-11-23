@@ -1,0 +1,34 @@
+@keyframes slide-up {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 2s ease forwards; 
+  }
+  @keyframes wave {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-5px);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+    75% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  .waving-text {
+    display: inline-block; /* This allows the transform to work properly */
+    animation: wave 1.5s infinite;
+  }
+  

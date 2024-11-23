@@ -11,7 +11,7 @@ const Process = () => {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-raleway font-bold text-lightblue pb-2 relative inline-block">
             PROCESS
             {/* Large underline */}
-            <div className="hidden lg:block absolute bottom-0 lg:w-[956px] left-40 border-b-4 border-lightblue"></div>
+            <div className="hidden lg:block absolute bottom-0 lg:w-[956px] lg:left-14 border-b-4 border-lightblue"></div>
           </h2>
         </div>
 
@@ -29,16 +29,15 @@ const Process = () => {
           <div className="w-full lg:w-1/2 flex flex-col justify-start">
             
             {/* Red Block with Text */}
-            <div className="bg-lightgreen text-white p-4 sm:p-8 md:p-12 lg:p-16">
-              <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base md:text-lg">
-                <li><span className="text-white">|</span> English Test</li>
-                <li><span className="text-white">|</span> Demand for workers is raised</li>
-                <li><span className="text-white">|</span> Source potential candidates</li>
-                <li><span className="text-white">|</span> Pre-screening</li>
-                <li><span className="text-white">|</span> Interview by employer</li>
-                <li><span className="text-white">|</span> Training of selected staff</li>
-                <li><span className="text-white">|</span> Visas</li>
-                <li><span className="text-white">|</span> Mobilisation to country of employment</li>
+            <div className="bg-lightgreen text-white p-4 sm:p-8 md:p-12  lg:py-[114px]">
+              <ul className="space-y-2 sm:space-y-2 text-sm sm:text-base md:text-lg">
+                <li><span className="text-white">|</span> Application & Registration</li>
+                <li><span className="text-white">|</span> Initial Screening & Review</li>
+                <li><span className="text-white">|</span> Interview & Assessment</li>
+                <li><span className="text-white">|</span> Training & Development</li>
+                <li><span className="text-white">|</span> Onboarding & Integration</li>
+                <li><span className="text-white ">|</span> Ongoing Support & Career Advancement</li>
+
               </ul>
             </div>
 

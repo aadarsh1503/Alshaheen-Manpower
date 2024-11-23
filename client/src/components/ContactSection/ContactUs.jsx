@@ -3,6 +3,7 @@ import { FaPhoneAlt, FaEnvelope, FaGlobe, FaCheckCircle } from 'react-icons/fa';
 import ReCAPTCHA from 'react-google-recaptcha';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import i2 from "./i2.png"
 
 const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
@@ -120,45 +121,52 @@ const ContactUs = () => {
     }
   };
   return (
-    <div className="flex flex-wrap max-w-7xl mx-auto font-raleway bg-gray-100 p-4 md:p-8">
-  <div className="w-full md:w-1/2 p-4 text-center sm:text-left">
-    <h2 className="text-3xl sm:text-4xl font-bold text-lightblue">REACH OUT <br /> TO US!</h2>
-    <p className="text-gray-600 mt-4 text-sm sm:text-base">
-      If you wish to speak to a GVS representative, kindly fill the form or contact an office close to you.
-    </p>
-    <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row space-y-4 lg:ml-0 ml-10 sm:space-y-0 sm:space-x-8">
-      <div className="flex items-center space-x-2">
-        <FaPhoneAlt className="text-lightblue text-xl sm:text-2xl" />
-        <div>
-          <p className="text-gray-600 font-bold text-sm sm:text-base">Head Office</p>
-          <p className="text-black text-sm sm:text-base">+973 1330 3301</p>
-        </div>
-      </div>
-      <div className="flex items-center space-x-2">
-        <FaEnvelope className="text-lightblue text-xl sm:text-2xl" />
-        <div>
-          <p className="text-gray-600 font-bold text-sm sm:text-base">Email</p>
-          <p className="text-gray-600 ">
-            <a href="mailto:info@alshaheen.pro" className="text-black text-sm sm:text-base hover:underline">
-              info@alshaheen.pro
-            </a>
-          </p>
-        </div>
+    <div className="flex flex-wrap max-w-7xl mx-auto font-raleway  p-4 md:p-8">
+ <div className="w-full md:w-1/2 p-4 text-center sm:text-left">
+  <h2 className="text-3xl sm:text-4xl font-bold text-lightblue">REACH OUT <br /> TO US!</h2>
+  <p className="text-gray-600 mt-4 text-sm sm:text-base">
+    If you wish to speak to a AL SHAHEEN MANPOWER representative, kindly fill the form or contact an office close to you.
+  </p>
+  <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row space-y-4 lg:ml-0 ml-10 sm:space-y-0 sm:space-x-8">
+    <div className="flex items-center space-x-2">
+      <FaPhoneAlt className="text-lightblue text-xl sm:text-2xl" />
+      <div>
+        <p className="text-gray-600 font-bold text-sm sm:text-base">Head Office</p>
+        <p className="text-black text-sm sm:text-base">+973 1330 3301</p>
       </div>
     </div>
-    <div className="w-full mt-4 flex lg:ml-0 ml-8 items-center space-x-2">
-      <FaGlobe className="text-lightblue text-xl sm:text-2xl" />
-      <p className="text-gray-600 font-bold text-sm sm:text-base">
-        Website<br />
-        <a href="https://www.alshaheen.pro" target="_blank" className="text-black font-normal hover:underline">
-          www.alshaheen.pro
-        </a>
-      </p>
+    <div className="flex items-center space-x-2">
+      <FaEnvelope className="text-lightblue text-xl sm:text-2xl" />
+      <div>
+        <p className="text-gray-600 font-bold text-sm sm:text-base">Email</p>
+        <p className="text-gray-600 ">
+          <a href="mailto:info@alshaheen.pro" className="text-black text-sm sm:text-base hover:underline">
+            info@alshaheen.pro
+          </a>
+        </p>
+      </div>
     </div>
-    <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-lightblue text-2xl sm:text-4xl underline font-bold mt-10 sm:mt-32 inline-block">
-      Apply here for jobs
-    </a>
   </div>
+  <div className="w-full mt-4 flex lg:ml-0 ml-8 items-center space-x-2">
+    <FaGlobe className="text-lightblue text-xl sm:text-2xl" />
+    <p className="text-gray-600 font-bold text-sm sm:text-base">
+      Website<br />
+      <a href="https://www.alshaheen.pro" target="_blank" className="text-black font-normal hover:underline">
+        www.alshaheen.pro
+      </a>
+    </p>
+  </div>
+  <div className="mt-10  flex justify-center">
+    <a href="https://www.talentportal.bh/#pills-home" target="_blank">
+      <img
+        src={i2} 
+        alt="Apply here for jobs"
+        className="w-80 sm:w-96 hover:opacity-80 transition-opacity"
+      />
+    </a>
+  </div>
+</div>
+
   {!formSubmitted ? (
     <div className="w-full md:w-1/2 p-4 bg-white shadow-md rounded-xl mt-8 sm:mt-0">
       <h3 className="text-lg sm:text-xl font-semibold text-gray-800 text-center sm:text-left">HOW CAN WE HELP YOU?</h3>

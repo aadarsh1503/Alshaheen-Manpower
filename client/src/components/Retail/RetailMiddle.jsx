@@ -21,7 +21,7 @@ const RetailMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          Looking to hire dynamic people to fill in selling or servicing <br /> positions in your business? We have just the right candidates <br /> for you.
+          At AL SHAHEEN MANPOWER, we understand that exceptional service begins with exceptional people. That's why we are committed to hiring the best talent to ensure our retail operations run smoothly and efficiently.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -42,7 +42,7 @@ const RetailMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          Our candidates are customer-service focussed while being trained <br /> in skills to keep their sales, inventory and managerial objectives in <br /> the forefront.
+          Our team is at the heart of what we do, and we are always looking for motivated, customer-focused candidates who are eager to make a positive impact. If you're dedicated to delivering outstanding customer service and thrive in a fast-paced, team-oriented environment.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

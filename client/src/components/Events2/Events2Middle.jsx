@@ -22,7 +22,7 @@ const Events2Middle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          During the creation of small or large-scale personal or <br /> corporate events, finding efficient management help can be <br /> an arduous task almost every single time. We have brought our <br /> experience and expertise to hand-pick just the right people for <br />your event.
+          Are you ready to be part of an exciting event experience? We're looking for motivated and enthusiastic individuals to join our team as manpower candidates for AL SHAHEEN MANPOWER. As a key member of the event crew, you'll play an essential role in ensuring the smooth execution of this event, gaining valuable hands-on experience in the event industry.
           
             
           </p>
@@ -52,7 +52,7 @@ const Events2Middle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          We provide the best trained candidates for building, maintaining, <br /> and repairing structures, as required by your business.
+          We provide the best trained candidates for building, maintaining, and repairing structures, as required by your business.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

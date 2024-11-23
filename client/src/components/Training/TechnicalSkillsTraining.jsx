@@ -8,10 +8,7 @@ const TechnicalSkillsTraining = () => {
       
       {/* Paragraph Section Below Heading */}
       <p className="text-gray-700 max-w-7xl mb-10">
-        Our training ensures a shorter recruitment cycle for job-ready candidates and greatly
-        impacts the quality of the workforce delivered. Our trainees are our foremost responsibility.
-        Giving them gainful employable skills, we ensure that they are ready to take on work
-        immediately upon arrival.
+      Our training programs are designed to accelerate the recruitment process, delivering job-ready candidates and improving the quality of the workforce. We prioritize our trainees, equipping them with essential skills that ensure they are prepared and capable of starting work right away upon placement."
       </p>
       
       {/* Grid Section for the Skills */}

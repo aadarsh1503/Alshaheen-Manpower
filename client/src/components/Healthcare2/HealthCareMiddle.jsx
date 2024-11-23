@@ -22,7 +22,7 @@ const HealthCareMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          Adept at curative, preventive, rehabilitative, and palliative <br /> functions , our candidates are a perfect match for your <br /> requirements.
+          At Al Shaheen Manpower, we understand that a strong and skilled workforce is the cornerstone of exceptional healthcare delivery. Our comprehensive manpower solutions are designed to meet the diverse staffing needs of healthcare facilities, ensuring that you have the right professionals in place to provide top-quality care to patients.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -43,7 +43,7 @@ const HealthCareMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          Our professional, and compassionate candidates are trained in all <br />clinical processes as well as industry service standards to help<br />facilitate smooth functioning of your business ."</p> 
+          We specialize in recruiting and placing highly qualified candidates across various healthcare roles, including doctors, nurses, medical technicians, administrative staff, and more. Whether you're looking to fill temporary positions, full-time roles, or specialized needs"</p> 
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">
               <span>|  Nurses</span>

@@ -22,7 +22,7 @@ const Hero = () => {
       alt: "Image 2",
       text: "BRINGING SKILLS <br /> AND OPPORTUNITY TOGETHER",
       description:
-        "Incorporated 48 years ago, GVS has been providing ethical <br /> workforce and recruitment solutions across multiple industries in <br /> Europe and the Middle East since 2013.",
+        "Incorporated 48 years ago, AL SHAHEEN MANPOWER has been providing ethical  workforce and recruitment solutions across multiple industries in <br /> Europe and the Middle East since 2013.",
       googleSrc: "",
     },
     {
@@ -30,7 +30,7 @@ const Hero = () => {
       alt: "Image 3",
       text: "HIRE SMART, <br /> GROW FAST",
       description:
-        "Our qualified managers bring you the expertise to deal with a range of <br /> issues including audit of the recruitment processes, labour dispute <br /> resolution, general HR administration.",
+        "With our team of skilled managers, we offer the expertise to tackle a range of challenges, from auditing recruitment processes to resolving labor disputes and handling general HR administration.",
       googleSrc: "",
     },
     {
@@ -38,7 +38,7 @@ const Hero = () => {
       alt: "Image 4",
       text: "160,000+ SCREENED <br />CANDIDATES",
       description:
-        "We have a vast pool of trained and screened candidates to fulfil the <br /> requirements of your business. Our global collaborations with various <br /> technical institutes enable us to train and assess the candidates' <br /> technical and language skills prior to their selection.",
+        "We offer an extensive pool of trained and thoroughly vetted candidates to meet your business needs. Through our international partnerships with technical institutes, we ensure that candidates are trained and assessed on both technical and language skills before selection.",
       googleSrc: "",
     },
     {
@@ -46,7 +46,7 @@ const Hero = () => {
       alt: "Image 5",
       text: "FULL SERVICE HR",
       description:
-        "Our service portfolio looks after your entire human resource cycle. Our <br /> consultancy vertical includes effective advisory - helping you <br /> understand and stay up to date on the current recruitment market -<br /> available talent, salary rates, current hiring complexities, competitor <br /> benchmarking as well as bespoke solutions based on your specific <br /> need.",
+        "Our comprehensive service portfolio manages your entire human resource cycle. Through our consultancy services, we provide valuable insights into the recruitment market, including available talent, salary trends, hiring challenges, competitor comparisons, and tailored solutions to meet your unique needs",
       googleSrc: "",
     },
   ];

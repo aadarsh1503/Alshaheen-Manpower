@@ -6,7 +6,7 @@ import i3 from "./i3.png";
 import i4 from "./i4.png";
 import i5 from "./i5.png";
 import i6 from "./i6.png";
-
+import g1 from "./g1.png"
 const TheTeam = () => {
   const images = [
     {
@@ -64,57 +64,40 @@ const TheTeam = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Title Section */}
-        <div className="text-left mb-4">
-          <h1 className="text-lightblue font-bold text-4xl">THE TEAM</h1>
-        </div>
+    <div>
+      
+      <div className="w-full  py-12 px-4">
+  <div className="max-w-5xl mx-auto flex flex-col lg:flex-row lg:items-center">
+    {/* Left Side Image */}
+    <div className="lg:w-full lg:-ml-[432px] mb-6 lg:mb-0 flex justify-center">
+      <img
+        src={g1}
+        alt=""
+        className="h-96 w-64 object-fill rounded-lg shadow-md"
+      />
+    </div>
 
-        {/* Image Carousel */}
-        <div className="relative flex items-center justify-center space-x-4 lg:flex hidden">
-          {/* Left Arrow */}
-          <button
-            onClick={handlePrev}
-            className="absolute -left-28 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
-          >
-            <BsChevronLeft className="text-gray-600" size={24} />
-          </button>
+    {/* Right Side Content */}
+    <div className="lg:w-2/3">
+      {/* Title Section */}
+      <div className="text-left lg:-ml-40 mb-4">
+        <h1 className="text-lightblue font-bold text-4xl">THE TEAM</h1>
+      </div>
 
-          {/* Display Three Images */}
-          <div className="flex space-x-4 transition-transform duration-500 ease-in-out">
-            {visibleImages.map((image, index) => (
-              <div key={index} className="relative group w-60 lg:w-[306px] lg:h-[332px] h-40">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-fill rounded-lg shadow-md"
-                />
-                {/* Description Overlay */}
-                <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
-                  <p className="text-lg font-bold text-left">{image.heading}</p> {/* Heading */}
-                  <p className="text-12.8 text-left font-semibold whitespace-pre-line">{image.description}</p> {/* Description */}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Image Carousel */}
+      <div className="relative flex items-center justify-center space-x-4 lg:flex hidden">
+        {/* Left Arrow */}
+        <button
+          onClick={handlePrev}
+          className="absolute -left-60 z-50 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+        >
+          <BsChevronLeft className="text-gray-600" size={24} />
+        </button>
 
-          {/* Right Arrow */}
-          <button
-            onClick={handleNext}
-            className="absolute -right-32 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
-          >
-            <BsChevronRight className="text-gray-600" size={24} />
-          </button>
-        </div>
-
-        {/* Grid Layout for Mobile */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:hidden">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`relative group ${index === 5 ? 'order-first' : ''}`}  // Ensure i6 is first on mobile
-            >
+        {/* Display Three Images */}
+        <div className="flex space-x-4  transition-transform duration-500 ease-in-out">
+          {visibleImages.map((image, index) => (
+            <div key={index} className="relative lg:-ml-32 group w-60 lg:w-[306px] lg:h-[332px] h-40">
               <img
                 src={image.src}
                 alt={image.alt}
@@ -122,13 +105,46 @@ const TheTeam = () => {
               />
               {/* Description Overlay */}
               <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
-                <p className="text-lg font-bold text-left">{image.heading}</p> {/* Heading */}
-                <p className="text-12.8 text-left font-semibold whitespace-pre-line">{image.description}</p> {/* Description */}
+                <p className="text-lg font-bold text-left">{image.heading}</p>
+                <p className="text-12.8 text-left font-semibold whitespace-pre-line">{image.description}</p>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Right Arrow */}
+        <button
+          onClick={handleNext}
+          className="absolute -right-32 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
+        >
+          <BsChevronRight className="text-gray-600" size={24} />
+        </button>
       </div>
+
+      {/* Grid Layout for Mobile */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:hidden">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`relative group ${index === 5 ? 'order-first' : ''}`} // Ensure i6 is first on mobile
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="w-full h-full object-fill rounded-lg shadow-md"
+            />
+            {/* Description Overlay */}
+            <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
+              <p className="text-lg font-bold text-left">{image.heading}</p>
+              <p className="text-12.8 text-left font-semibold whitespace-pre-line">{image.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };

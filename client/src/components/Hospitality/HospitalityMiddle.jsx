@@ -22,7 +22,7 @@ const HospitalityMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          We provide a diverse range of talented candidates across all <br /> levels of F&B, Recreation, Lodging and Travel and Tourism <br /> administration.
+          At AL SHAHEEN MANPOWER, we understand that exceptional hospitality begins with exceptional people. Our dedicated team of professionals is at the heart of everything we do, ensuring that every guest enjoys a seamless, memorable experience
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -47,7 +47,7 @@ const HospitalityMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          Our tailored approach to all staffing needs for your hospitality <br /> business, with trained resources, ensures service continuity with <br />optimal results. Our people first approach ensures customer <br /> satisfaction at all points of their luxury experience with you.
+          We are always on the lookout for talented individuals who share our values of excellence, attention to detail, and a genuine passion for hospitality
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

@@ -13,7 +13,7 @@ const Security = () => {
       alt: "Image 1",
       text: "SECURITY",
       description:
-        "With a talent pool that is reliably sourced and rigorously <br /> trained, we are committed to the operative excellence of <br /> our clients in the Security sector.",
+        "With a talent pool that is consistently sourced and meticulously trained, we are dedicated to ensuring operational excellence for our clients in the Security sector.",
     },
   ];
 
@@ -88,7 +88,7 @@ const Security = () => {
 
         {/* Buttons */}
         <motion.div
-          className="absolute top-2/4 lg:top-2/4 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
+          className="absolute top-2/4 lg:top-3/4 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}

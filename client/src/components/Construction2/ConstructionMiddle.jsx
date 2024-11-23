@@ -22,7 +22,7 @@ const ConstructionMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          The greatest structures are built on quality. Your business is no <br /> different. We help you find professionals who are trained in all <br /> processes involved in buildings, infrastructure and industrial <br /> facilities, and associated activities.
+          At AL SHAHEEN MANPOWER, we understand that the foundation of every successful construction project is the strength, skill, and dedication of the people behind it. That’s why we take great pride in providing highly skilled and experienced manpower to meet the diverse needs of your construction projects.
           
             
           </p>
@@ -50,7 +50,7 @@ const ConstructionMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          We provide the best trained candidates for building, maintaining, <br /> and repairing structures, as required by your business.
+          Our team consists of qualified professionals, including laborers, engineers, project managers, carpenters, electricians, masons, and skilled craftsmen, all trained to meet the highest industry standards. We ensure that our workforce is equipped with the latest tools and technologies.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

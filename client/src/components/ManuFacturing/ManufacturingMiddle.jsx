@@ -22,7 +22,7 @@ const ManufacturingMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          We meet your requirements of a highly trained workforce that <br /> can transition its talents quickly and work effectively on <br /> various critical projects.
+          At AL SHAHEEN MANPOWER, we understand that a skilled and dedicated workforce is essential for the success of any manufacturing operation. Our manpower solutions are designed to provide you with highly qualified, reliable, and experienced candidates to meet your production needs.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -42,7 +42,7 @@ const ManufacturingMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          We meet your requirements of a highly trained workforce that <br /> can transition its talents quickly and work effectively on <br /> various critical projects.
+          Our candidates are thoroughly vetted, with expertise in various aspects of manufacturing, including assembly, quality control, machine operation, and production management.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

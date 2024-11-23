@@ -22,7 +22,7 @@ const LogisticsMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8" />
           <p className="text-gray-600 text-base md:text-lg mb-4">
-          We deliver screened and trained talent across the supply <br /> chain sector.
+          At AL SHAHEEN MANPOWER, we understand that the backbone of any successful logistics operation is a skilled and dedicated workforce. That’s why we offer specialized manpower solutions to help your business meet its staffing needs across the logistics sector.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md">
             <div className="flex flex-col space-y-2">
@@ -47,7 +47,7 @@ const LogisticsMiddle = () => {
           </h2>
           <hr className="w-12 md:w-16 lg:w-20 border-t-4 md:border-t-6 lg:border-t-8 border-lightgreen mb-4 md:mb-8 lg:ml-32" />
           <p className="text-gray-600 text-base md:text-lg mb-4 lg:ml-32">
-          As a provider to the logistics sector, we understand your need to <br /> access efficient recruitment solutions, and hence, we bring you a <br /> repository of permanent and temporary staff who possess the skills that your business needs.
+          Our workforce solutions include both temporary and permanent staffing options, designed to fit the unique demands of your business. Whether you need warehouse operatives, drivers, inventory controllers, or logistics managers, we ensure that our candidates.
           </p>
           <div className="flex space-x-6 font-raleway text-DarkRed font-semibold text-sm md:text-md lg:ml-32">
             <div className="flex flex-col space-y-2">

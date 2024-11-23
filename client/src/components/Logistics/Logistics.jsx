@@ -13,7 +13,7 @@ const Logistics = () => {
       alt: "Image 1",
       text: "LOGISTICS",
       description:
-        "Secure and stable supply chains are built on reliably <br /> sourced skills and talent.",
+        "Reliable skills and talent are the foundation of secure and stable supply chains.",
     },
   ];
 

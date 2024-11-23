@@ -15,7 +15,7 @@ const Events2 = () => {
       alt: "Image 1",
       text: "EVENTS",
       description:
-        "Industry leading skills and talent to fuel the biggest and <br /> safest return to normal in the Events industry.",
+        "Delivering top-tier skills and talent to support the biggest and safest resurgence in the Events industry.",
     },
   ];
 
