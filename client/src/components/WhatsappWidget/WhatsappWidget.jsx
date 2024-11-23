@@ -9,7 +9,7 @@ const WhatsAppWidget = () => {
   const downloadFile = () => {
     const link = document.createElement("a");
     link.href = "public/files/Al Shaheen Manpower_Profile.pdf"; // File URL or path
-    link.download = "Al Shaheen Manpower_Profile.pdf"; // Downloaded file name
+    link.download = "Al Shaheen Manpower_Profile"; // Downloaded file name
     link.click();
   };
 
