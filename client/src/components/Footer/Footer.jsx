@@ -1,4 +1,6 @@
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { AiOutlinePhone, AiOutlineMail } from 'react-icons/ai';
+import { MdOutlineBusinessCenter } from 'react-icons/md'; // Importing the office icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
@@ -10,13 +12,22 @@ const Footer = () => {
         {/* Left Section */}
         <div className="text-center lg:text-left mb-4 lg:mb-0">
           <h2 className="text-lightblue mt-6 lg:mt-10 font-bold text-2xl lg:text-3xl">CONTACT US</h2>
-          <p className="mt-2 lg:mt-4 text-sm lg:text-base text-gray-700">
-            P.O. Box 54121, Kingdom of Bahrain
-            <br />
-            +973 13303301
-            <br />
-            info@alshaheen.pro
-          </p>
+          <div className="mt-2 lg:mb-4 text-sm lg:text-base text-gray-700 space-y-2">
+            <p className="flex text-base items-center">
+              <MdOutlineBusinessCenter className="text-DarkRed text-lg mr-2" />
+              OFFICE 22, BLDG 661, RD 1208,<br />
+              BLOCK 712 - SALMABAD,<br />
+              KINGDOM OF BAHRAIN
+            </p>
+            <p className="flex items-center">
+              <AiOutlinePhone className="text-DarkRed text-lg mr-2" />
+              +973 13303301
+            </p>
+            <p className="flex  items-center">
+              <AiOutlineMail className="text-DarkRed text-lg mr-2" />
+              info@alshaheen.pro
+            </p>
+          </div>
         </div>
 
         {/* Right Section */}
@@ -41,12 +52,9 @@ const Footer = () => {
               <FontAwesomeIcon icon={faXTwitter} />
             </a>
           </div>
-          <a href='/privacy-policy'>
+          <a href="/privacy-policy">
             <p className="text-gray-500 hover:text-DarkRed text-xs lg:text-sm mt-2">Privacy Policy</p>
           </a>
-
-          {/* Download Button */}
-          
         </div>
       </div>
     </footer>

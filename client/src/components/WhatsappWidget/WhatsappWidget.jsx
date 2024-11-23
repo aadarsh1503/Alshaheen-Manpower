@@ -4,7 +4,7 @@ import g1 from "./g1.png"; // Replace with your image path
 const WhatsAppWidget = () => {
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
 
-  const image = { src: g1, alt: "Company Profile", file: "file1.pdf" };
+  const image = { src: g1, alt: "Click Here To Download Company Profile", file: "file1.pdf" };
 
   const downloadFile = () => {
     const link = document.createElement("a");
@@ -31,7 +31,7 @@ const WhatsAppWidget = () => {
   }, [isWidgetOpen]);
 
   return (
-    <div className="fixed bottom-7 z-50 left-8">
+    <div className="fixed bottom-7 z-50 left-1">
       {/* Floating Button or Cross Icon */}
       <button
         onClick={() => setIsWidgetOpen(!isWidgetOpen)}
@@ -77,7 +77,7 @@ const WhatsAppWidget = () => {
             onClick={downloadFile}
             className="absolute inset-0 bg-black bg-opacity-40 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center text-sm font-semibold rounded-lg"
           >
-            Download {image.alt}
+         {image.alt}
           </button>
         </div>
       </div>
