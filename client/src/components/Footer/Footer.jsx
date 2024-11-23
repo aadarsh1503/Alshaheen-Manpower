@@ -46,15 +46,7 @@ const Footer = () => {
           </a>
 
           {/* Download Button */}
-          <div className="mt-4">
-            <a 
-              href="public/files/AL SHAHEEN MANPOWER WEBSITE CONTENT.docx" 
-              download 
-              className="bg-lightblue text-white px-4 py-2 rounded-lg hover:bg-DarkRed transition duration-300 text-sm"
-            >
-              Download File
-            </a>
-          </div>
+          
         </div>
       </div>
     </footer>
