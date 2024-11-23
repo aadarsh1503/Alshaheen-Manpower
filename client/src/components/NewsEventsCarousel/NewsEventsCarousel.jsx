@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import b1 from "./b1.jpg"
+import b2 from "./b2.jpg"
+import b3 from "./b3.jpg"
+import b4 from "./b4.jpg"
+import b5 from "./b5.jpg"
+
 
 const NewsEventsCarousel = () => {
   const images = [
     {
-      src: "https://www.groupl.ae/images/e9.jpg",
+      src: b1,
       alt: "Event 1",
       heading:"AL SHAHEEN MANPOWER Dubai LAUNCH",
       description: "We are thrilled to announce our Healthcare Wellness Day on [Date], taking place at [Location]! This special event is designed to promote healthier living, provide valuable resources, and offer support for all of our community members.",
     },
     {
-      src: "https://www.groupl.ae/images/e7.jpg",
+      src: b2,
       alt: "Event 2",
       heading:"LAUNCH OF AL SHAHEEN MANPOWER AT DUBAI",
       description: "We are thrilled to announce the official launch of our brand-new office in Dubai! This marks an exciting milestone in our journey as we continue to grow and extend our reach in the heart of one of the world’s most dynamic and thriving business hubs.",
     },
     {
-      src: "https://www.groupl.ae/images/e6.jpg",
+      src: b3,
       alt: "Event 3",
       heading:"AL SHAHEEN MANPOWER LAUNCHES WORKA",
       description: "Worka was founded with the mission of empowering people worldwide to connect with the right job opportunities and talent. We strive to match employers with the best-fit candidates and provide job seekers with relevant roles across various industries, experience levels, and regions.",
+    },
+    {
+      src: b4,
+      alt: "Event 4",
+      heading:"AL SHAHEEN MANPOWER Dubai LAUNCH",
+      description: "We are thrilled to announce our Healthcare Wellness Day on [Date], taking place at [Location]! This special event is designed to promote healthier living, provide valuable resources, and offer support for all of our community members.",
+    },
+    {
+      src: b5,
+      alt: "Event 5",
+      heading:"AL SHAHEEN MANPOWER LAUNCHES WORKA",
+      description: "We are thrilled to announce the official launch of our brand-new office in Dubai! This marks an exciting milestone in our journey as we continue to grow and extend our reach in the heart of one of the world’s most dynamic and thriving business hubs.",
     },
   ];
 
