@@ -95,7 +95,6 @@ const About = () => {
       </div>
 <CEOSpeaks />
 <TheTeam />
-<OurCustomers />  
 <Methodology />
 <LicenseModal />
       <BrochureSection />

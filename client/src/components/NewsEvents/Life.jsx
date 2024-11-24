@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import g1 from "./g1.jpg";
+import g2 from "./g2.jpg";
+import g3 from "./g3.jpg";
+import g4 from "./g4.jpg";
+import g5 from "./g5.jpg";
+import g6 from "./g6.jpg";
+
 
 const Life = () => {
   const images = [
-    "https://www.groupl.ae/images/life5.jpg",
-    "https://www.groupl.ae/images/life6.jpg",
-    "https://www.groupl.ae/images/PSBD1.png",
-    "https://www.groupl.ae/images/MEP1.png",
-    "https://www.groupl.ae/images/_COM1.png",
-    "https://www.groupl.ae/images/_COM2.png",
-    "https://www.groupl.ae/images/_com3.png",
+g1,g2,g3,g4,g5,g6
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

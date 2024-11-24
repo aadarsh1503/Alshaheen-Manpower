@@ -15,7 +15,7 @@ const LicenseModel = () => {
         <img
           src={L1}
           alt="Company License"
-          className="w-auto h-56 lg:h-screen max-w-full object-contain border shadow-lg"
+          className="w-auto h-56 lg:h-[500px] max-w-full object-contain border shadow-lg"
         />
       </div>
     </div>
