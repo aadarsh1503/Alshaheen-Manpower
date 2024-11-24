@@ -179,13 +179,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
   {emailDropdownOpen && (
     <div className="absolute z-50 font-raleway mt-2 bg-white shadow-lg w-48 rounded-md">
       {/* Customer Care */}
-      <a 
-        href="mailto:customercare@gvscargo.com" 
-        className="block w-full px-4 py-2 text-left text-black hover:text-lightgreen hover:bg-gray-100"
-        title="Send an email to Customer Care"
-      >
-        Customer Care
-      </a>
+    
 
       {/* Sales */}
       <a 

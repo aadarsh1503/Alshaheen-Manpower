@@ -157,7 +157,7 @@ const ContactUs = () => {
     </p>
   </div>
   <div className="mt-10  flex justify-center">
-    <a href="https://www.talentportal.bh/#pills-home" target="_blank">
+  <a href="mailto:Hire@alshaheen.pro" target="_blank">
       <img
         src={i2} 
         alt="Apply here for jobs"
