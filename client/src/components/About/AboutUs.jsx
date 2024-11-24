@@ -8,6 +8,7 @@ import CEOSpeaks from "./CEOSpeaks";
 import TheTeam from "./TheTeam";
 import Methodology from "./Methodology";
 import OurCustomers from "../OurCustomer/OurCustomer";
+import LicenseModal from "../License/License";
 
 const About = () => {
   const images = [
@@ -96,7 +97,7 @@ const About = () => {
 <TheTeam />
 <OurCustomers />  
 <Methodology />
-
+<LicenseModal />
       <BrochureSection />
     </div>
   );
