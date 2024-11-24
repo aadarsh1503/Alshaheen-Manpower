@@ -183,7 +183,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
 
       {/* Sales */}
       <a 
-        href="mailto:sales@gvscargo.com" 
+        href="mailto:sales@alshaheen.pro" 
         className="block w-full px-4 py-2 text-left text-black hover:text-lightgreen hover:bg-gray-100"
         title="Send an email to Sales"
       >
@@ -192,7 +192,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
 
       {/* Business Enquiries */}
       <a 
-        href="mailto:info@gvscargo.com" 
+        href="mailto:info@alshaheen.pro" 
         className="block w-full px-4 py-2 text-left text-black hover:text-lightgreen hover:bg-gray-100"
         title="Send an email to Business Enquiries"
       >
@@ -289,14 +289,9 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
       </button>
       {emailDropdownOpen && (
         <div className="mt-2 grid grid-cols-1 gap-4 w-full px-4 py-4 bg-white border rounded-lg shadow-md">
+         
           <a 
-            href="mailto:customercare@gvscargo.com" 
-            className="block text-center py-2 px-4 text-black hover:text-lightgreen hover:bg-gray-100 rounded-md"
-          >
-            Customer Care
-          </a>
-          <a 
-            href="mailto:sales@gvscargo.com" 
+            href="mailto:sales@alshaheen.pro" 
             className="block text-center py-2 px-4 text-black hover:text-lightgreen hover:bg-gray-100 rounded-md"
           >
             Seller Care

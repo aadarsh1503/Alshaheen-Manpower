@@ -7,6 +7,7 @@ import BrochureSection from "../BrochureSection/BrochureSection";
 import CEOSpeaks from "./CEOSpeaks";
 import TheTeam from "./TheTeam";
 import Methodology from "./Methodology";
+import OurCustomers from "../OurCustomer/OurCustomer";
 
 const About = () => {
   const images = [
@@ -93,7 +94,9 @@ const About = () => {
       </div>
 <CEOSpeaks />
 <TheTeam />
+<OurCustomers />  
 <Methodology />
+
       <BrochureSection />
     </div>
   );
