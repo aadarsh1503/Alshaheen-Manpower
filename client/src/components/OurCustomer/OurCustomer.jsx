@@ -77,21 +77,21 @@ const OurCustomer = () => {
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                 }
             },
             {
                 breakpoint: 360,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                 }
             }
         ]
     };
 
     return (
-        <section className="py-10 max-w-7xl w-full mb-10 mx-auto">
-          <h1 className='text-3xl ml-28 font-bold text-lightblue'>OUR VALUED CUSTOMERS</h1>
+        <section className="py-10 lg:max-w-7xl max-w-[300px] mb-10 mx-auto">
+          <h1 className='text-3xl lg:ml-28 ml-0 font-bold text-lightblue'>OUR VALUED CUSTOMERS</h1>
           <div className="h-2 w-10 lg:w-16 bg-lightblue ml-2 lg:ml-28 mt-0 lg:mt-2 lg:mb-6"></div>
         <div className="">
             {isLoaded ? (

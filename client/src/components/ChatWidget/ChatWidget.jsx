@@ -55,7 +55,7 @@ const ChatWidget = () => {
   }, [isOpen]); // Dependency array ensures this effect runs when `isOpen` changes
 
   return (
-    <div className="fixed bottom-8 right-5 z-50">
+    <div className="fixed bottom-8 lg:right-5 right-6 z-50">
       {/* WhatsApp Button */}
       <button
         onClick={toggleChat}
