@@ -7,7 +7,7 @@ const ChatWidget = () => {
 
   // WhatsApp numbers
   const supportNumber = "+97333340017"; // Support number
-  const teamNumber = "+97344450018"; // Team number
+  const teamNumber = "+97317491444"; // Team number
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -20,7 +20,7 @@ const ChatWidget = () => {
     const message =
       messageType === "support"
         ? "I need support"
-        : "I would like to contact your team";
+        : "I need support";
 
     // Check if the user is on a mobile device
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
@@ -89,14 +89,14 @@ const ChatWidget = () => {
               className="bg-gray-200 text-green-700 p-3 rounded-lg shadow-md hover:bg-gray-300 transition duration-300 flex items-center justify-center text-lg"
             >
               <FaWhatsapp className="mr-2" size={20} />
-              Support
+              SALES
             </button>
             <button
               onClick={() => handleSendMessage("team")}
               className="bg-gray-200 text-green-700 p-3 rounded-lg shadow-md hover:bg-gray-300 transition duration-300 flex items-center justify-center text-lg"
             >
               <FaWhatsapp className="mr-2" size={20} />
-              Team
+              SUPPORT
             </button>
           </div>
         </div>

@@ -1,0 +1,46 @@
+.image-container {
+    position: relative;
+    overflow: hidden; /* Prevents image overflow during animation */
+  }
+  
+  .fade-out {
+    animation: fadeOut 1s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%); /* Move out to the left */
+      opacity: 0; /* Fade out */
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      transform: translateX(100%); /* Start from the right */
+      opacity: 0; /* Fade in */
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  .slide-item a {
+    display: inline-block;
+}
+
+.slide-item .slide-image {
+    transition: transform 0.3s ease; /* Smooth zoom transition */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.slide-item:hover .slide-image {
+    transform: scale(1.1); /* Zoom-in effect */
+}

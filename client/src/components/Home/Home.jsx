@@ -4,6 +4,7 @@ import HrSolutionsComponent from '../HrSolutionsComponent/HrSolutionsComponent'
 import NewsEventsCarousel from '../NewsEventsCarousel/NewsEventsCarousel'
 import VacanciesCarousel from '../VacanciesCarousel/VacanciesCarousel'
 import BrochureSection from '../BrochureSection/BrochureSection'
+import OurCustomer from '../OurCustomer/OurCustomer'
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
         <HrSolutionsComponent />
         <NewsEventsCarousel />
         <VacanciesCarousel />
+        <OurCustomer />
         <BrochureSection />
 
     </div>

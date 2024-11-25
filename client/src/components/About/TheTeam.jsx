@@ -38,6 +38,7 @@ const TheTeam = () => {
       <div className="max-w-5xl mx-auto">
         <div className="text-left mb-4">
           <h1 className="text-lightblue font-bold text-4xl">THE TEAM</h1>
+          <div className="h-2 w-10 lg:w-16 bg-lightblue ml-2 lg:ml-0 mt-0 lg:mt-2"></div>
         </div>
 
         {/* Image Carousel */}
