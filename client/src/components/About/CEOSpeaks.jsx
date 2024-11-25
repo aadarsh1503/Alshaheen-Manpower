@@ -41,7 +41,7 @@ const CEOSpeaks = () => {
           onClick={toggleModal}
         >
           Commercial Registration No. 2024/MA23R0189
-        </span>) below mentioned Establishment, in line with Law No. (19) for 2006 and all circulars regarding
+        </span>) in line with Law No. (19) for 2006 and all circulars regarding
         the implementation of the law, with regards to practice of Commercial Activities under the jurisdiction
         of the LMRA.
       </p>
