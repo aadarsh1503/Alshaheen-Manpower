@@ -97,7 +97,6 @@ const About = () => {
 <TheTeam />
 <Methodology />
 <OurCustomers />
-<LicenseModal />
 
       <BrochureSection />
     </div>
