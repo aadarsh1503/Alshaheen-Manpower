@@ -9,6 +9,7 @@ import TheTeam from "./TheTeam";
 import Methodology from "./Methodology";
 import OurCustomers from "../OurCustomer/OurCustomer";
 import LicenseModal from "../License/License";
+import Testimonials from "../Testimonials/Testimonials";
 
 const About = () => {
   const images = [
@@ -97,6 +98,7 @@ const About = () => {
 <TheTeam />
 <Methodology />
 <OurCustomers />
+<Testimonials />
 
       <BrochureSection />
     </div>
