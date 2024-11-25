@@ -22,19 +22,19 @@ const ProcessSteps = () => {
       <div className="absolute inset-0 bg-lightblue opacity-80 sm:hidden"></div>
 
       {/* Steps grid */}
-      <div className="relative z-10 ml-4 grid grid-cols-1 mt-32 sm:grid-cols-3 lg:grid-cols-7 gap-6 px-8">
+      <div className="relative z-10 lg:ml-4  grid grid-cols-1 mt-32 sm:grid-cols-3 lg:grid-cols-7 gap-6 px-8">
   {steps.map((step, index) => (
     <div key={index} className="flex flex-col text-center">
       {/* Image with right arrow */}
       <div className="flex ">
-        <img src={step.icon} alt={step.text} className="w-28 h-28 items-center justify-center object-contain" />
+        <img src={step.icon} alt={step.text} className="w-28 h-28 items-center lg:ml-0 ml-24 text-center justify-center object-contain" />
         {/* Right arrow, hidden on small screens and after the last item */}
         {index < steps.length - 1 && (
           <p className="text-white font-bold text-lg ml-2 mt-10 items-center  hidden sm:block">{`→`}</p>
         )}
       </div>
       {/* Text below the image */}
-      <p className="text-white font-bold mt-2 px-8   lg:-ml-12 text-sm leading-tight">{step.text}</p>
+      <p className="text-white font-bold mt-2 px-8 -ml-4 lg:-ml-12 text-sm leading-tight">{step.text}</p>
     </div>
   ))}
 </div>
