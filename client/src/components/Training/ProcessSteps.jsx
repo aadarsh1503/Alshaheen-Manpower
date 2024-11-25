@@ -22,7 +22,7 @@ const ProcessSteps = () => {
       <div className="absolute inset-0 bg-lightblue opacity-80 sm:hidden"></div>
 
       {/* Steps grid */}
-      <div className="relative z-10 lg:ml-4  grid grid-cols-1 mt-32 sm:grid-cols-3 lg:grid-cols-7 gap-6 px-8">
+      <div className="relative z-10  max-w-7xl mx-auto  grid grid-cols-1 mt-32 sm:grid-cols-3 lg:grid-cols-7 gap-6 px-8">
   {steps.map((step, index) => (
     <div key={index} className="flex flex-col text-center">
       {/* Image with right arrow */}
