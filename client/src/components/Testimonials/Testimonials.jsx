@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import i1 from "./i1.jpg"
-import i2 from "./i2.jpg"
-import i3 from "./i3.jpg"
-import i4 from "./i4.jpg"
+import i1 from "./i1.jpg";
+import i2 from "./i2.jpg";
+import i3 from "./i3.jpg";
+import i4 from "./i4.jpg";
 
 const Testimonials = () => {
   const testimonials = [
@@ -37,6 +37,7 @@ const Testimonials = () => {
   ];
 
   const [current, setCurrent] = useState(0);
+  const [expandedIndex, setExpandedIndex] = useState(null); // Track expanded testimonial
 
   const handleNext = () => {
     setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
@@ -114,7 +115,7 @@ const Testimonials = () => {
 
       {/* Mobile View */}
       <div className="grid grid-cols-1 sm:grid-cols-1 gap-8 lg:hidden mt-10 px-4">
-        {testimonials.map((testimonial) => (
+        {testimonials.map((testimonial, index) => (
           <div
             key={testimonial.id}
             className="flex flex-col items-center bg-white shadow-md p-6 rounded-lg"
@@ -130,10 +131,17 @@ const Testimonials = () => {
             </div>
             <div className="text-lightblue font-bold mb-1">{testimonial.name}</div>
             <p className="text-gray-500 mt-2">{testimonial.address}</p>
+            
             <p className="text-gray-600 max-w-7xl text-center">
-              {truncateText(testimonial.text, 3)}
+              {expandedIndex === index ? testimonial.text : truncateText(testimonial.text, 3)}
             </p>
-      
+
+            <div className="flex justify-center space-x-2 mt-4">
+              <button
+                className={`h-2 w-2 rounded-full ${expandedIndex === index ? 'bg-lightblue' : 'bg-gray-300'}`}
+                onClick={() => setExpandedIndex(expandedIndex === index ? null : index)} // Toggle expanded state
+              ></button>
+            </div>
           </div>
         ))}
       </div>
