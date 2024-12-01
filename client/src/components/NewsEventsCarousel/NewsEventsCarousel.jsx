@@ -58,7 +58,7 @@ const NewsEventsCarousel = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-100 py-12 px-4">
+    <div className="w-full bg-llgray py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Title Section */}
         <div className="text-left mb-4">

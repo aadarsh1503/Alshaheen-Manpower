@@ -88,19 +88,19 @@ const HealthCare2 = () => {
 
         {/* Buttons */}
         <motion.div
-          className="absolute top-2/4 lg:top-2/3 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
+          className="absolute top-2/4 lg:top-2/3 right-32 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <button
-  className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0"
+  className="bg-lightgreen text-white px-4 lg:ml-0 ml-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0"
   onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
 >
   FIND TALENT
 </button>
 <button
-  className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed"
+  className="bg-lightgreen text-white px-6 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed"
   onClick={() => window.open("https://www.talentportal.bh/#pills-home", "_blank")}
 >
   FIND A JOB

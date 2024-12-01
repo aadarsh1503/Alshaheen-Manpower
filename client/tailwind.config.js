@@ -11,6 +11,8 @@ export default {
         darkgray:'#e9e9e9',
         lightblue:'#4ba3ca',
         lightgreen:'#1a9c2c',
+        lgray:'#e9e9e9',
+        llgray:'#ededed',
 
       },
       fontFamily: {

@@ -28,8 +28,8 @@ const RecruitmentDays = () => {
   };
 
   return (
-    <div className="">
-      <div className="flex lg:ml-32 flex-col md:flex-row p-8 items-center">
+    <div className="bg-lgray py-10 ">
+      <div className="flex lg:ml-32  flex-col md:flex-row p-8 items-center">
         {/* Left Side - Carousel Image */}
         <div className="relative w-full md:w-[400px] flex items-center justify-center">
           <a href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(images[currentIndex].subject)}`} target="_blank">
@@ -50,7 +50,7 @@ const RecruitmentDays = () => {
         </div>
       </div>
       {/* Carousel Controls Below Image */}
-      <div className="flex justify-center mb-4 space-x-4 w-full md:w-2/3">
+      <div className="flex justify-center  space-x-4 w-full md:w-2/3">
         <button onClick={prevSlide} className="text-2xl text-gray-700 hover:text-gray-900">
           <FaChevronLeft />
         </button>

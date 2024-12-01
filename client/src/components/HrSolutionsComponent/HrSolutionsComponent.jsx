@@ -65,7 +65,7 @@ const HrSolutionsComponent = () => {
       </div>
 
       {/* Right Side with Content */}
-      <div className="w-full lg:w-1/2 bg-gray-100 p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
+      <div className="w-full lg:w-1/2 bg-lgray p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
         <h1 className="text-lightblue text-xl sm:text-2xl lg:text-3xl font-sans font-bold mb-4 lg:mb-6">
           THE UAE'S LEADING<br /> PROVIDER OF UNIQUE AND<br /> INNOVATIVE HR SOLUTIONS
         </h1>

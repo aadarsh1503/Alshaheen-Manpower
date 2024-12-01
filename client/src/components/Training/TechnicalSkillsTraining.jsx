@@ -18,7 +18,7 @@ const TechnicalSkillsTraining = () => {
         </div>
 
         <div>
-          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">SECURITY <br /> GUARD</h3>
+          <h3 className="text-DarkRed font-bold border-l-4 border-DarkRed pl-2">SECURITY <br /><span className='text-black font-normal'> Guard </span></h3>
         </div>
 
         <div>
