@@ -15,9 +15,7 @@ const Footer = () => {
           <div className="mt-2 lg:mb-4 text-sm lg:text-base text-gray-700 space-y-2">
             <p className="flex text-base items-center">
               <MdOutlineBusinessCenter className="text-DarkRed text-lg mr-2" />
-              OFFICE 22, BLDG 661, RD 1208,<br />
-              BLOCK 712 - SALMABAD,<br />
-              KINGDOM OF BAHRAIN
+              FLAT 22, BUILDING 661, BLOCK 712,<br /> ROAD 1208,P.O BOX 54121, <br />MANAMA, KINGDOM OF BAHRAIN
             </p>
             <p className="flex items-center">
               <AiOutlinePhone className="text-DarkRed text-lg mr-2" />

@@ -1,0 +1,20 @@
+/* testimonials.css */
+.testimonial-slide {
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+  
+  .slide-enter {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  .slide-active {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .slide-exit {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
