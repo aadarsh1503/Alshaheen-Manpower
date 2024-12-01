@@ -132,7 +132,7 @@ const ContactUs = () => {
       <FaPhoneAlt className="text-lightblue text-xl sm:text-2xl" />
       <div>
         <p className="text-gray-600 font-bold text-sm sm:text-base">Head Office</p>
-        <p className="text-black text-sm sm:text-base">+973 1330 3301</p>
+        <p className="text-black text-sm sm:text-base">+973 1330 3301(Ext. 202)</p>
       </div>
     </div>
     <div className="flex items-center space-x-2">
