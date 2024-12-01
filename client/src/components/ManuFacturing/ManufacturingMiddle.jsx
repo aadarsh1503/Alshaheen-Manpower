@@ -52,7 +52,6 @@ const ManufacturingMiddle = () => {
             </div>
             <div className="flex flex-col space-y-2">
               <span>| Machine</span>
-              <span>| Loader</span>
               <span>| Operator</span>
             </div>
           </div>
