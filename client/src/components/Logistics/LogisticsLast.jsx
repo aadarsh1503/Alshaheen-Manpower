@@ -26,7 +26,7 @@ const LogisticsLast = () => {
           </div>
 
           {/* Right side: Heading and Text */}
-          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-start">
+          <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col mb-6 justify-start">
             
             {/* Red Block with Text */}
             <div className="bg-lightgreen text-white p-6 lg:p-20">

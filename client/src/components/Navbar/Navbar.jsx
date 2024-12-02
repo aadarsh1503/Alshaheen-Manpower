@@ -231,7 +231,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
     <li><a href="/about" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">About Us</a></li>
 
     {/* Mobile Services Dropdown */}
-    <li className="relative w-full text-center">
+    {/* <li className="relative w-full text-center">
       <button
         className="font-semibold hover:text-lightgreen text-DarkRed flex items-center justify-center w-full text-2xl"
         onClick={toggleServicesDropdown}
@@ -247,7 +247,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
           <li><a href="/visas" className="block text-black hover:text-lightgreen">Visas</a></li>
         </ul>
       )}
-    </li>
+    </li> */}
 
     {/* Mobile Industry Dropdown */}
     <li className="relative w-full text-center">

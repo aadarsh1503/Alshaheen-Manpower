@@ -29,7 +29,7 @@ const RetailLast = () => {
           <div className="w-full lg:w-1/2 h-auto lg:h-full flex flex-col justify-start">
             
             {/* Red Block with Text */}
-            <div className="bg-lightgreen text-white p-6 lg:p-20">
+            <div className="bg-lightgreen text-white p-6 mb-6  lg:p-20">
               <ul className="space-y-2 text-sm lg:text-lg">
                 <li><span className="text-white">|</span> Application Submission</li>
                 <li><span className="text-white">|</span> Screening & Review</li>
