@@ -4,6 +4,11 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import i2 from "./i2.png"
+import { v4 as uuidv4 } from 'uuid';
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
+
+
 
 const ContactUs = () => {
   const [firstName, setFirstName] = useState('');
@@ -20,6 +25,7 @@ const ContactUs = () => {
   const [loading, setLoading] = useState(false);
   const [referenceId, setReferenceId] = useState('');
   const [file, setFile] = useState(null);
+
 
   // Fetch user country code using a geolocation service
   useEffect(() => {
@@ -49,77 +55,193 @@ const ContactUs = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Helper function to show a Toastify error message
+    const showError = (message) => {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            style: { background: "#f44336", color: "#fff" }, // Red for errors
+        }).showToast();
+    };
+
+    // Validation checks for required fields
+    if (!firstName) {
+        showError("First name is required!");
+        setLoading(false);
+        return;
+    }
+
+    if (!lastName) {
+        showError("Last name is required!");
+        setLoading(false);
+        return;
+    }
+
+    if (!email) {
+        showError("Email is required!");
+        setLoading(false);
+        return;
+    }
+
+    if (!countryCode || !phoneNumber) {
+        showError("Country code and phone number are required!");
+        setLoading(false);
+        return;
+    }
+
     if (!companyType) {
-      alert('Please select a company type.');
-      setLoading(false);
-      return;
+        showError("Please select a company type!");
+        setLoading(false);
+        return;
+    }
+
+    if (companyType === "I am a job seeker looking for jobs" && !file) {
+        showError("Please upload a file!");
+        setLoading(false);
+        return;
+    }
+
+    if (companyType !== "I am a job seeker looking for jobs") {
+        if (!company) {
+            showError("Company name is required!");
+            setLoading(false);
+            return;
+        }
+
+        if (!website) {
+            showError("Company website is required!");
+            setLoading(false);
+            return;
+        }
     }
 
     if (!recaptchaValue) {
-      alert('Please complete the reCAPTCHA verification.');
-      setLoading(false);
-      return;
+        showError("Please complete the reCAPTCHA verification!");
+        setLoading(false);
+        return;
     }
 
-    if (companyType === 'I am a job seeker looking for jobs' && !file) {
-      alert('Please upload a document.');
-      setLoading(false);
-      return;
-    }
+    const uniqueId = uuidv4().split("-")[0]; // Generate a unique ID for the submission
+    console.log(`Generated Unique ID: ${uniqueId}`);
 
-    const formData = new FormData();
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('email', email);
-    formData.append('company', company);
-    formData.append('companyType', companyType);
-    formData.append('website', website);
-    formData.append('phone', phoneNumber);
-    formData.append('countryCode', countryCode);
-    formData.append('message', message);
-    formData.append('recaptchaValue', recaptchaValue);
-    formData.append('document', file);
+    let filePath = ""; // Initialize the file path variable
+    let fileName = ""; // Initialize the file name variable
 
     try {
-      const response = await fetch('http://localhost:5000/contact', {
-        method: 'POST',
-        body: formData,
-      });
+        // If a file exists, upload it first
+        if (file) {
+            console.log("Uploading file...");
+            const formData = new FormData();
+            formData.append("fileToUpload", file);
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
+            const fileResponse = await fetch("https://alshaheen.pro/upload_file.php", {
+                method: "POST",
+                body: formData,
+            });
 
-      const result = await response.json();
-      if (result.success) {
-        setReferenceId(result.referenceId);
-        setFormSubmitted(true);
-        setLoading(false);
+            if (!fileResponse.ok) {
+                throw new Error("Failed to upload file");
+            }
 
-        setTimeout(() => {
-          setFormSubmitted(false);
-          setFirstName('');
-          setLastName('');
-          setEmail('');
-          setCompany('');
-          setCompanyType('');
-          setWebsite('');
-          setPhoneNumber('');
-          setMessage('');
-          setRecaptchaValue(null);
-          setReferenceId('');
-          setFile(null);
-        }, 3000);
-      } else {
-        alert('Error submitting form. Please try again later.');
-        setLoading(false);
-      }
+            const fileResult = await fileResponse.json();
+            if (!fileResult.status) {
+                throw new Error("Oops! Looks like your file is larger than 5MB. ");
+            }
+
+            filePath = fileResult.fileUrl;
+
+            const match = fileResult.message.match(/The file (\S+) has been uploaded/);
+            fileName = match && match[1] ? match[1] : "Unknown File";
+
+            Toastify({
+                text: "File uploaded successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: { background: "#4caf50", color: "#fff" }, // Green for success
+            }).showToast();
+        }
+
+        // Prepare email data
+        const emailData = {
+            to: "alshaheen.pro@gmail.com",
+            from: "alshaheen.pro@gmail.com",
+            subject: `Form Submission by ${email}`,
+            message: `
+                Reference ID: ${uniqueId}
+                Name: ${firstName} ${lastName}
+                Email: ${email}
+                Phone: ${countryCode} ${phoneNumber}
+                Company Type: ${companyType}
+                ${
+                  companyType === "I am a job seeker looking for jobs"
+                    ? `File Name: https://gvscargo.net/uploads/${fileName}`
+                    : `Company: ${company}\nWebsite: ${website}`
+                }
+            `.trim(),
+            ...(companyType === "I am a job seeker looking for jobs" && { filePath }),
+        };
+
+        // Send email data via API
+        const response = await fetch("https://alshaheen.pro/send_to_a_mail.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(emailData),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to send email");
+        }
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            Toastify({
+                text: "Form submitted successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: { background: "#4caf50", color: "#fff" },
+            }).showToast();
+
+            setReferenceId(uniqueId);
+            setFormSubmitted(true);
+            setTimeout(() => {
+                resetFormFields();
+                window.location.reload(); // Refresh the page after 3 seconds
+            }, 3000);
+        } else {
+            throw new Error("Email API response indicates failure");
+        }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Error submitting form. Please try again later.');
-      setLoading(false);
+        showError(error.message || "An error occurred!");
+        console.error("Error occurred:", error);
+    } finally {
+        setLoading(false);
     }
-  };
+};
+
+// Helper function to reset form fields
+const resetFormFields = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setCompany("");
+    setCompanyType("");
+    setWebsite("");
+    setPhoneNumber("");
+    setMessage("");
+    setRecaptchaValue(null);
+    setReferenceId("");
+    setFile("");
+    console.log("Form fields reset");
+};
+
+
+
+
   return (
     <div className="flex flex-wrap max-w-7xl mx-auto font-raleway  p-4 md:p-8">
  <div className="w-full md:w-1/2 p-4 text-center sm:text-left">

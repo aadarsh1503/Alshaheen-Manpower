@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 // Handle ES module __dirname workaround
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
 dotenv.config();
 const router = express.Router();
 
