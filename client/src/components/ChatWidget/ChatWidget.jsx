@@ -19,8 +19,8 @@ const ChatWidget = () => {
       messageType === "support" ? supportNumber : teamNumber;
     const message =
       messageType === "support"
-        ? "I need support"
-        : "I need support";
+        ? "Hello,  Alshaheen Manpower Team! I'm [Your Name] from [Your Company]. I'm excited to discuss [Topic/Subject] with you."
+        : "Hello,  Alshaheen Manpower Team! I'm [Your Name] from [Your Company]. I'm excited to discuss [Topic/Subject] with you.";
 
     // Check if the user is on a mobile device
     const isMobile = /Mobi|Android/i.test(navigator.userAgent);
