@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaEnvelope ,FaBars, FaTimes } from 'react-icons/fa';
 import i1 from "./i1.jpg"
+import i21 from "./i21.jpg"
 const Navbar = () => {
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [industryDropdownOpen, setIndustryDropdownOpen] = useState(false);
@@ -37,7 +38,7 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
       {/* Logo positioned to the left and partially outside navbar */}
       <div className="absolute left-1 top-1 z-20 hidden lg:block">
         <img
-          src="https://alshaheen.pro/wp-content/uploads/2023/09/cropped-AlshaheenManpower_1_page-0001.jpg"
+          src={i21}
           alt="Logo"
           className="h-28"
         />
