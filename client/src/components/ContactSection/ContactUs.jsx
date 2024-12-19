@@ -177,7 +177,7 @@ const ContactUs = () => {
                 Company Type: ${companyType}
                 ${
                   companyType === "I am a job seeker looking for jobs"
-                    ? `File Name: https://gvscargo.net/uploads/${fileName}`
+                    ? `File Name: https://alshaheen.pro/uploads/${fileName}`
                     : `Company: ${company}\nWebsite: ${website}`
                 }
             `.trim(),
