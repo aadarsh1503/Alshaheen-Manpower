@@ -205,17 +205,14 @@ const toggleEmailDropdown = () => setEmailDropdownOpen(!emailDropdownOpen);
 
 
 
-        <a 
+<a  
   href="https://www.talentportal.bh/#pills-home" 
-  target="_blank" 
-  className="flex items-center space-x-2 text-DarkRed hover:text-lightgreen font-semibold hover:underline"
+  target="_blank"  
+  className="bg-red-600 text-white lg:text-md  font-semibold hover:text-DarkRed outline hover:outline-Darkred hover:bg-white mt-0 px-4 py-2 rounded"
 >
-  <img 
-    src={i1}
-    alt="Find a Job" 
-    className="w-6 h-6 lg:w-44 rounded-full lg:h-10 object-cover"
-  />
+  Click Here To Register
 </a>
+
       </div>
 
       {/* Mobile Menu */}

@@ -4,7 +4,7 @@ import i1 from "./i1.png";
 import i2 from "./i2.png";
 import i3 from "./i3.png";
 import i4 from "./i4.png";
-import i5 from "./i5.png";
+import i5 from "./i5.jpeg";
 import i6 from "./i6.png";
 
 const TheTeam = () => {
@@ -13,7 +13,7 @@ const TheTeam = () => {
     { src: i2, alt: "Event 2", heading: "ASMAN RAHIM", description: "TECHNOLOGY OFFICER" },
     { src: i3, alt: "Event 3", heading: "SHAMEEMUDHEEN KANNAMPURATH VALAPPIL", description: "HRM SALES EXECUTIVE" },
     { src: i4, alt: "Event 4", heading: "MARICRIS ANGELES", description: "ACCOUNTANT" },
-    { src: i5, alt: "Event 5", heading: "CANDY REGORIS", description: "CUSTOMER SALES" },
+    { src: i5, alt: "Event 5", heading: "SHANIKA ", description: "Recruiter" },
     { src: i6, alt: "Event 6", heading: "RIYADH SHAHEEN", description: "MANAGING DIRECTOR" },
   ];
 
