@@ -101,7 +101,7 @@ const VacanciesCarousel = () => {
                     <img
                       src={item.src}
                       alt={`Vacancy ${index + 1}`}
-                      className="w-full h-full object-cover rounded-lg shadow-md"
+                      className="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-500 ease-in-out transform hover:scale-105"
                     />
                   </a>
                 ))}
