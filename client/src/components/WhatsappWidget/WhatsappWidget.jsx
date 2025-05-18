@@ -8,7 +8,7 @@ const WhatsAppWidget = () => {
   const image = {
     src: g1,
     alt: "Click Here To View Company Profile",
-    file: "/files/Al Shaheen Manpower_Profile.pdf",
+    file: "/files/Al Shaheen Manpower_Profile_2025.pdf",
   };
 
   // Handle auto-minimize on scroll
