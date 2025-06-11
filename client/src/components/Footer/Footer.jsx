@@ -19,7 +19,7 @@ const Footer = () => {
             </p>
             <p className="flex items-center">
               <AiOutlinePhone className="text-DarkRed text-lg mr-2" />
-              +973 13303301(Ext. 202)
+              +973 13303301(Ext. 100 / 102 / 103)
             </p>
             <p className="flex  items-center">
               <AiOutlineMail className="text-DarkRed text-lg mr-2" />
