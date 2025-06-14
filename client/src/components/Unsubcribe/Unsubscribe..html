@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unsubscribe Confirmation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .elegant-button {
+      background: linear-gradient(45deg, #4a6fa5, #3a4f7a);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-origin: center;
+      box-shadow: 0 4px 20px rgba(74, 111, 165, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .elegant-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(74, 111, 165, 0.4);
+      background: linear-gradient(45deg, #3a4f7a, #4a6fa5);
+    }
+    .elegant-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 45%,
+        rgba(255, 255, 255, 0.15) 48%,
+        rgba(255, 255, 255, 0) 52%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(30deg);
+      transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .elegant-button:hover::after {
+      left: 100%;
+    }
+    .fade-in {
+      animation: fadeIn 0.8s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .icon-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .text-gradient {
+      background: linear-gradient(90deg, #e0e7ff, #a5b4fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .divider {
+      position: relative;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center font-sans text-gray-100">
+
+  <div class="card rounded-xl p-10 max-w-md w-full mx-4 text-center fade-in">
+    <div class="icon-float text-5xl mb-6 text-white opacity-90">
+      <i class="fas fa-envelope-open-text"></i>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-5 text-gradient">
+      You're Unsubscribed
+    </h1>
+    
+    <p class="text-gray-300 mb-8 leading-relaxed">
+      We've removed you from our mailing list. <br class="hidden sm:inline"/>
+      We respect your inbox space and appreciate the time you spent with us.
+    </p>
+
+    <div class="mb-8">
+      <div class="divider"></div>
+      <div class="text-xs uppercase tracking-wider text-gray-400 mt-3">
+        Changed your mind?
+      </div>
+    </div>
+
+    <resubscribe class="block">
+      <a href="#" class="elegant-button text-white font-medium px-8 py-3 rounded-lg inline-flex items-center">
+        <i class="fas fa-sync-alt mr-2"></i> 
+        Resubscribe
+      </a>
+    </resubscribe>
+
+    
+  </div>
+
+</body>
+</html>
