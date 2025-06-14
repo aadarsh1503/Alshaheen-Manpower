@@ -1,40 +1,41 @@
 import React, { useState } from 'react';
-import i1 from "./i1.jpg";
+import i1 from "./i1.webp";
 import i2 from "./i2.jpg";
 import i3 from "./i3.jpg";
-import i4 from "./i4.jpg";
+import i4 from "./i4.webp";
 
 const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Amit Chopra",
-      text: "Reliable and Efficient Staffing Solutions We've been partnering with Al Shaheen Manpower for years, and they consistently deliver top-notch talent. Their personalized service have helped us find skilled professionals, especially in the nursing and aviation sectors. We highly recommend them.",
-      address: "Mumbai, India",
+      name: "Fatima Al Mansoori",
+      text: "Al Shaheen Manpower has played a crucial role in helping us scale our operations at Gulf Air. Their commitment to quality, especially in aviation staffing, has consistently exceeded our expectations. Professional and trustworthy.",
+      address: "Manama, Bahrain – Gulf Air",
       image: i1,
     },
     {
       id: 2,
-      name: "Juan Cruz",
-      text: "Dedicated and Supportive Team The team at Al Manpower is incredibly dedicated and supportive. They understood our specific needs for event coordinators and provided us with highly qualified candidates. Their commitment to client satisfaction is truly commendable",
-      address: "Metro Manila, Philippines",
+      name: "Khalid Al Zayani",
+      text: "Working with Al Shaheen Manpower has been an outstanding experience. Their deep understanding of the hospitality industry has helped us at Jumeirah Group find world-class professionals with minimal turnaround time.",
+      address: "Dubai, UAE – Jumeirah Group",
       image: i2,
     },
     {
       id: 3,
-      name: "Ali Ahmed",
-      text: "Seamless Placement Process The placement process with Al Shaheen Manpower was seamless. They quickly identified and presented us with suitable candidates for our logistics and hospitality positions. Their attention to detail and prompt communication made the entire experience hassle-free",
-      address: "Dubai, UAE",
+      name: "Sara Khalifa",
+      text: "We collaborated with Al Shaheen Manpower to meet urgent hiring demands for our healthcare unit. Their seamless coordination, pre-screened candidates, and efficient process made them a valuable partner.",
+      address: "Dubai, UAE – Mediclinic Middle East",
       image: i3,
     },
     {
       id: 4,
-      name: "Maya Singh",
-      text: "Excellent Recruitment Support Al Shaheen Manpower has been a key partner in fulfilling our staffing requirements. Their team takes the time to understand our needs and consistently delivers exceptional candidates. Their proactive approach and timely communication make them a reliable staffing provider.",
-      address: "New Delhi, India",
+      name: "Mohammed Al Suwaidi",
+      text: "The talent pool Al Shaheen provides is consistently top-tier. Their team is proactive and responsive, ensuring we meet our recruitment goals quickly. We've onboarded several skilled engineers through them.",
+      address: "Abu Dhabi, UAE – ADNOC Group",
       image: i4,
     },
   ];
+  
 
   const [current, setCurrent] = useState(0);
   const [expandedIndex, setExpandedIndex] = useState(null); // Track expanded testimonial
