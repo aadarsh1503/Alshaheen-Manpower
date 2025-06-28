@@ -69,17 +69,36 @@ const VacanciesCarousel = () => {
   return (
     <div className="w-full bg-white py-12 px-4 flex justify-center items-center">
       <div className="flex items-center">
-        {/* Side Text */}
-        <div className="bg-lightgreen hidden w-[356px] h-[300px] lg:-mt-14 text-white text-left flex-col justify-center items-center p-6 text-5xl font-bold mr-4 grid grid-cols-1 lg:flex">
+        {/* Side Text - Desktop only */}
+        <div className="bg-lightgreen hidden w-[356px] h-[300px] lg:-mt-14 text-white text-left flex-col justify-center items-center p-6 text-5xl font-bold mr-4 lg:flex">
           CURRENT <br /> VACANCIES
         </div>
 
-        {/* Carousel */}
-        <div className="relative flex flex-col items-center space-y-4 overflow-hidden">
-          <div className="p-12 text-4xl font-raleway text-white mb-4 lg:hidden bg-lightgreen">
+        {/* Mobile Vertical Layout */}
+        <div className="lg:hidden w-full">
+          <div className="p-6 text-4xl font-raleway text-white mb-6 bg-lightgreen text-center">
             Current Vacancies
           </div>
+          
+          <div className="flex flex-col items-center space-y-6">
+            {images.map((item, index) => (
+              <a
+                key={index}
+                href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(item.subject)}`}
+                className="w-full max-w-[356px] h-auto"
+              >
+                <img
+                  src={item.src}
+                  alt={`Vacancy ${index + 1}`}
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
+                />
+              </a>
+            ))}
+          </div>
+        </div>
 
+        {/* Desktop Carousel - Hidden on mobile */}
+        <div className="hidden lg:flex flex-col items-center space-y-4 overflow-hidden">
           <div className="w-[720px] h-[338px] relative overflow-hidden">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div

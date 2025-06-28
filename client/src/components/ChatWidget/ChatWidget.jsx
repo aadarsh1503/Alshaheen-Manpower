@@ -66,7 +66,7 @@ const ChatWidget = () => {
         ) : (
           <>
             <FaWhatsapp size={18} className="mr-1" />
-            <span className={`hidden sm:inline ${isOpen ? "waving-text" : ""}`}>
+            <span className={` inline ${isOpen ? "waving-text" : ""}`}>
               Hi, how can I help?
             </span>
           </>
