@@ -25,7 +25,7 @@ const WhatsAppWidget = () => {
   return (
     <>
       {/* Main Floating Button */}
-      <div className="fixed bottom-7 z-50 left-1">
+      <div className="fixed bottom-7 z-50 left-2 lg:left-1">
         <button
           onClick={() => setIsWidgetOpen(!isWidgetOpen)}
           className="bg-lightblue hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg text-sm font-semibold flex items-center justify-center"

@@ -59,7 +59,7 @@ const ChatWidget = () => {
       {/* WhatsApp Button */}
       <button
         onClick={toggleChat}
-        className="bg-green-500 text-white p-2 pl-3 pr-4 rounded-full shadow-lg flex items-center hover:bg-green-600 transition duration-300"
+        className="bg-green-500 text-white relative left-4 p-2 pl-3 pr-4 rounded-full shadow-lg flex items-center hover:bg-green-600 transition duration-300"
       >
         {isOpen ? (
           <FaTimes size={18} />
