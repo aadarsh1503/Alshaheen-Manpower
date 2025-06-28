@@ -57,7 +57,7 @@ const Footer = () => {
   return (
     <footer className="bg-white max-w-5xl mx-auto lg:h-[280px] text-gray-800 py-6">
       <div className="container mx-auto flex lg:flex-row flex-col lg:justify-between lg:items-center px-4">
-
+{/* div */}
         {/* Left Section */}
         <div className="text-center lg:text-left mb-4 lg:mb-0">
           <h2 className="text-lightblue mt-6 lg:mt-10 font-bold text-2xl lg:text-3xl">CONTACT US</h2>
