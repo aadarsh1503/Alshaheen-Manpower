@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
-import i1 from "./i1.webp";
+import i1 from "./i1.png";
 import i2 from "./i2.jpg";
-import i3 from "./i3.jpg";
-import i4 from "./i4.webp";
+import i3 from "./i3.png";
+import i4 from "./i4.png";
 
 const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Fatima Al Mansoori",
+      name: "Gulf Air",
       text: "Al Shaheen Manpower has played a crucial role in helping us scale our operations at Gulf Air. Their commitment to quality, especially in aviation staffing, has consistently exceeded our expectations. Professional and trustworthy.",
-      address: "Manama, Bahrain – Gulf Air",
+      address: "",
       image: i1,
     },
     {
       id: 2,
-      name: "Khalid Al Zayani",
+      name: "Jumeirah Group",
       text: "Working with Al Shaheen Manpower has been an outstanding experience. Their deep understanding of the hospitality industry has helped us at Jumeirah Group find world-class professionals with minimal turnaround time.",
-      address: "Dubai, UAE – Jumeirah Group",
+      address: "",
       image: i2,
     },
     {
       id: 3,
-      name: "Sara Khalifa",
+      name: "Mediclinic Middle East",
       text: "We collaborated with Al Shaheen Manpower to meet urgent hiring demands for our healthcare unit. Their seamless coordination, pre-screened candidates, and efficient process made them a valuable partner.",
-      address: "Dubai, UAE – Mediclinic Middle East",
-      image: i3,
+      address: "",
+      image: "https://ocs-sport.ams3.cdn.digitaloceanspaces.com/sst/2023/02/mediclinic-logo.png",
     },
     {
       id: 4,
-      name: "Mohammed Al Suwaidi",
+      name: "ADNOC Group",
       text: "The talent pool Al Shaheen provides is consistently top-tier. Their team is proactive and responsive, ensuring we meet our recruitment goals quickly. We've onboarded several skilled engineers through them.",
-      address: "Abu Dhabi, UAE – ADNOC Group",
-      image: i4,
+      address: "",
+      image: "https://yt3.googleusercontent.com/NgrRBjmwwqgyGiTHlEfVKPuxk4GPcXKxiUYHiYSV4MJplTm75cXsev1BWkYWRgo2EjO7a64lGA=s900-c-k-c0x00ffffff-no-rj",
     },
   ];
   
@@ -91,7 +91,7 @@ const Testimonials = () => {
                 <img
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className={`object-cover w-full h-full ${index === 1 ? "scale-110" : "scale-100"}`}
+                  className={`object-fill w-full h-16 ${index === 1 ? "scale-110" : "scale-100"}`}
                 />
               </div>
               <div className="text-5xl text-lightblue mt-4 lg:mt-10 ml-0 lg:-ml-56">“</div>
