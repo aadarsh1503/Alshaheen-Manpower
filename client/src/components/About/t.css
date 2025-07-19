@@ -1,0 +1,35 @@
+/* Keyframes for the fade-in animations */
+@keyframes fade-in {
+    0% {
+      opacity: 0.5;
+      transform: scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fade-in-slow {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* 
+    Custom utility classes to APPLY the animations.
+    We will use these class names in our React component.
+  */
+  .animation-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+  
+  .animation-fade-in-slow {
+    animation: fade-in-slow 0.8s ease-out forwards;
+  }

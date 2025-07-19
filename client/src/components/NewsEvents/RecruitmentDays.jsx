@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import i1 from "./i1.png";
 import i2 from "./i2.png";
 import i3 from "./i3.png";
@@ -7,10 +6,13 @@ import i4 from "./i4.png";
 import i5 from "./i5.png";
 import i6 from "./i6.png";
 
-const RecruitmentDays = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// Custom CSS (if you have it)
+import './r.css';
 
-  const images = [
+const RecruitmentDays = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const recruitmentData = [
     { src: i1, subject: "Application For Driver" },
     { src: i2, subject: "Application For Welder" },
     { src: i3, subject: "Application For Sales Executive" },
@@ -18,45 +20,79 @@ const RecruitmentDays = () => {
     { src: i5, subject: "Application For Chef" },
     { src: i6, subject: "Application For Delivery Man" },
   ];
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
+  
+  const activeJob = recruitmentData[activeIndex];
 
   return (
-    <div className="bg-lgray py-10 ">
-      <div className="flex lg:ml-32  flex-col md:flex-row p-8 items-center">
-        {/* Left Side - Carousel Image */}
-        <div className="relative w-full md:w-[400px] flex items-center justify-center">
-          <a href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(images[currentIndex].subject)}`} target="_blank">
-            <img
-              src={images[currentIndex].src}
-              alt="Recruitment Slide"
-              className="w-full object-cover"
-            />
-          </a>
-        </div>
+    <div className="bg-gradient-to-b from-gray-50 to-gray-100 font-raleway py-20 md:py-28">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+          
+          {/* --- LEFT PANEL: Main Display Screen --- */}
+          <div className="lg:col-span-2 lg:sticky lg:top-28">
+            <div className="relative p-2 bg-white rounded-xl shadow-2xl ring-1 ring-gray-200">
+              <div className="relative">
+                <img
+                  key={activeJob.src} // Key ensures the animation re-runs on change
+                  src={activeJob.src}
+                  alt={activeJob.subject}
+                  className="w-full h-auto rounded-lg object-cover animation-fade-in"
+                />
+              </div>
+            </div>
+            <div className="mt-6 text-center">
+              <h3 className="text-xl font-bold text-gray-800">{activeJob.subject}</h3>
+              <a 
+                href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(activeJob.subject)}`} 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-4 bg-DarkRed text-white font-bold py-3 px-10 rounded-full transition-all duration-300 hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transform hover:-translate-y-1"
+              >
+                Apply Now
+              </a>
+            </div>
+          </div>
+          
+          {/* --- RIGHT PANEL: Selection Grid --- */}
+          <div className="lg:col-span-3">
+            <div className="mb-8">
+              <h2 className="text-3xl lg:text-5xl font-bold text-lightblue mb-3">
+                RECRUITMENT DAYS
+              </h2>
+              <p className="text-gray-600 text-base lg:text-lg">
+                Select a job opening from the grid below to view details and apply.
+              </p>
+            </div>
 
-        {/* Right Side - Text Content */}
-        <div className="md:w-2/3 p-8 lg:-mt-56 text-gray-700">
-          <h2 className="text-3xl font-bold text-red-600 mb-4">RECRUITMENT DAYS</h2>
-          <p className="text-gray-600">
-            Through efficient processes, technology, and dedicated service teams, we are bringing skills and opportunities together almost every single day. Find the most recent job openings here.
-          </p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {recruitmentData.map((item, index) => (
+                <button
+                  key={index}
+                  // ✨ CHANGE: onMouseEnter has been completely removed. Only onClick remains.
+                  onClick={() => setActiveIndex(index)}
+                  className={`relative rounded-lg overflow-hidden cursor-pointer group focus:outline-none transition-all duration-300
+                    ${activeIndex === index ? 'ring-4 ring-DarkRed scale-105' : 'ring-2 ring-gray-200'}`
+                  }
+                >
+                  <img 
+                    src={item.src} 
+                    alt={item.subject}
+                    // ✨ CHANGE: The image is now grayscaled if it's NOT active. No hover effect.
+                    className={`w-full h-auto object-cover transition-all duration-300
+                      ${activeIndex === index ? 'grayscale-0' : ''}`
+                    }
+                  />
+                  {/* ✨ CHANGE: This overlay is now only shown on inactive items, with no hover effect. */}
+                  {activeIndex !== index && (
+                     <div className="absolute inset-0 bg-white/40 transition-colors"></div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
         </div>
-      </div>
-      {/* Carousel Controls Below Image */}
-      <div className="flex justify-center  space-x-4 w-full md:w-2/3">
-        <button onClick={prevSlide} className="text-2xl text-gray-700 hover:text-gray-900">
-          <FaChevronLeft />
-        </button>
-        <button onClick={nextSlide} className="text-2xl text-gray-700 hover:text-gray-900">
-          <FaChevronRight />
-        </button>
       </div>
     </div>
   );

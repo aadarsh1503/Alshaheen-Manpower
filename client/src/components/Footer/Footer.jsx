@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { AiOutlinePhone, AiOutlineMail } from 'react-icons/ai';
-import { MdOutlineBusinessCenter } from 'react-icons/md';
+import { GoLocation } from 'react-icons/go'; // A better icon for location
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 
@@ -12,116 +12,124 @@ const Footer = () => {
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-  
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       setMessage('Please enter a valid email address.');
+      setTimeout(() => setMessage(''), 3000);
       return;
     }
-  
+    
+    setLoading(true);
     try {
-      setLoading(true);
+      // Your form submission logic remains the same
       const formData = new FormData();
       formData.append('email', email);
-      formData.append('list', 'DXjE7radFu0UOJSxeJgydg'); // Your list ID
+      formData.append('list', 'DXjE7radFu0UOJSxeJgydg');
       formData.append('subform', 'yes');
       formData.append('hp', '');
-  
+
       await fetch('https://send.alzyara.com/subscribe', {
         method: 'POST',
         body: formData,
         mode: 'no-cors',
       });
-  
       setMessage('Thank you for subscribing!');
       setEmail('');
-  
-      // ⏱️ Hide message after 3 seconds
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
     } catch (error) {
       console.error('Error:', error);
       setMessage('Subscription failed. Please try again.');
-  
-      // Hide error message after 3 seconds (optional)
-      setTimeout(() => {
-        setMessage('');
-      }, 3000);
     } finally {
       setLoading(false);
+      setTimeout(() => setMessage(''), 3000);
     }
   };
-  
 
   return (
-    <footer className="bg-white max-w-5xl mx-auto lg:h-[280px] text-gray-800 py-6">
-      <div className="container mx-auto flex lg:flex-row flex-col lg:justify-between lg:items-center px-4">
-{/* div */}
-        {/* Left Section */}
-        <div className="text-center lg:text-left mb-4 lg:mb-0">
-          <h2 className="text-lightblue mt-6 lg:mt-10 font-bold text-2xl lg:text-3xl">CONTACT US</h2>
-          <div className="mt-2 text-sm lg:text-base text-gray-700 space-y-2">
-            <p className="flex items-start">
-              <MdOutlineBusinessCenter className="text-DarkRed text-lg mr-2 mt-1" />
-              <span>
-                FLAT 22, BUILDING 661, BLOCK 712,<br />
-                ROAD 1208, P.O BOX 54121,<br />
-                MANAMA, KINGDOM OF BAHRAIN
-              </span>
+    // ✨ Using a sophisticated light gradient background
+    <footer className="bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 font-raleway">
+      <div className="max-w-7xl mx-auto py-16 px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          
+          {/* Column 1: Brand Info */}
+          <div className="space-y-4  ">
+          <img 
+    src="http://localhost:5173/src/components/Navbar/i21.jpg"
+    alt="Al Shaheen Manpower Logo" 
+    className="h-20 w-auto mx-auto"
+  />
+            <p className="text-gray-500 text-center text-sm">
+              Connecting global talent with premier opportunities. Committed to ethical, efficient, and excellent manpower solutions.
             </p>
-            <p className="flex items-center">
-              <AiOutlinePhone className="text-DarkRed text-lg mr-2" />
-              +973 13303301 (Ext. 100 / 102 / 103)
-            </p>
-            <p className="flex items-center">
-              <AiOutlineMail className="text-DarkRed text-lg mr-2" />
-              info@alshaheen.pro
-            </p>
+          </div>
+
+          {/* Column 2: Contact Info */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-lightblue tracking-widest uppercase">Contact Us</h3>
+            <div className="space-y-3 text-sm text-gray-600">
+              <p className="flex items-start gap-3">
+                <GoLocation className="text-DarkRed text-lg flex-shrink-0 mt-1" />
+                <span>FLAT 22, BLDG 661, BLOCK 712, ROAD 1208, MANAMA, BAHRAIN</span>
+              </p>
+              <p className="flex items-center gap-3">
+                <AiOutlinePhone className="text-DarkRed text-lg flex-shrink-0" />
+                <span>+973 13303301 (Ext. 100 / 102 / 103)</span>
+              </p>
+              <p className="flex items-center gap-3">
+                <AiOutlineMail className="text-DarkRed text-lg flex-shrink-0" />
+                <span>info@alshaheen.pro</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Column 3: Social & Legal */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-lightblue tracking-widest uppercase">Follow Us</h3>
+            <div className="flex space-x-5">
+              <a href="https://www.facebook.com/Alshaheen.pro/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                <FaFacebookF size={22} />
+              </a>
+              <a href="https://www.instagram.com/alshaheen_manpower/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                <FaInstagram size={22} />
+              </a>
+              <a href="https://www.linkedin.com/in/alshaheen-manpower-144096339/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                <FaLinkedinIn size={22} />
+              </a>
+              <a href="https://x.com/Alshaheen_Pro" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                <FontAwesomeIcon icon={faXTwitter} size="lg" />
+              </a>
+            </div>
+            <a href="/privacy-policy" className="inline-block text-sm text-gray-500 hover:text-DarkRed transition-colors mt-4">
+              Privacy Policy
+            </a>
+          </div>
+
+          {/* Column 4: Newsletter */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-lightblue tracking-widest uppercase">Stay Updated</h3>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full bg-gray-200/60 border border-gray-300 rounded-md p-3 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-lightblue focus:border-transparent focus:outline-none transition-all"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-DarkRed text-white font-bold rounded-md py-3 transition-all duration-300 hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Submitting...' : 'Subscribe'}
+              </button>
+              {message && <p className="text-sm text-DarkRed mt-2">{message}</p>}
+            </form>
           </div>
         </div>
 
-        {/* Right Section */}
-        <div className="text-center lg:text-left">
-          <h3 className="text-lightblue font-bold mt-4 lg:mt-0">Follow us</h3>
-          <div className="flex justify-center lg:justify-start space-x-4 mt-2 mb-2">
-            <a href="https://www.facebook.com/Alshaheen.pro/" target="_blank" rel="noopener noreferrer">
-              <FaFacebookF className="text-gray-400 text-2xl hover:text-DarkRed" />
-            </a>
-            <a href="https://www.instagram.com/alshaheen_manpower/" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="text-gray-400 text-2xl hover:text-DarkRed" />
-            </a>
-            <a href="https://www.linkedin.com/in/alshaheen-manpower-144096339/" target="_blank" rel="noopener noreferrer">
-              <FaLinkedinIn className="text-gray-400 text-2xl hover:text-DarkRed" />
-            </a>
-            <a href="https://x.com/Alshaheen_Pro" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faXTwitter} className="text-gray-400 text-2xl hover:text-DarkRed" />
-            </a>
-          </div>
-
-          {/* Newsletter Form */}
-          <form onSubmit={handleSubscribe} className="flex flex-col w-full max-w-sm mt-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="p-2 border border-gray-300 rounded text-gray-700 mb-2"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-DarkRed text-white rounded-full py-2 transition hover:bg-red-600"
-            >
-              {loading ? 'Submitting...' : 'Subscribe'}
-            </button>
-            {message && <p className="text-sm text-gray-600 mt-2">{message}</p>}
-          </form>
-
-          <a href="/privacy-policy">
-            <p className="text-gray-500 hover:text-DarkRed text-xs lg:text-sm mt-3">Privacy Policy</p>
-          </a>
+        {/* Bottom Bar */}
+        <div className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+          <p>© {new Date().getFullYear()} Al Shaheen Manpower. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

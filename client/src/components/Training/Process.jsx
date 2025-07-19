@@ -6,8 +6,8 @@ const Process = () => {
       <div className="container mx-auto flex max-w-7xl flex-col sm:flex-row lg:flex-row w-full h-full lg:h-auto">
         {/* Text section */}
         <div className="sm:w-1/2 w-full flex flex-col justify-center px-8 space-y-4">
-          <h2 className="text-4xl font-bold uppercase">The Process</h2>
-          <div className="w-12 h-2 bg-white mb-4"></div>
+          <h2 className="text-2xl lg:text-5xl font-bold uppercase">The Process</h2>
+          <div className="w-24 h-2 bg-white mb-4"></div>
           <p className="text-lg leading-relaxed">
           AL SHAHEEN MANPOWER provides a wide array of training services that are specifically designed to meet the needs of clients seeking skilled, job-ready candidates. This approach benefits both the workforce and industries by empowering young individuals with valuable industry expertise while bridging the talent gap in various sectors.
           </p>

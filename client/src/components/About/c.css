@@ -1,0 +1,24 @@
+/* Import a beautiful, free cursive font from Google Fonts for the signature */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+/* A custom class to apply this font */
+.font-signature {
+  font-family: 'Great Vibes', cursive;
+}
+
+/* Keyframes for the modal to pop in and fade in */
+@keyframes modal-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* A class to apply the modal animation */
+.animation-modal-pop-in {
+  animation: modal-pop-in 0.3s ease-out forwards;
+}

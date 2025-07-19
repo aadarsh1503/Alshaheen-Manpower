@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+// Import your custom CSS file for animations
+import './t.css'; 
+
+// Import your images as before
 import i1 from "./i1.png";
 import i2 from "./i2.png";
 import i3 from "./i3.png";
@@ -8,90 +11,87 @@ import i5 from "./i5.jpeg";
 import i6 from "./i6.png";
 
 const TheTeam = () => {
-  const images = [
-    { src: i1, alt: "Event 1", heading: "MARIA BERNADETH CASTRO ", description: "ADMINISTRATOR" },
-    { src: i2, alt: "Event 2", heading: "ASMAN RAHIM", description: "TECHNOLOGY OFFICER" },
-    { src: i3, alt: "Event 3", heading: "SHAMEEMUDHEEN KANNAMPURATH VALAPPIL", description: "HRM SALES EXECUTIVE" },
-    { src: i4, alt: "Event 4", heading: "MARICRIS ANGELES", description: "ACCOUNTANT" },
-    { src: i5, alt: "Event 5", heading: "SHANIKA DILHANI  ", description: "Recruiter" },
-    { src: i6, alt: "Event 6", heading: "RIYADH SHAHEEN", description: "MANAGING DIRECTOR" },
+  // Re-ordered to place the MD first for a logical default selection
+  const teamMembers = [
+    { src: i6, alt: "Riyadh Shaheen", name: "RIYADH SHAHEEN", role: "MANAGING DIRECTOR" },
+    { src: i1, alt: "Maria Bernadeth Castro", name: "MARIA BERNADETH CASTRO", role: "ADMINISTRATOR" },
+    { src: i2, alt: "Asman Rahim", name: "ASMAN RAHIM", role: "TECHNOLOGY OFFICER" },
+    { src: i3, alt: "Shameemudheen K.V.", name: "SHAMEEMUDHEEN KANNAMPURATH VALAPPIL", role: "HRM SALES EXECUTIVE" },
+    { src: i4, alt: "Maricris Angeles", name: "MARICRIS ANGELES", role: "ACCOUNTANT" },
+    { src: i5, alt: "Shanika Dilhani", name: "SHANIKA DILHANI", role: "RECRUITER" },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  const visibleImages = [
-    images[(currentIndex - 1 + images.length) % images.length],
-    images[currentIndex],
-    images[(currentIndex + 1) % images.length],
-  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeMember = teamMembers[activeIndex];
 
   return (
-    <div className="w-full bg-gray-100 py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-left mb-4">
-          <h1 className="text-lightblue font-bold text-4xl">THE TEAM</h1>
-          <div className="h-2 w-10 lg:w-16 bg-lightblue ml-2 lg:ml-0 mt-0 lg:mt-2"></div>
+    <div className="w-full bg-gray-100 font-raleway py-20 md:py-28 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* --- Section Header --- */}
+        <div className="text-left mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-lightblue mb-3">
+            MEET THE TEAM
+          </h2>
+          <div className="w-32 h-2 bg-lightblue rounded-full"></div>
         </div>
 
-        {/* Image Carousel */}
-        <div className="relative flex items-center justify-center space-x-4 lg:flex hidden">
-          <button
-            onClick={handlePrev}
-            className="absolute -left-28 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
-          >
-            <BsChevronLeft className="text-gray-600" size={24} />
-          </button>
-
-          <div className="flex space-x-4 transition-transform duration-500 ease-in-out">
-            {visibleImages.map((image, index) => (
-              <div key={index} className="relative group w-60 lg:w-[306px] lg:h-[332px] h-40">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover rounded-lg shadow-md"
-                />
-                <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
-                  <p className="text-lg font-bold text-left">{image.heading}</p>
-                  <p className="text-base text-left font-semibold whitespace-pre-line">{image.description}</p>
+        {/* --- Main Layout: Featured Profile + Selection List --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start">
+          
+          {/* --- LEFT (or TOP on mobile): Featured Profile Card --- */}
+          <div className="lg:col-span-2">
+            <div className="sticky top-28 bg-white/70 backdrop-blur-xl p-8 rounded-2xl shadow-2xl shadow-lightblue/20 border border-gray-200/50 transition-all duration-500 ease-in-out">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-8">
+                <div className="flex-shrink-0">
+                  <img
+                    key={activeMember.alt} 
+                    src={activeMember.src}
+                    alt={activeMember.alt}
+                    className="w-40 h-40 lg:w-48 lg:h-48 rounded-full object-cover ring-4 ring-lightblue ring-offset-4 ring-offset-gray-100 animation-fade-in"
+                  />
+                </div>
+                <div className="animation-fade-in-slow">
+                  <h3 className="text-2xl lg:text-3xl font-bold text-gray-800">
+                    {activeMember.name}
+                  </h3>
+                  <p className="text-lg text-lightgreen font-semibold mt-1">
+                    {activeMember.role}
+                  </p>
+                  <p className="text-gray-600 mt-4 text-base lg:text-lg leading-relaxed hidden sm:block">
+                    Leading our team with vision and dedication to drive innovation and excellence in every project we undertake.
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
 
-          <button
-            onClick={handleNext}
-            className="absolute -right-32 transform -translate-y-1/2 bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"
-          >
-            <BsChevronRight className="text-gray-600" size={24} />
-          </button>
-        </div>
-
-        {/* Grid Layout for Mobile */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:hidden">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`relative group ${index === 5 ? 'order-first' : ''}`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover rounded-lg shadow-md"
-              />
-              <div className="absolute inset-0 top-44 bg-lightgreen bg-opacity-80 text-white opacity-0 group-hover:opacity-100 flex flex-col items-start justify-center transition-opacity duration-300 rounded-lg p-4">
-                <p className="text-lg font-bold text-left">{image.heading}</p>
-                <p className="text-base text-left font-semibold whitespace-pre-line">{image.description}</p>
-              </div>
+          {/* --- RIGHT (or BOTTOM on mobile): Selection List --- */}
+          <div className="lg:col-span-1">
+            <div className="space-y-3">
+              {teamMembers.map((member, index) => (
+                <button
+                  key={member.name}
+                  // ✨ --- THE ONLY CHANGE IS HERE --- ✨
+                  // We add onMouseEnter to change the profile on hover for desktop users.
+                  // We keep onClick to allow tapping on mobile devices.
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onClick={() => setActiveIndex(index)}
+                  className={`w-full flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 ease-in-out border-2
+                    ${activeIndex === index
+                      ? 'bg-lightblue/10 border-lightblue shadow-md' // Active state
+                      : 'bg-white/60 border-transparent hover:bg-white hover:border-lightblue/50' // Inactive state
+                    }`
+                  }
+                >
+                  <img src={member.src} alt={member.alt} className="w-12 h-12 rounded-full object-cover mr-4" />
+                  <div>
+                    <p className="font-semibold text-gray-800 text-left">{member.name}</p>
+                    <p className="text-sm text-gray-500 text-left">{member.role}</p>
+                  </div>
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

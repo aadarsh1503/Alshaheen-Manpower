@@ -1,150 +1,145 @@
 import React, { useState } from 'react';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+
+// Import your images
 import i1 from "./i1.png";
 import i2 from "./i2.jpg";
-import i3 from "./i3.png";
-import i4 from "./i4.png";
 
 const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
       name: "Gulf Air",
-      text: "Al Shaheen Manpower has played a crucial role in helping us scale our operations at Gulf Air. Their commitment to quality, especially in aviation staffing, has consistently exceeded our expectations. Professional and trustworthy.",
-      address: "",
+      text: "Al Shaheen Manpower has played a crucial role in helping us scale our operations. Their commitment to quality, especially in aviation staffing, has consistently exceeded our expectations.",
       image: i1,
     },
     {
       id: 2,
       name: "Jumeirah Group",
-      text: "Working with Al Shaheen Manpower has been an outstanding experience. Their deep understanding of the hospitality industry has helped us at Jumeirah Group find world-class professionals with minimal turnaround time.",
-      address: "",
+      text: "Working with Al Shaheen Manpower has been an outstanding experience. Their deep understanding of the hospitality industry has helped us find world-class professionals with minimal turnaround time.",
       image: i2,
     },
     {
       id: 3,
       name: "Mediclinic Middle East",
-      text: "We collaborated with Al Shaheen Manpower to meet urgent hiring demands for our healthcare unit. Their seamless coordination, pre-screened candidates, and efficient process made them a valuable partner.",
-      address: "",
+      text: "We collaborated with Al Shaheen to meet urgent hiring demands. Their seamless coordination, pre-screened candidates, and efficient process made them an invaluable partner for our healthcare unit.",
       image: "https://ocs-sport.ams3.cdn.digitaloceanspaces.com/sst/2023/02/mediclinic-logo.png",
     },
     {
       id: 4,
       name: "ADNOC Group",
       text: "The talent pool Al Shaheen provides is consistently top-tier. Their team is proactive and responsive, ensuring we meet our recruitment goals quickly. We've onboarded several skilled engineers through them.",
-      address: "",
       image: "https://yt3.googleusercontent.com/NgrRBjmwwqgyGiTHlEfVKPuxk4GPcXKxiUYHiYSV4MJplTm75cXsev1BWkYWRgo2EjO7a64lGA=s900-c-k-c0x00ffffff-no-rj",
     },
   ];
-  
 
-  const [current, setCurrent] = useState(0);
-  const [expandedIndex, setExpandedIndex] = useState(null); // Track expanded testimonial
-
-  const handleNext = () => {
-    setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
-    setCurrent((prev) => (prev + 1) % testimonials.length);
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1));
   };
 
-  const reorderedTestimonials = [
-    testimonials[(current + 0) % testimonials.length],
-    testimonials[(current + 1) % testimonials.length],
-    testimonials[(current + 2) % testimonials.length],
-  ];
-
-  const truncateText = (text, lines) => {
-    const maxChars = lines * 50; // Approximate character count for 3 lines
-    return text.length > maxChars ? text.substring(0, maxChars) + "..." : text;
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1));
   };
+
+  const getCardIndices = () => {
+    const total = testimonials.length;
+    const prevIndex = (currentIndex - 1 + total) % total;
+    const nextIndex = (currentIndex + 1) % total;
+    return [prevIndex, currentIndex, nextIndex];
+  };
+
+  const visibleIndices = getCardIndices();
 
   return (
-    <div className="bg-gray-100 py-10">
-      <div className="lg:text-3xl text-2xl lg:ml-44 ml-4 text-lightblue font-bold max-w-5xl mx-auto mb-20">
-        OUR TESTIMONIALS
-      </div>
-      <h1 className="h-2 w-10 lg:w-16 bg-lightblue ml-4 lg:ml-44 -mt-12 lg:-mt-16"></h1>
-
-      {/* Desktop View */}
-      <div className="hidden lg:flex justify-center items-center">
-        {/* Left Arrow */}
-        <button
-          onClick={handlePrev}
-          className="text-gray-600 hover:text-gray-800 p-4 bg-gray-200 rounded-full focus:outline-none mx-4"
-        >
-          &#8592;
-        </button>
-
-        <div className="flex items-center gap-12 mt-32">
-          {reorderedTestimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.id}
-              className={`relative transition-all duration-1000 ease-in-out flex flex-col items-center bg-white shadow-md p-6 rounded-lg
-                ${index === 1
-                  ? "scale-110 opacity-100 h-[456px] w-72 transform shadow-xl transition-transform"
-                  : "scale-90 opacity-60 w-72 transform transition-transform"}`}
-            >
-              <div
-                className={`absolute -top-10 flex justify-center items-center w-24 h-24 rounded-full overflow-hidden border-4 ${index === 1 ? "border-lightgreen" : "border-gray-200"}`}
-              >
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className={`object-fill w-full h-16 ${index === 1 ? "scale-110" : "scale-100"}`}
-                />
-              </div>
-              <div className="text-5xl text-lightblue mt-4 lg:mt-10 ml-0 lg:-ml-56">“</div>
-              <p className="text-lightblue font-bold mb-1">{testimonial.name}</p>
-              <p className="text-gray-600 max-w-7xl text-center">
-                {index === 1 ? testimonial.text : truncateText(testimonial.text, 3)}
-              </p>
-              <p className="text-gray-500 mt-2">{testimonial.address}</p>
-              <div className="text-5xl text-lightblue ml-0 lg:ml-56 mt-2">”</div>
-            </div>
-          ))}
+    <div className="bg-gray-100 font-raleway w-full py-20 md:py-28 px-4 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-left mb-16 md:mb-20">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-lightblue mb-3">
+            OUR TESTIMONIALS
+          </h2>
+          <div className="w-32 h-2 bg-lightblue rounded-full"></div>
         </div>
 
-        {/* Right Arrow */}
-        <button
-          onClick={handleNext}
-          className="text-gray-600 hover:text-gray-800 p-4 bg-gray-200 rounded-full focus:outline-none mx-4"
-        >
-          &#8594;
-        </button>
-      </div>
-
-      {/* Mobile View */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 gap-8 lg:hidden mt-10 px-4">
-        {testimonials.map((testimonial, index) => (
-          <div
-            key={testimonial.id}
-            className="flex flex-col items-center bg-white shadow-md p-6 rounded-lg"
+        <div className="relative h-[450px] md:h-[400px] flex items-center justify-center">
+          <button
+            onClick={handlePrev}
+            className="absolute left-0 md:left-64 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-lg rounded-full p-3 hover:bg-white transition"
           >
-            <div
-              className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-200 mb-4"
-            >
-              <img
-                src={testimonial.image}
-                alt={testimonial.name}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div className="text-lightblue font-bold mb-1">{testimonial.name}</div>
-            <p className="text-gray-500 mt-2">{testimonial.address}</p>
-            
-            <p className="text-gray-600 max-w-7xl text-center">
-              {expandedIndex === index ? testimonial.text : truncateText(testimonial.text, 3)}
-            </p>
+            <BsChevronLeft className="text-lightblue" size={24} />
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute right-0 md:right-64 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-lg rounded-full p-3 hover:bg-white transition"
+          >
+            <BsChevronRight className="text-lightblue" size={24} />
+          </button>
 
-            <div className="flex justify-center space-x-2 mt-4">
-              <button
-                className={`h-2 w-2 rounded-full ${expandedIndex === index ? 'bg-lightblue' : 'bg-gray-300'}`}
-                onClick={() => setExpandedIndex(expandedIndex === index ? null : index)} // Toggle expanded state
-              ></button>
-            </div>
+          <div className="relative w-full h-full [perspective:1000px]">
+            {testimonials.map((testimonial, index) => {
+              const visibleIndex = visibleIndices.indexOf(index);
+              
+              let positionStyle = {};
+              let zIndex = 0;
+              let opacity = 0;
+              let scale = 0.8;
+
+              if (visibleIndex !== -1) {
+                opacity = 1;
+                if (visibleIndex === 1) { 
+                  zIndex = 10;
+                  scale = 1;
+                  positionStyle = { transform: "translateX(0) translateZ(0) rotateY(0)" };
+                } 
+                else if (visibleIndex === 0) { 
+                  zIndex = 5;
+                  // ✨ Changed from -60% to -50% to bring it closer
+                  positionStyle = { transform: "translateX(-50%) translateZ(-200px) rotateY(45deg)" };
+                } 
+                else if (visibleIndex === 2) { 
+                  zIndex = 5;
+                   // ✨ Changed from 60% to 50% to bring it closer
+                  positionStyle = { transform: "translateX(50%) translateZ(-200px) rotateY(-45deg)" };
+                }
+              } else {
+                positionStyle = { transform: `translateX(0) translateZ(-500px) rotateY(0)` };
+              }
+
+              return (
+                <div
+                  key={testimonial.id}
+                  className="absolute top-0 left-0 w-full h-full flex items-center justify-center transition-all duration-700 ease-in-out"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    ...positionStyle,
+                    zIndex: zIndex,
+                  }}
+                >
+                  <div
+                    className="w-11/12 md:w-3/5 lg:w-2/5 min-h-[320px] bg-white/60 backdrop-blur-xl rounded-2xl shadow-2xl shadow-lightblue/20 border border-gray-200/50 p-6 text-center flex flex-col items-center justify-center transition-all duration-500"
+                    style={{
+                      opacity: opacity,
+                      transform: `scale(${scale})`,
+                    }}
+                  >
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-24 h-24 mb-4 object-contain bg-white p-2 rounded-full ring-4 ring-lightblue/50 ring-offset-4 ring-offset-transparent"
+                    />
+                    <p className=" text-base lg:text-lg text-gray-600 leading-relaxed line-clamp-4">
+                      "{testimonial.text}"
+                    </p>
+                    <p className="mt-6 text-base lg:text-lg font-bold text-gray-800">
+                      {testimonial.name}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

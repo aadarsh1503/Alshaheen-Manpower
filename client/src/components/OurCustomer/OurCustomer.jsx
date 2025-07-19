@@ -91,8 +91,8 @@ const OurCustomer = () => {
 
     return (
         <section className="py-10 lg:max-w-7xl max-w-[300px] mb-10 mx-auto">
-          <h1 className='text-3xl lg:ml-28 ml-0 font-bold text-lightblue'>OUR VALUED CUSTOMERS</h1>
-          <div className="h-2 w-10 lg:w-16 bg-lightblue ml-2 lg:ml-28 mt-0 lg:mt-2 lg:mb-6"></div>
+          <h1 className='text-2xl lg:text-5xl  ml-0 font-bold text-lightblue'>OUR VALUED CUSTOMERS</h1>
+          <div className="h-2 w-10 lg:w-24 bg-lightblue ml-1  mt-0 lg:mt-2 lg:mb-6"></div>
         <div className="">
             {isLoaded ? (
                 <Slider ref={sliderRef} {...settings}>
