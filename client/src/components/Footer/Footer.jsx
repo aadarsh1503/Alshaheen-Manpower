@@ -53,7 +53,7 @@ const Footer = () => {
           {/* Column 1: Brand Info */}
           <div className="space-y-4  ">
           <img 
-    src="http://localhost:5173/src/components/Navbar/i21.jpg"
+    src="https://alshaheen.pro/assets/i21-Bo7dbSjO.jpg"
     alt="Al Shaheen Manpower Logo" 
     className="h-20 w-auto mx-auto"
   />
