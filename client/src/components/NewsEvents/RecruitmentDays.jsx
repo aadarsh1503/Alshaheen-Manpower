@@ -1,32 +1,85 @@
-import React, { useState } from 'react';
-import i1 from "./i1.png";
-import i2 from "./i2.png";
-import i3 from "./i3.png";
-import i4 from "./i4.png";
-import i5 from "./i5.png";
-import i6 from "./i6.png";
+import React, { useState, useEffect } from 'react';
 
 // Custom CSS (if you have it)
-import './r.css';
+import './r.css'; // Assuming this file exists and contains the animation styles
 
 const RecruitmentDays = () => {
+  // --- STATE MANAGEMENT ---
+  const [jobs, setJobs] = useState([]); // State to hold formatted data
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loading, setLoading] = useState(true); // State to handle loading UI
+  const [error, setError] = useState(null); // State to handle API errors
 
-  const recruitmentData = [
-    { src: i1, subject: "Application For Driver" },
-    { src: i2, subject: "Application For Welder" },
-    { src: i3, subject: "Application For Sales Executive" },
-    { src: i4, subject: "Application For Accountant" },
-    { src: i5, subject: "Application For Chef" },
-    { src: i6, subject: "Application For Delivery Man" },
-  ];
-  
-  const activeJob = recruitmentData[activeIndex];
+  // --- API FETCHING LOGIC ---
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        // Fetch data from your API endpoint
+        const response = await fetch('https://alshaheen-manpower.onrender.com/api/admin/vacancies'); 
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // --- DATA MAPPING ---
+        // ✨ THIS IS THE FIX ✨
+        // The API returns objects with `imageUrl` and `subject`.
+        // Our component's JSX expects `src` and `subject`.
+        // We use .map() to create a new array with the correct property names.
+        const formattedData = data.map(apiItem => ({
+          src: apiItem.imageUrl,  // Map API's 'imageUrl' to our component's 'src'
+          subject: apiItem.subject // 'subject' is the same, so we just pass it through
+        }));
 
+        // Set the state with the new, correctly formatted array
+        setJobs(formattedData);
+
+      } catch (e) {
+        console.error("Failed to fetch recruitment data:", e);
+        setError("Could not load job vacancies. Please try again later.");
+      } finally {
+        setLoading(false); // Stop loading, whether successful or not
+      }
+    };
+
+    fetchJobs();
+  }, []); // The empty array [] ensures this effect runs only once on mount
+
+  // --- UI FOR LOADING AND ERROR STATES ---
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <p className="text-xl text-gray-600">Loading Vacancies...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <p className="text-xl text-red-600">{error}</p>
+      </div>
+    );
+  }
+
+  // --- HANDLE NO DATA ---
+  if (jobs.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <p className="text-xl text-gray-600">No open vacancies at the moment.</p>
+      </div>
+    );
+  }
+
+  // Active job is derived from the 'jobs' state
+  const activeJob = jobs[activeIndex];
+
+  // --- RENDER THE ORIGINAL DESIGN WITH DYNAMIC DATA ---
   return (
     <div className="bg-gradient-to-b from-gray-50 to-gray-100 font-raleway py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
           
           {/* --- LEFT PANEL: Main Display Screen --- */}
@@ -66,10 +119,9 @@ const RecruitmentDays = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {recruitmentData.map((item, index) => (
+              {jobs.map((item, index) => (
                 <button
                   key={index}
-                  // ✨ CHANGE: onMouseEnter has been completely removed. Only onClick remains.
                   onClick={() => setActiveIndex(index)}
                   className={`relative rounded-lg overflow-hidden cursor-pointer group focus:outline-none transition-all duration-300
                     ${activeIndex === index ? 'ring-4 ring-DarkRed scale-105' : 'ring-2 ring-gray-200'}`
@@ -78,12 +130,10 @@ const RecruitmentDays = () => {
                   <img 
                     src={item.src} 
                     alt={item.subject}
-                    // ✨ CHANGE: The image is now grayscaled if it's NOT active. No hover effect.
                     className={`w-full h-auto object-cover transition-all duration-300
                       ${activeIndex === index ? 'grayscale-0' : ''}`
                     }
                   />
-                  {/* ✨ CHANGE: This overlay is now only shown on inactive items, with no hover effect. */}
                   {activeIndex !== index && (
                      <div className="absolute inset-0 bg-white/40 transition-colors"></div>
                   )}

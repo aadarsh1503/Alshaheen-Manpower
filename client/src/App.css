@@ -1,0 +1,50 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Noto+Sans+Display:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Noto+Serif:wght@400;500;600;700&display=swap');
+/* Custom animations */
+.slide-in-right {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.bg-primary {
+  background-color: #3B82F6;
+}
+.bg-secondary {
+  background-color: #10B981;
+}
+.bg-dark {
+  background-color: #1F2937;
+}
+.bg-light {
+  background-color: #F9FAFB;
+}
+.shadow-custom {
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+}
+.font-noto-serif {
+  font-family: 'Noto Serif', serif;
+}

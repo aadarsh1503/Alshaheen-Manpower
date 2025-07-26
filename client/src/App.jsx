@@ -1,4 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+
+// Imports from your existing files
+import MultiStepForm from './components/MultiStepForm/MultiStepForm';
+import Dashboard from './components/PersonalInfoStep/Dashboard/Dashboard';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import NotFound from './components/NotFound/NotFound';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
@@ -22,18 +30,34 @@ import HealthCare2 from './components/Healthcare2/Healthcare2';
 import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 import ChatWidget from './components/ChatWidget/ChatWidget';
 import WhatsAppWidget from './components/WhatsappWidget/WhatsappWidget';
+import './app.css';
+import VacancyManager from './components/VacancyManager/VacancyManager';
 
+/**
+ * MainLayout component handles the shared structure (Navbar, Footer, etc.)
+ * for the main website pages.
+ */
+const MainLayout = () => (
+  <>
+    <Navbar />
+    <ChatWidget />
+    <WhatsAppWidget />
+    <main className="min-h-screen">
+      <Outlet /> {/* Nested routes will render here */}
+    </main>
+    <Footer />
+  </>
+);
 
+/**
+ * The main App component that sets up the router and all application routes.
+ */
 function App() {
   return (
     <Router>
-      {/* Navbar will be displayed on every page */}
-      <Navbar />
-      <ChatWidget />
-      <WhatsAppWidget />
-      {/* Main content area with Routes */}
-      <div className="min-h-screen">
-        <Routes>
+      <Routes>
+        {/* Routes that use the MainLayout (with Navbar and Footer) */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/contactUs" element={<ContactSection />} />
           <Route path="/recruitment" element={<Aviation />} />
@@ -53,12 +77,34 @@ function App() {
           <Route path="/events" element={<Events2 />} />
           <Route path="/healthcare" element={<HealthCare2 />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-    
-        </Routes>
-      </div>
+          <Route path="/apply" element={<MultiStepForm />} />
+        </Route>
 
-      {/* Footer will be displayed on every page */}
-      <Footer />
+        {/* Standalone routes (like login, signup, dashboard) without the main layout */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup-gvs3245" element={<Signup />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Admin route for managing vacancies - NOW PROTECTED */}
+        <Route
+          path="/admin/vacancies"
+          element={
+            <ProtectedRoute>
+              <VacancyManager />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Catch-all 404 Not Found route must be last */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Router>
   );
 }

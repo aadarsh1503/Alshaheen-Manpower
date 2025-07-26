@@ -11,6 +11,10 @@ export default {
         darkgray:'#e9e9e9',
         lightblue:'#4ba3ca',
         lightgreen:'#1a9c2c',
+        primary: '#3B82F6',
+        secondary: '#10B981',
+        dark: '#1F2937',
+        light: '#F9FAFB',
         lgray:'#e9e9e9',
         llgray:'#ededed',
 

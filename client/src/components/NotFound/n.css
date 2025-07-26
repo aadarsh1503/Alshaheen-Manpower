@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0a0a0a; /* Dark background */
+  color: #e0e0e0;
+  font-family: 'Orbitron', sans-serif; /* Futuristic font */
+  overflow: hidden;
+  text-align: center;
+  padding: 2rem;
+}
+
+.not-found-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Glitch Effect --- */
+.glitch {
+  font-size: 8rem;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #ff00ff, 0 0 80px #ff00ff;
+  color: #fff;
+  letter-spacing: 0.1em;
+  animation: glitch-animation 2.5s infinite linear alternate-reverse;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 #ff00ff;
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 #00ffff, 2px 2px #ff00ff;
+  animation: glitch-anim-2 2.1s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-animation {
+  0% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(1deg);
+  }
+  100% {
+    transform: skewX(-1deg);
+  }
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(10% 0 80% 0); }
+  20% { clip-path: inset(50% 0 10% 0); }
+  40% { clip-path: inset(30% 0 65% 0); }
+  60% { clip-path: inset(80% 0 5% 0); }
+  80% { clip-path: inset(25% 0 40% 0); }
+  100% { clip-path: inset(70% 0 20% 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(85% 0 5% 0); }
+  25% { clip-path: inset(20% 0 70% 0); }
+  50% { clip-path: inset(60% 0 30% 0); }
+  75% { clip-path: inset(5% 0 90% 0); }
+  100% { clip-path: inset(45% 0 50% 0); }
+}
+/* --- End Glitch Effect --- */
+
+.futuristic-subheading {
+  font-size: 1.5rem;
+  color: #00ffff; /* Neon Cyan */
+  text-shadow: 0 0 5px #00ffff;
+  letter-spacing: 0.2em;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.futuristic-text {
+  color: #a0a0a0;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.futuristic-button {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px #00ffff, inset 0 0 5px #00ffff;
+}
+
+.futuristic-button:hover {
+  background-color: #00ffff;
+  color: #0a0a0a;
+  box-shadow: 0 0 20px #00ffff;
+  text-shadow: none;
+}

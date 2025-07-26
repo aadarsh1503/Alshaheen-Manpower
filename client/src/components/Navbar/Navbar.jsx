@@ -132,7 +132,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <a href="https://www.talentportal.bh/#pills-home" target="_blank" className="bg-red-600 text-white lg:text-md  font-semibold hover:text-DarkRed outline hover:outline-Darkred hover:bg-white mt-0 px-4 py-2 rounded">
+        <a href="/apply" className="bg-red-600 text-white lg:text-md  font-semibold hover:text-DarkRed outline hover:outline-Darkred hover:bg-white mt-0 px-4 py-2 rounded">
           Click Here To Register
         </a>
       </div>
