@@ -120,49 +120,69 @@ app.get('/api/vacancies', async (req, res) => {
 // === MODIFIED: Admin API Routes for Vacancies (Authentication Removed) ===
 
 // GET all vacancies for the admin panel
-app.get('/api/admin/vacancies', async (req, res) => { // <-- authenticateAdmin removed
-    try {
+// GET all vacancies (for admin)
+app.get('/api/admin/vacancies', async (req, res) => {
+  console.log("GET /api/admin/vacancies called");
+  
+  try {
       const [vacancies] = await pool.execute(
-        'SELECT id, subject, imageUrl, createdAt FROM vacancies ORDER BY id DESC'
+          'SELECT id, subject, imageUrl, createdAt FROM vacancies ORDER BY id DESC'
       );
+      
+      console.log("Fetched vacancies:", vacancies.length, "records");
       res.json(vacancies);
-    } catch (error) {
-      console.error('Error fetching vacancies for admin:', error);
+  } catch (error) {
+      console.error('❌ Error fetching vacancies for admin:', error);
       res.status(500).json({ message: 'Server error' });
-    }
+  }
 });
+
 
 // POST a new vacancy
-app.post('/api/admin/vacancies', upload.single('image'), async (req, res) => { // <-- authenticateAdmin removed
-    const { subject } = req.body;
-    const file = req.file;
+// POST a new vacancy
+app.post('/api/admin/vacancies', upload.single('image'), async (req, res) => {
+  console.log("POST /api/admin/vacancies called");
+  
+  const { subject } = req.body;
+  const file = req.file;
 
-    if (!subject || !file) {
-        return res.status(400).json({ message: 'Subject and image are required.' });
-    }
+  console.log("Request body subject:", subject);
+  console.log("Uploaded file:", file?.originalname || "No file received");
 
-    try {
-        const imageKitResult = await imagekit.upload({
-            file: file.buffer,
-            fileName: file.originalname,
-            folder: "vacancies",
-        });
+  if (!subject || !file) {
+      console.warn("⚠️ Missing subject or file in request");
+      return res.status(400).json({ message: 'Subject and image are required.' });
+  }
 
-        const [result] = await pool.execute(
-            'INSERT INTO vacancies (subject, imageUrl, imageFileId) VALUES (?, ?, ?)',
-            [subject, imageKitResult.url, imageKitResult.fileId]
-        );
+  try {
+      console.log("Uploading image to ImageKit...");
 
-        res.status(201).json({
-            id: result.insertId,
-            subject,
-            imageUrl: imageKitResult.url
-        });
-    } catch (error) {
-        console.error('Error creating vacancy:', error);
-        res.status(500).json({ message: 'Failed to create vacancy' });
-    }
+      const imageKitResult = await imagekit.upload({
+          file: file.buffer,
+          fileName: file.originalname,
+          folder: "vacancies",
+      });
+
+      console.log("✅ Image uploaded:", imageKitResult.url);
+
+      const [result] = await pool.execute(
+          'INSERT INTO vacancies (subject, imageUrl, imageFileId) VALUES (?, ?, ?)',
+          [subject, imageKitResult.url, imageKitResult.fileId]
+      );
+
+      console.log("✅ Vacancy inserted with ID:", result.insertId);
+
+      res.status(201).json({
+          id: result.insertId,
+          subject,
+          imageUrl: imageKitResult.url
+      });
+  } catch (error) {
+      console.error('❌ Error creating vacancy:', error);
+      res.status(500).json({ message: 'Failed to create vacancy' });
+  }
 });
+
 
 app.put('/api/admin/vacancies/:id', upload.single('image'), async (req, res) => {
     const { id } = req.params;
