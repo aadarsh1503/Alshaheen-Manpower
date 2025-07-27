@@ -81,7 +81,7 @@ function App() {
         </Route>
 
         {/* Standalone routes (like login, signup, dashboard) without the main layout */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/alshaheen-pro-login" element={<Login />} />
         <Route path="/signup-gvs3245" element={<Signup />} />
         <Route
           path="/dashboard"

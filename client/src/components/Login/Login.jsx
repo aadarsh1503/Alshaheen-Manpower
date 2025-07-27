@@ -98,7 +98,7 @@ const Login = () => {
 
           <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 text-center">
             <p className="text-xs text-gray-500">
-              &copy; {new Date().getFullYear()} Global Vision Solutions. All rights reserved.
+              &copy; {new Date().getFullYear()} Alshaheen Manpower. All rights reserved.
             </p>
           </div>
         </div>

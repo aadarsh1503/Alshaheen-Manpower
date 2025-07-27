@@ -64,7 +64,7 @@ const Filters = ({ filters, setFilters, darkMode, clearAllFilters }) => {
         <h2 className={`text-lg font-semibold text-gray-800 ${darkMode ? 'text-white' : 'text-gray-800'}`}>Filters</h2>
         <button
           onClick={clearAllFilters}
-          className="text-sm text-indigo-600 cursor-pointer hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+          className="text-sm text-[#FF0000] cursor-pointer hover:text-[#ff000069] "
         >
           Clear all
         </button>
@@ -144,7 +144,7 @@ const Filters = ({ filters, setFilters, darkMode, clearAllFilters }) => {
 
       <button
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="mt-4 text-sm text-indigo-600 cursor-pointer hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 flex items-center"
+        className="mt-4 text-sm text-[#FF0000] cursor-pointer hover:text-[#ff000095]  flex items-center"
       >
         {showAdvanced ? 'Hide' : 'Show'} advanced filters
         <svg

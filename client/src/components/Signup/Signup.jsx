@@ -36,7 +36,7 @@ const Signup = () => {
         setIsSuccess(true);
         setMessage('Account created successfully! Redirecting to login...');
         setTimeout(() => {
-          navigate('/login');
+          navigate('/alshaheen-pro-login');
         }, 2000);
       } else {
         setIsSuccess(false);
@@ -206,7 +206,7 @@ const Signup = () => {
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
               <button 
-                onClick={() => navigate('/login')} 
+                onClick={() => navigate('/alshaheen-pro-login')} 
                 className="font-medium text-emerald-600 hover:text-emerald-500"
               >
                 Sign in

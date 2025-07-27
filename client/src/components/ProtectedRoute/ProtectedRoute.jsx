@@ -5,7 +5,7 @@ const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
 
   if (!token) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/alshaheen-pro-login" replace />;
   }
 
   try {
@@ -15,12 +15,12 @@ const ProtectedRoute = ({ children }) => {
     if (decoded.exp < currentTime) {
       localStorage.removeItem('adminToken');
       alert("Session expired. Please login again.");
-      return <Navigate to="/login" replace />;
+      return <Navigate to="/alshaheen-pro-login" replace />;
     }
   } catch (error) {
     console.error('Invalid token:', error);
     localStorage.removeItem('adminToken');
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/alshaheen-pro-login" replace />;
   }
 
   return children;

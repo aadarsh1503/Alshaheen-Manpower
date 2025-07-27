@@ -22,7 +22,8 @@ const Dashboard = () => {
 
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem('darkMode');
-    return savedMode ? JSON.parse(savedMode) : window.matchMedia('(prefers-color-scheme: dark)').matches;
+   
+    return savedMode ? JSON.parse(savedMode) : false; 
   });
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -225,7 +226,7 @@ const Dashboard = () => {
     if (!value) return null;
     return (
       <p className={`mt-1 text-sm font-noto-serif ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-        <strong className={darkMode ? 'text-indigo-400' : 'text-indigo-600'}>{label}:</strong> {value}
+        <strong className={darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}>{label}:</strong> {value}
       </p>
     );
   };
@@ -610,7 +611,7 @@ const Dashboard = () => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+        className="flex items-center space-x-2 px-4 py-2 bg-[#FF0000] text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
       >
         <FiBriefcase size={18} />
         <span>Vacancy Manager</span>
@@ -618,7 +619,7 @@ const Dashboard = () => {
     </Link>
     {/* === END OF NEW BUTTON === */}
 
-    <Toggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+    {/* <Toggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} /> */}
   </div>
 </div>
 
@@ -630,7 +631,7 @@ const Dashboard = () => {
         />
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
             {[...Array(6)].map((_, idx) => (
               <Skeleton key={idx} darkMode={darkMode} />
             ))}
@@ -645,8 +646,8 @@ const Dashboard = () => {
                 <button 
                   onClick={fetchEntries}
                   className={`px-3 py-1 cursor-pointer text-xs rounded-full transition-colors ${
-                    darkMode ? 'bg-indigo-900 text-indigo-200 hover:bg-indigo-800' 
-                    : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+                    darkMode ? 'bg-red-100 text-indigo-200 hover:bg-indigo-800' 
+                    : 'bg-red-100 text-[#FF0000] hover:bg-indigo-200'
                   }`}
                 >
                   Refresh
@@ -709,7 +710,7 @@ const Dashboard = () => {
                 {/* No results message */}
               </motion.div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
                 <AnimatePresence>
                   {filteredEntries.map((entry) => (
                     <motion.div
@@ -726,9 +727,9 @@ const Dashboard = () => {
                       <div className="p-5">
                         <div className="flex items-start">
                           <div className={`flex-shrink-0 h-12 w-12 rounded-full flex items-center justify-center ${
-                            darkMode ? 'bg-indigo-900' : 'bg-indigo-100'
+                            darkMode ? 'bg-indigo-900' : 'bg-red-50'
                           }`}>
-                            <span className={darkMode ? 'text-indigo-300' : 'text-indigo-600'}>
+                            <span className={darkMode ? 'text-indigo-300' : 'text-[#FF0000]'}>
                               {entry.fullName?.charAt(0) || '?'}
                             </span>
                           </div>
@@ -749,13 +750,13 @@ const Dashboard = () => {
                           
                           {entry.skills && (
                             <div className="mt-2">
-                              <p className={`text-xs ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>SKILLS</p>
+                              <p className={`text-xs ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>SKILLS</p>
                               <div className="flex flex-wrap gap-1 mt-1">
                                 {entry.skills.split(',').slice(0, 3).map((skill, i) => (
                                   <span 
                                     key={i} 
                                     className={`text-xs px-2 py-1 rounded-full ${
-                                      darkMode ? 'bg-indigo-900/50 text-indigo-300' : 'bg-indigo-50 text-indigo-700'
+                                      darkMode ? 'bg-indigo-900/50 text-[#FF0000]' : 'bg-indigo-50 text-black'
                                     }`}
                                   >
                                     {skill.trim()}
@@ -782,7 +783,7 @@ const Dashboard = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`text-xs flex items-center ${
-                                  darkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-800'
+                                  darkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-[#FF0000] hover:text-[#ff0000aa]'
                                 }`}
                               >
                                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -797,9 +798,9 @@ const Dashboard = () => {
                           </div>
                           <button
                             onClick={() => openModal(entry)}
-                            className="px-4 py-2 cursor-pointer bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors"
+                            className="px-4 py-2 cursor-pointer bg-[#FF0000] text-white text-sm rounded-lg hover:bg-[#ff0000c1] transition-colors"
                           >
-                            View Now
+                            View
                           </button>
                         </div>
                       </div>
@@ -844,9 +845,9 @@ const Dashboard = () => {
                 <div className="p-8">
                   <div className="flex items-start">
                     <div className={`flex-shrink-0 h-20 w-20 rounded-full flex items-center justify-center ${
-                      darkMode ? 'bg-indigo-900' : 'bg-indigo-100'
+                      darkMode ? 'bg-indigo-900' : 'bg-red-50'
                     }`}>
-                      <span className={`text-2xl ${darkMode ? 'text-indigo-300' : 'text-indigo-600'}`}>
+                      <span className={`text-2xl ${darkMode ? 'text-red-50' : ' text-[#FF0000]'}`}>
                         {selectedEntry.fullName?.charAt(0) || '?'}
                       </span>
                     </div>
@@ -855,8 +856,8 @@ const Dashboard = () => {
                         {selectedEntry.fullName || 'No Name'}
                       </h2>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        <span className={`px-3 py-1 text-xs rounded-full ${
-                          darkMode ? 'bg-blue-900 text-blue-200' : 'bg-blue-100 text-blue-800'
+                        <span className={`px-3 py-1 text-sm rounded-full ${
+                          darkMode ? 'bg-blue-900 text-blue-200' : 'bg-red-50 text-[#FF0000]'
                         }`}>
                           {selectedEntry.nationality}
                         </span>
@@ -883,7 +884,7 @@ const Dashboard = () => {
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                        <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                        <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                           Personal Details
                         </h3>
                         {renderField('Email', selectedEntry.email)}
@@ -899,7 +900,7 @@ const Dashboard = () => {
                       </div>
 
                       <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                        <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                        <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                           Identification
                         </h3>
                         {renderField('CPR/National ID', selectedEntry.cprNationalId)}
@@ -910,7 +911,7 @@ const Dashboard = () => {
 
                     <div className="space-y-4">
                     <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-  <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+  <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
     Education & Employment
   </h3>
   {renderField('Education Level', selectedEntry.educationLevel)}
@@ -930,7 +931,7 @@ const Dashboard = () => {
 
                       {selectedEntry.skills && (
                         <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                          <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                          <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                             Skills
                           </h3>
                           <div className="flex flex-wrap gap-2">
@@ -938,7 +939,7 @@ const Dashboard = () => {
                               <span 
                                 key={i} 
                                 className={`px-3 py-1 rounded-full text-sm ${
-                                  darkMode ? 'bg-indigo-900/50 text-indigo-300' : 'bg-indigo-50 text-indigo-700'
+                                  darkMode ? 'bg-indigo-900/50 text-indigo-300' : 'bg-indigo-50 text-black'
                                 }`}
                               >
                                 {skill.trim()}
@@ -953,7 +954,7 @@ const Dashboard = () => {
                   {/* References Section */}
                   {(selectedEntry.ref1Name || selectedEntry.ref2Name || selectedEntry.ref3Name) && (
                     <div className={`mt-6 p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                         References
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -988,7 +989,7 @@ const Dashboard = () => {
                   {/* Additional Info */}
                   <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                         Visa & Salary
                       </h3>
                       {renderField('Visa Status', selectedEntry.visaStatus)}
@@ -997,7 +998,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                      <h3 className={`font-semibold text-lg mb-3 ${darkMode ? 'text-[#FF0000]' : 'text-[#FF0000]'}`}>
                         Strategy
                       </h3>
                       {renderField('Client Leads Strategy', selectedEntry.clientLeadsStrategy)}
@@ -1007,7 +1008,7 @@ const Dashboard = () => {
         <div className="mt-6 flex justify-center">
           <button
             onClick={() => setShowPDF(true)}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
+            className="px-6 py-3 bg-[#FF0000] text-white rounded-lg hover:bg-[#ff0000af] transition-colors flex items-center"
           >
             <svg
               className="w-5 h-5 mr-2"

@@ -7,7 +7,7 @@ const AdminNavbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
-    navigate('/login');
+    navigate('/alshaheen-pro-login');
   };
 
   const openConfirmation = () => {
