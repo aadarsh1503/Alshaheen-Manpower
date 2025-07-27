@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const PersonalInfoStep = ({ formData, errors, handleChange }) => {
   const [countries, setCountries] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
@@ -41,7 +41,7 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
       // Detect user's country code for phone input default
       const fetchCountryCode = async () => {
         try {
-          const response = await fetch('https://gvs-application-form-1.onrender.com/ipapi');
+          const response = await fetch(`${baseUrl}/ipapi`);
           const data = await response.json();
           if (data.countryCode) {
             setDefaultCountry(data.countryCode.toLowerCase());
