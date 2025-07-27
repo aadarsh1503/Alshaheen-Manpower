@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,7 @@ const Login = () => {
 
 
     try {
-      const res = await fetch('https://alshaheen-manpower.onrender.com/admin/login', {
+      const res = await fetch(`${baseUrl}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

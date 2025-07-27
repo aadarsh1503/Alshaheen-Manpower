@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 // --- [NEW] --- Import the cropping library and its CSS
 import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -416,7 +416,7 @@ const VacancyManager = () => {
   const fetchVacancies = async () => {
     try {
       const response = await axios.get(
-        "https://alshaheen-manpower.onrender.com/api/admin/vacancies"
+        `${baseUrl}/api/admin/vacancies`
       );
       setVacancies(response.data);
     } catch (err) {
@@ -468,12 +468,12 @@ const VacancyManager = () => {
     await toast.promise(
       (isEditing
         ? axios.put(
-            `https://alshaheen-manpower.onrender.com/api/admin/vacancies/${id}`,
+            `${baseUrl}/api/admin/vacancies/${id}`,
             formData,
             config
           )
         : axios.post(
-            "https://alshaheen-manpower.onrender.com/api/admin/vacancies",
+            `${baseUrl}/api/admin/vacancies`,
             formData,
             config
           )
@@ -499,7 +499,7 @@ const VacancyManager = () => {
     await toast.promise(
       axios
         .delete(
-          `https://alshaheen-manpower.onrender.com/api/admin/vacancies/${id}`
+          `${baseUrl}/api/admin/vacancies/${id}`
         )
         .then(() => {
           fetchVacancies();

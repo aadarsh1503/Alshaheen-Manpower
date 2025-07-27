@@ -8,7 +8,7 @@ import AdminNavbar from '../../AdminNavbar/AdminNavbar';
 import { FiDownload } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { FiBriefcase } from 'react-icons/fi';
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const Dashboard = () => {
   const [entries, setEntries] = useState([]);
   const [filteredEntries, setFilteredEntries] = useState([]);
@@ -55,7 +55,7 @@ const Dashboard = () => {
   const fetchEntries = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('https://alshaheen-manpower.onrender.com/admin/form-entries');
+      const response = await axios.get(`${baseUrl}/admin/form-entries`);
       setEntries(response.data);
       setFilteredEntries(response.data);
     } catch (err) {

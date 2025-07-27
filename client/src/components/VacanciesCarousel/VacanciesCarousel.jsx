@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const VacanciesCarousel = () => {
   const [vacancies, setVacancies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +11,7 @@ const VacanciesCarousel = () => {
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get('https://alshaheen-manpower.onrender.com/api/vacancies');
+        const response = await axios.get(`${baseUrl}/api/vacancies`);
         setVacancies(response.data);
       } catch (err) {
         setError('Could not load vacancies at this time.');

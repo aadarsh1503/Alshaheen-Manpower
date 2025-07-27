@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLocation } from 'react-router-dom';
 import '../../app.css';
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const MultiStepForm = () => {
   const { pathname } = useLocation();
  
@@ -419,7 +419,7 @@ const MultiStepForm = () => {
         if (file) formDataToSend.append('file', file);
 
        
-        const response = await fetch('https://alshaheen-manpower.onrender.com/submit-form', {
+        const response = await fetch(`${baseUrl}/submit-form`, {
             method: 'POST',
             body: formDataToSend,
         });

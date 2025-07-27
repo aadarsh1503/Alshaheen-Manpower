@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // Custom CSS (if you have it)
 import './r.css'; // Assuming this file exists and contains the animation styles
-
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const RecruitmentDays = () => {
   // --- STATE MANAGEMENT ---
   const [jobs, setJobs] = useState([]); // State to hold formatted data
