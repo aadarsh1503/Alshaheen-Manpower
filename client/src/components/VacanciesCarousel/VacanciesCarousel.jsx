@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+// src/components/VacanciesCarousel/VacanciesCarousel.js
+
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom'; // 1. Import Link from react-router-dom
+
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const VacanciesCarousel = () => {
+  // ... (all your state and useEffect hooks remain exactly the same)
   const [vacancies, setVacancies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchVacancies = async () => {
@@ -23,21 +32,27 @@ const VacanciesCarousel = () => {
     fetchVacancies();
   }, []);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (vacancies.length <= 1) return;
     setDirection(-1);
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? vacancies.length - 1 : prevIndex - 1));
-  };
+  }, [vacancies.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (vacancies.length <= 1) return;
     setDirection(1);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % vacancies.length);
-  };
-  
+  }, [vacancies.length]);
+
+  useEffect(() => {
+    if (!isHovered && vacancies.length > 1) {
+      const slideInterval = setInterval(handleNext, 3000);
+      return () => clearInterval(slideInterval);
+    }
+  }, [currentIndex, isHovered, handleNext, vacancies.length]);
+
+
+  // ... (isLoading and error sections remain the same)
   if (isLoading) {
     return (
       <div className="w-full bg-white py-12 px-4 flex justify-center items-center h-[450px]">
@@ -58,11 +73,10 @@ const VacanciesCarousel = () => {
       </div>
     );
   }
-
-  // === FIX: Handle visible images logic correctly for 1 or more items ===
+  
   const visibleImages = vacancies.length > 1
     ? [vacancies[currentIndex], vacancies[(currentIndex + 1) % vacancies.length]]
-    : [vacancies[0]]; // If only one vacancy, show only that one.
+    : [vacancies[0]];
 
   const variants = {
     enter: (direction) => ({ x: direction > 0 ? 300 : -300, opacity: 0, scale: 0.95, position: 'absolute' }),
@@ -83,9 +97,10 @@ const VacanciesCarousel = () => {
           <div className="p-6 text-4xl font-raleway text-white mb-6 bg-lightgreen text-center">Current Vacancies</div>
           <div className="flex flex-col items-center space-y-6">
             {vacancies.map((item, index) => (
-              <a key={item.id || index} href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(item.subject)}`} className="w-full max-w-[356px] h-auto">
+              // 2. Change 'a' to 'Link' and 'href' to 'to'
+              <Link key={item.id || index} to="/apply" className="w-full max-w-[356px] h-auto">
                 <img src={item.imageUrl} alt={item.subject} className="w-full h-auto object-cover rounded-lg shadow-md" />
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -102,20 +117,22 @@ const VacanciesCarousel = () => {
                 animate="center"
                 exit="exit"
                 transition={transition}
-                className="absolute top-0 left-0 w-full flex justify-center gap-4" // Use justify-center for single item
+                className="absolute top-0 left-0 w-full flex justify-center gap-4"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
                 {visibleImages.map((item) => (
                   item && (
-                    <a key={item.id} href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(item.subject)}`} className="w-[356px] h-[338px] flex-shrink-0">
+                    // 3. Change 'a' to 'Link' and 'href' to 'to' here as well
+                    <Link key={item.id} to="/apply" className="w-[356px] h-[338px] flex-shrink-0">
                       <img src={item.imageUrl} alt={item.subject} className="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-500 ease-in-out transform hover:scale-105" />
-                    </a>
+                    </Link>
                   )
                 ))}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Buttons - Only show if more than 1 vacancy */}
           {vacancies.length > 1 && (
             <div className="flex space-x-4 ml-0 lg:ml-[596px] mt-4">
               <button onClick={handlePrev} className="bg-white rounded-full shadow-lg p-2 hover:bg-gray-200"><BsChevronLeft className="text-gray-600" size={24} /></button>

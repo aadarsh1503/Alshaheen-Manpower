@@ -72,7 +72,7 @@ const itemVariants = {
   },
 };
 
-const Hero = () => {
+const Hero = ({ onFindJobClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -82,6 +82,7 @@ const Hero = () => {
 
     return () => clearInterval(interval);
   }, []);
+
 
   const handleDotClick = (index) => {
     setCurrentIndex(index);
@@ -151,7 +152,7 @@ const Hero = () => {
                 </button>
                 <button
                   className="bg-transparent border-2 border-white text-white px-8 py-3 font-raleway font-semibold hover:bg-white hover:text-black transition-colors duration-300"
-                  onClick={() => window.open("https://www.talentportal.bh/#pills-home", "_blank")}
+                  onClick={onFindJobClick} // Use the prop here
                 >
                   FIND A JOB
                 </button>
