@@ -96,10 +96,10 @@ const RecruitmentDays = () => {
             </div>
             <div className="mt-6 text-center">
               <h3 className="text-xl font-bold text-gray-800">{activeJob.subject}</h3>
-              <a 
-                href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(activeJob.subject)}`} 
-                target="_blank"
-                rel="noopener noreferrer"
+              <a href='/apply'
+                // href={`mailto:Hire@alshaheen.pro?subject=${encodeURIComponent(activeJob.subject)}`} 
+               
+
                 className="inline-block mt-4 bg-DarkRed text-white font-bold py-3 px-10 rounded-full transition-all duration-300 hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transform hover:-translate-y-1"
               >
                 Apply Now
