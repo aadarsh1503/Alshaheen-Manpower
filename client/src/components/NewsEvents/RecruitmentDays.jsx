@@ -15,7 +15,7 @@ const RecruitmentDays = () => {
     const fetchJobs = async () => {
       try {
         // Fetch data from your API endpoint
-        const response = await fetch('https://alshaheen-manpower.onrender.com/api/admin/vacancies'); 
+        const response = await fetch(`${baseUrl}/api/vacancies`); 
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

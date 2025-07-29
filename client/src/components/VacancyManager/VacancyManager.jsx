@@ -15,24 +15,15 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-// --- [NEW] --- Import the cropping library and its CSS
 import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
-//==================================================================================
-// NOTE: This is a single, self-contained component file.
-// It includes all previous features PLUS:
-// - A more compact grid layout (smaller columns).
-// - A search bar to filter vacancies by subject.
-// - A sort dropdown to order vacancies by date or subject.
-//==================================================================================
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // --- [INTERNAL] --- Admin Navbar Component (Unchanged)
 const AdminNavbar = ({ onLogoutClick, darkMode, toggleDarkMode }) => {
   return (
     <div className="flex flex-col w-20 xl:w-64 bg-gray-900 text-gray-200 p-4 border-r border-gray-700/50">
-      {/* Header */}
       <div className="flex items-center justify-center xl:justify-start gap-3 mb-10 h-12">
         <motion.div
           className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center"
@@ -45,11 +36,8 @@ const AdminNavbar = ({ onLogoutClick, darkMode, toggleDarkMode }) => {
           V-MANAGER
         </h1>
       </div>
-
-      {/* Nav Items */}
       <nav className="flex-grow ">
         <ul>
-          <li className="relative"></li>
           <a href="/dashboard">
             <li className="relative">
               <button className="w-full flex mt-4 justify-center xl:justify-start items-center gap-4 py-3 px-3 rounded-lg bg-red-600/30 text-white font-semibold border border-red-500/50 shadow-inner shadow-red-900/50">
@@ -60,16 +48,7 @@ const AdminNavbar = ({ onLogoutClick, darkMode, toggleDarkMode }) => {
           </a>
         </ul>
       </nav>
-
-      {/* Footer Actions */}
       <div className="mt-auto space-y-2">
-        {/* <button 
-                    onClick={toggleDarkMode}
-                    className="w-full flex justify-center xl:justify-start items-center gap-4 py-3 px-3 rounded-lg text-gray-400 hover:bg-gray-700/50 hover:text-white transition-colors"
-                >
-                    {darkMode ? <Sun size={22} /> : <Moon size={22}/>}
-                    <span className="hidden xl:block">{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
-                </button> */}
         <button
           onClick={onLogoutClick}
           className="w-full flex justify-center xl:justify-start items-center gap-4 py-3 px-3 rounded-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors"
@@ -169,8 +148,14 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("subject", subject);
-    if (croppedImageBlob)
-      formData.append("image", croppedImageBlob, "cropped-image.jpg");
+    // If the user is editing but hasn't selected a new image, don't append one.
+    // The backend will know to only update the subject.
+    if (croppedImageBlob) {
+        formData.append("image", croppedImageBlob, "cropped-image.jpg");
+    } else if (!vacancy) { // If creating new, image is required
+        toast.error("An image is required to create a new vacancy.");
+        return;
+    }
     await onSave(formData, vacancy?.id);
   };
 
@@ -214,7 +199,7 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
                         darkMode ? "text-gray-300" : "text-gray-700"
                       }`}
                     >
-                      Cover Image (16:9)
+                      Cover Image (16:9 aspect ratio)
                     </label>
                     <input
                       type="file"
@@ -256,7 +241,7 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
                             darkMode ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          Upload an image to crop
+                          {vacancy ? 'Current image is used. Upload a new one to replace it.' : 'Upload an image to crop'}
                         </p>
                       )}
                     </div>
@@ -276,7 +261,7 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
                         id="subject"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        className={`w-full p-3 rounded-lg transition-colors ${
+                        className={`w-full p-3 rounded-lg transition-colors border ${
                           darkMode
                             ? "bg-gray-700 text-white border-gray-600 focus:border-indigo-500 focus:ring-indigo-500"
                             : "bg-gray-100 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
@@ -388,17 +373,14 @@ const LogoutConfirmationModal = ({ isOpen, onConfirm, onCancel, darkMode }) => {
   );
 };
 
-// --- [MAIN COMPONENT - HEAVILY MODIFIED] --- Vacancy Manager with Search and Sort
+// --- [MAIN COMPONENT - MODIFIED FOR AUTHENTICATION] ---
 const VacancyManager = () => {
   const [vacancies, setVacancies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVacancy, setEditingVacancy] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
-  // --- [NEW] State for search and sort ---
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("date_desc"); // default sort
-
+  const [sortBy, setSortBy] = useState("date_desc");
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : true;
@@ -413,14 +395,39 @@ const VacancyManager = () => {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
+  // ✅ MODIFIED: Function to handle expired tokens and redirect
+  const handleAuthError = (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        toast.error("Session expired. Please log in again.");
+        localStorage.removeItem("adminToken");
+        navigate("/alshaheen-pro-login");
+    } else {
+        // For other errors, just show the toast
+        throw error;
+    }
+  };
+
   const fetchVacancies = async () => {
+    // ✅ ADDED: Get token from storage
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+        navigate("/alshaheen-pro-login");
+        return;
+    }
+
     try {
       const response = await axios.get(
-        `${baseUrl}/api/admin/vacancies`
+        `${baseUrl}/api/admin/vacancies`, {
+            // ✅ ADDED: Authorization header
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
       );
       setVacancies(response.data);
     } catch (err) {
-      toast.error("Failed to fetch vacancies.");
+      handleAuthError(err); // Use the centralized error handler
+      if (!err.response || (err.response.status !== 401 && err.response.status !== 403)) {
+          toast.error("Failed to fetch vacancies.");
+      }
     }
   };
 
@@ -428,26 +435,18 @@ const VacancyManager = () => {
     fetchVacancies();
   }, []);
 
-  // --- [NEW] Memoized filtering and sorting logic ---
   const filteredAndSortedVacancies = useMemo(() => {
     let processedVacancies = [...vacancies].filter((vacancy) =>
       vacancy.subject.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
     processedVacancies.sort((a, b) => {
       switch (sortBy) {
-        case "date_asc":
-          return new Date(a.createdAt) - new Date(b.createdAt);
-        case "subject_asc":
-          return a.subject.localeCompare(b.subject);
-        case "subject_desc":
-          return b.subject.localeCompare(a.subject);
-        case "date_desc":
-        default:
-          return new Date(b.createdAt) - new Date(a.createdAt);
+        case "date_asc": return new Date(a.createdAt) - new Date(b.createdAt);
+        case "subject_asc": return a.subject.localeCompare(b.subject);
+        case "subject_desc": return b.subject.localeCompare(a.subject);
+        case "date_desc": default: return new Date(b.createdAt) - new Date(a.createdAt);
       }
     });
-
     return processedVacancies;
   }, [vacancies, searchQuery, sortBy]);
 
@@ -463,20 +462,25 @@ const VacancyManager = () => {
 
   const handleSave = async (formData, id) => {
     const isEditing = !!id;
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    // ✅ ADDED: Get token from storage
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+        navigate("/alshaheen-pro-login");
+        return;
+    }
+    
+    // ✅ ADDED: Authorization header to config
+    const config = { 
+        headers: { 
+            "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${token}`
+        } 
+    };
 
     await toast.promise(
       (isEditing
-        ? axios.put(
-            `${baseUrl}/api/admin/vacancies/${id}`,
-            formData,
-            config
-          )
-        : axios.post(
-            `${baseUrl}/api/admin/vacancies`,
-            formData,
-            config
-          )
+        ? axios.put(`${baseUrl}/api/admin/vacancies/${id}`, formData, config)
+        : axios.post(`${baseUrl}/api/admin/vacancies`, formData, config)
       ).then(() => {
         setIsModalOpen(false);
         fetchVacancies();
@@ -484,30 +488,38 @@ const VacancyManager = () => {
       {
         loading: "Saving vacancy...",
         success: `Vacancy ${isEditing ? "updated" : "created"} successfully!`,
-        error: (err) => `Failed to ${isEditing ? "update" : "create"} vacancy.`,
+        error: (err) => {
+            handleAuthError(err);
+            return `Failed to ${isEditing ? "update" : "create"} vacancy.`;
+        },
       }
     );
   };
 
   const handleDelete = async (id) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to permanently delete this vacancy?"
-      )
-    )
-      return;
+    if (!window.confirm("Are you sure you want to permanently delete this vacancy?")) return;
+    
+    // ✅ ADDED: Get token from storage
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+        navigate("/alshaheen-pro-login");
+        return;
+    }
+    
     await toast.promise(
-      axios
-        .delete(
-          `${baseUrl}/api/admin/vacancies/${id}`
-        )
-        .then(() => {
+      axios.delete(`${baseUrl}/api/admin/vacancies/${id}`, {
+            // ✅ ADDED: Authorization header
+            headers: { 'Authorization': `Bearer ${token}` }
+      }).then(() => {
           fetchVacancies();
         }),
       {
         loading: "Deleting vacancy...",
         success: "Vacancy deleted successfully!",
-        error: "Failed to delete vacancy.",
+        error: (err) => {
+            handleAuthError(err);
+            return "Failed to delete vacancy.";
+        },
       }
     );
   };
@@ -566,15 +578,12 @@ const VacancyManager = () => {
             >
               Vacancy Manager
             </motion.h1>
-
-            {/* --- [NEW] Filter and Action Controls --- */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               className="flex items-center gap-2 md:gap-4 w-full md:w-auto"
             >
-              {/* Search Bar */}
               <div className="relative flex-grow md:flex-grow-0">
                 <Search
                   className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${
@@ -593,8 +602,6 @@ const VacancyManager = () => {
                   }`}
                 />
               </div>
-
-              {/* Sort Dropdown */}
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -609,7 +616,6 @@ const VacancyManager = () => {
                 <option value="subject_asc">Subject (A-Z)</option>
                 <option value="subject_desc">Subject (Z-A)</option>
               </select>
-
               <motion.button
                 onClick={handleOpenAddModal}
                 whileHover={{ scale: 1.05 }}
@@ -621,10 +627,8 @@ const VacancyManager = () => {
               </motion.button>
             </motion.div>
           </div>
-
           {filteredAndSortedVacancies.length > 0 ? (
             <motion.div
-              // --- [MODIFIED] More compact grid layout ---
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
               initial="hidden"
               animate="visible"
@@ -645,8 +649,6 @@ const VacancyManager = () => {
                   }`}
                 >
                   <div className="overflow-hidden h-40">
-                    {" "}
-                    {/* Reduced height for smaller cards */}
                     <img
                       src={vacancy.imageUrl}
                       alt={vacancy.subject}

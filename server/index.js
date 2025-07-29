@@ -13,26 +13,26 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// --- Middleware Setup ---
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// ImageKit configuration
+// --- ImageKit Configuration ---
 const imagekit = new ImageKit({
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
 });
 
-// Multer memory storage for file uploads
+// --- Multer Configuration (for file uploads) ---
 const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
-// MySQL connection pool
+// --- MySQL Connection Pool ---
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -45,66 +45,49 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
-// Verify pool connection
+// Verify pool connection on startup
 pool.getConnection()
   .then(connection => {
-    console.log('Connected to MySQL');
+    console.log('✅ Successfully connected to MySQL database.');
     connection.release();
   })
   .catch(err => {
-    console.error('Database connection failed:', err);
+    console.error('❌ Database connection failed:', err);
     process.exit(1);
   });
 
-// File download endpoint
-app.get('/download-file', async (req, res) => {
-  try {
-    const { url, filename } = req.query;
-    if (!url) return res.status(400).send('File URL required');
-    
-    let contentType = 'application/octet-stream';
-    let extension = '';
-    
-    if (filename) {
-      extension = path.extname(filename).toLowerCase();
-    } else {
-      const urlPath = new URL(url).pathname;
-      extension = path.extname(urlPath).toLowerCase();
-    }
+// =================================================================
+// ✨ SECURITY: AUTHENTICATION MIDDLEWARE ✨
+// This function protects our admin routes by verifying a JWT.
+// =================================================================
+const authenticateAdmin = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  // The token is expected in the format: "Bearer <TOKEN>"
+  const token = authHeader && authHeader.split(' ')[1];
 
-    switch(extension) {
-      case '.pdf':
-        contentType = 'application/pdf';
-        break;
-      case '.doc':
-        contentType = 'application/msword';
-        break;
-      case '.docx':
-        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        break;
-      case '.jpg':
-      case '.jpeg':
-        contentType = 'image/jpeg';
-        break;
-      case '.png':
-        contentType = 'image/png';
-        break;
-    }
-
-    res.setHeader('Content-Type', contentType);
-    
-    if (filename) {
-      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    } else {
-      res.setHeader('Content-Disposition', `attachment; filename="file${extension}"`);
-    }
-
-    return res.redirect(url);
-  } catch (error) {
-    
-    res.status(500).send('Error downloading file');
+  if (token == null) {
+    // 401 Unauthorized: The request lacks valid authentication credentials.
+    return res.status(401).json({ message: 'No token provided, authorization denied.' });
   }
-});
+
+  jwt.verify(token, process.env.JWT_SECRET || 'your_secret', (err, user) => {
+    if (err) {
+      // 403 Forbidden: The server understands the request but refuses to authorize it.
+      // This happens if the token is expired or invalid.
+      console.error('JWT Verification Error:', err.message);
+      return res.status(403).json({ message: 'Token is not valid.' });
+    }
+    // If the token is valid, attach the decoded user payload to the request object
+    req.user = user;
+    next(); // Proceed to the next middleware or the route handler
+  });
+};
+
+// =================================================================
+// 🔓 PUBLIC API ROUTES (No Authentication Needed)
+// =================================================================
+
+// GET public vacancies for the main website carousel
 app.get('/api/vacancies', async (req, res) => {
   try {
     const [vacancies] = await pool.execute(
@@ -112,175 +95,107 @@ app.get('/api/vacancies', async (req, res) => {
     );
     res.json(vacancies);
   } catch (error) {
-    console.error('Error fetching vacancies:', error);
+    console.error('Error fetching public vacancies:', error);
     res.status(500).json({ message: 'Error fetching vacancies' });
   }
 });
 
-// === MODIFIED: Admin API Routes for Vacancies (Authentication Removed) ===
-
-// GET all vacancies for the admin panel
-// GET all vacancies (for admin)
-app.get('/api/admin/vacancies', async (req, res) => {
-  console.log("GET /api/admin/vacancies called");
-  
-  try {
-      const [vacancies] = await pool.execute(
-          'SELECT id, subject, imageUrl, createdAt FROM vacancies ORDER BY id DESC'
-      );
-      
-      console.log("Fetched vacancies:", vacancies.length, "records");
-      res.json(vacancies);
-  } catch (error) {
-      console.error('❌ Error fetching vacancies for admin:', error);
-      res.status(500).json({ message: 'Server error' });
+// POST a new form entry from a job applicant
+app.post('/submit-form', upload.single('file'), async (req, res) => {
+  // Helper to convert empty strings to NULL for the database
+  function normalizeEmptyFields(obj) {
+    const result = {};
+    for (const key in obj) {
+      result[key] = obj[key] === '' ? null : obj[key];
+    }
+    return result;
   }
-});
 
-
-// POST a new vacancy
-// POST a new vacancy
-app.post('/api/admin/vacancies', upload.single('image'), async (req, res) => {
-  console.log("POST /api/admin/vacancies called");
-  
-  const { subject } = req.body;
+  const data = normalizeEmptyFields(req.body);
   const file = req.file;
 
-  console.log("Request body subject:", subject);
-  console.log("Uploaded file:", file?.originalname || "No file received");
-
-  if (!subject || !file) {
-      console.warn("⚠️ Missing subject or file in request");
-      return res.status(400).json({ message: 'Subject and image are required.' });
-  }
-
+  let connection;
   try {
-      console.log("Uploading image to ImageKit...");
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
 
-      const imageKitResult = await imagekit.upload({
-          file: file.buffer,
-          fileName: file.originalname,
-          folder: "vacancies",
+    let fileUrl = null;
+    let fileType = null;
+    let originalFilename = null;
+
+    if (file) {
+      originalFilename = file.originalname;
+      fileType = file.mimetype;
+
+      const result = await imagekit.upload({
+        file: file.buffer,
+        fileName: originalFilename,
+        folder: "job_applications",
+        useUniqueFileName: true // Use true to avoid overwriting files with the same name
       });
+      fileUrl = result.url;
+    }
 
-      console.log("✅ Image uploaded:", imageKitResult.url);
+    const [columns] = await connection.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'form_entries' AND TABLE_SCHEMA = DATABASE()`);
+    const columnNames = columns.map(col => col.COLUMN_NAME);
+    const hasOriginalFilenameCol = columnNames.includes('originalFilename');
 
-      const [result] = await pool.execute(
-          'INSERT INTO vacancies (subject, imageUrl, imageFileId) VALUES (?, ?, ?)',
-          [subject, imageKitResult.url, imageKitResult.fileId]
-      );
+    // Define all possible columns that can come from the form
+    const allPossibleColumns = ['email', 'fullName', 'dateOfBirth', 'gender', 'nationality', 'mobileContact', 'whatsapp', 'currentAddress', 'postalCode', 'city', 'country', 'cprNationalId', 'passportId', 'passportValidity', 'educationLevel', 'courseDegree', 'currentlyEmployed', 'employmentDesired', 'yearsOfExperience', 'availableStart', 'shiftAvailable', 'canTravel', 'drivingLicense', 'skills', 'ref1Name', 'ref1Contact', 'ref1Email', 'ref2Name', 'ref2Contact', 'ref2Email', 'ref3Name', 'ref3Contact', 'ref3Email', 'visaStatus', 'visaValidity', 'expectedSalary', 'clientLeadsStrategy', 'resumeFile', 'fileType'];
+    if (hasOriginalFilenameCol) {
+        allPossibleColumns.push('originalFilename');
+    }
+    
+    // Filter to only include columns that actually exist in the table
+    const validColumns = allPossibleColumns.filter(col => columnNames.includes(col));
+    
+    const placeholders = validColumns.map(() => '?').join(', ');
+    const sql = `INSERT INTO form_entries (${validColumns.join(', ')}) VALUES (${placeholders})`;
 
-      console.log("✅ Vacancy inserted with ID:", result.insertId);
+    // Map form data to the valid columns
+    const values = validColumns.map(col => {
+        if (col === 'resumeFile') return fileUrl;
+        if (col === 'fileType') return fileType;
+        if (col === 'originalFilename') return originalFilename;
+        return data[col] || null;
+    });
 
-      res.status(201).json({
-          id: result.insertId,
-          subject,
-          imageUrl: imageKitResult.url
-      });
-  } catch (error) {
-      console.error('❌ Error creating vacancy:', error);
-      res.status(500).json({ message: 'Failed to create vacancy' });
+    await connection.query(sql, values);
+    await connection.commit();
+    res.status(200).send('Form submitted successfully!');
+  } catch (err) {
+    if (connection) await connection.rollback();
+    console.error('Error saving form data:', err);
+    res.status(500).send('Error saving data');
+  } finally {
+    if (connection) connection.release();
   }
 });
 
 
-app.put('/api/admin/vacancies/:id', upload.single('image'), async (req, res) => {
-    const { id } = req.params;
-    const { subject } = req.body;
-    const file = req.file;
+// =================================================================
+// 🔑 AUTHENTICATION ROUTES (For Admin Login/Signup)
+// =================================================================
 
-    if (!subject) {
-        return res.status(400).json({ message: 'Subject is required.' });
-    }
-
-    try {
-        const connection = await pool.getConnection();
-
-        // If a new file is uploaded, we need to update the image
-        if (file) {
-            // 1. Get the old imageFileId to delete it from ImageKit later
-            const [currentVacancy] = await connection.execute('SELECT imageFileId FROM vacancies WHERE id = ?', [id]);
-            if (currentVacancy.length === 0) {
-                connection.release();
-                return res.status(404).json({ message: 'Vacancy not found' });
-            }
-            const oldImageFileId = currentVacancy[0].imageFileId;
-
-            // 2. Upload the new image to ImageKit
-            const newImageResult = await imagekit.upload({
-                file: file.buffer,
-                fileName: file.originalname,
-                folder: "vacancies",
-            });
-
-            // 3. Update the database with new subject, imageUrl, and imageFileId
-            await connection.execute(
-                'UPDATE vacancies SET subject = ?, imageUrl = ?, imageFileId = ? WHERE id = ?',
-                [subject, newImageResult.url, newImageResult.fileId, id]
-            );
-
-            // 4. Delete the old image from ImageKit
-            if (oldImageFileId) {
-                await imagekit.deleteFile(oldImageFileId);
-            }
-
-        } else {
-            // If no new file, just update the subject
-            await connection.execute(
-                'UPDATE vacancies SET subject = ? WHERE id = ?',
-                [subject, id]
-            );
-        }
-
-        connection.release();
-        res.status(200).json({ message: 'Vacancy updated successfully.' });
-
-    } catch (error) {
-        console.error('Error updating vacancy:', error);
-        res.status(500).json({ message: 'Failed to update vacancy.' });
-    }
-});
-// DELETE a vacancy
-app.delete('/api/admin/vacancies/:id', async (req, res) => { // <-- authenticateAdmin removed
-    const { id } = req.params;
-    try {
-        const [rows] = await pool.execute('SELECT imageFileId FROM vacancies WHERE id = ?', [id]);
-        if (rows.length === 0) {
-            return res.status(404).json({ message: 'Vacancy not found' });
-        }
-        const { imageFileId } = rows[0];
-        
-        await imagekit.deleteFile(imageFileId);
-        await pool.execute('DELETE FROM vacancies WHERE id = ?', [id]);
-        
-        res.status(200).json({ message: 'Vacancy deleted successfully' });
-    } catch (error) {
-        console.error(`Error deleting vacancy ${id}:`, error);
-        res.status(500).json({ message: 'Failed to delete vacancy' });
-    }
-});
-
-// Admin authentication routes
+// Admin signup (can be disabled or protected after initial setup)
 app.post('/admin/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const [result] = await pool.execute(
-      'INSERT INTO admin_users (email, password) VALUES (?, ?)',
-      [email, hashedPassword]
-    );
-    res.status(201).json({ message: 'Admin user registered' });
+    await pool.execute('INSERT INTO admin_users (email, password) VALUES (?, ?)', [email, hashedPassword]);
+    res.status(201).json({ message: 'Admin user registered successfully' });
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ message: 'User already exists' });
+      return res.status(409).json({ message: 'An admin with this email already exists' });
     }
-    
-    res.status(500).json({ message: 'Server error' });
+    console.error('Admin signup error:', err);
+    res.status(500).json({ message: 'Server error during signup' });
   }
 });
 
+// Admin login
 app.post('/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -295,32 +210,98 @@ app.post('/admin/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET || 'your_secret',
-      { expiresIn: '1h' }
+      { expiresIn: '8h' } // Increased token expiration time
     );
     res.json({ token });
   } catch (err) {
-    
+    console.error('Admin login error:', err);
+    res.status(500).json({ message: 'Server error during login' });
+  }
+});
+
+
+// =================================================================
+// 🔒 SECURED ADMIN API ROUTES (Authentication Required)
+// =================================================================
+
+// GET all vacancies for the admin panel
+app.get('/api/admin/vacancies', authenticateAdmin, async (req, res) => {
+  try {
+    const [vacancies] = await pool.execute('SELECT id, subject, imageUrl, imageFileId, createdAt FROM vacancies ORDER BY id DESC');
+    res.json(vacancies);
+  } catch (error) {
+    console.error('Error fetching admin vacancies:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Form entries route with column existence check
-app.get('/admin/form-entries', async (req, res) => {
-  try {
-    // First check if the column exists
-    const [columns] = await pool.execute(`
-      SELECT COLUMN_NAME 
-      FROM INFORMATION_SCHEMA.COLUMNS 
-      WHERE TABLE_NAME = 'form_entries' 
-      AND COLUMN_NAME = 'originalFilename'
-    `);
+// POST a new vacancy
+app.post('/api/admin/vacancies', authenticateAdmin, upload.single('image'), async (req, res) => {
+  const { subject } = req.body;
+  const file = req.file;
 
+  if (!subject || !file) {
+    return res.status(400).json({ message: 'Subject and image are required.' });
+  }
+  try {
+    const imageKitResult = await imagekit.upload({ file: file.buffer, fileName: file.originalname, folder: "vacancies" });
+    const [result] = await pool.execute('INSERT INTO vacancies (subject, imageUrl, imageFileId) VALUES (?, ?, ?)', [subject, imageKitResult.url, imageKitResult.fileId]);
+    res.status(201).json({ id: result.insertId, subject, imageUrl: imageKitResult.url });
+  } catch (error) {
+    console.error('Error creating vacancy:', error);
+    res.status(500).json({ message: 'Failed to create vacancy' });
+  }
+});
+
+// PUT (update) a vacancy
+app.put('/api/admin/vacancies/:id', authenticateAdmin, upload.single('image'), async (req, res) => {
+  const { id } = req.params;
+  const { subject } = req.body;
+  const file = req.file;
+  if (!subject) return res.status(400).json({ message: 'Subject is required.' });
+
+  try {
+    if (file) {
+      const [currentVacancy] = await pool.execute('SELECT imageFileId FROM vacancies WHERE id = ?', [id]);
+      const oldImageFileId = currentVacancy.length > 0 ? currentVacancy[0].imageFileId : null;
+      const newImageResult = await imagekit.upload({ file: file.buffer, fileName: file.originalname, folder: "vacancies" });
+      await pool.execute('UPDATE vacancies SET subject = ?, imageUrl = ?, imageFileId = ? WHERE id = ?', [subject, newImageResult.url, newImageResult.fileId, id]);
+      if (oldImageFileId) await imagekit.deleteFile(oldImageFileId).catch(err => console.error("Old ImageKit file delete failed:", err));
+    } else {
+      await pool.execute('UPDATE vacancies SET subject = ? WHERE id = ?', [subject, id]);
+    }
+    res.status(200).json({ message: 'Vacancy updated successfully.' });
+  } catch (error) {
+    console.error(`Error updating vacancy ${id}:`, error);
+    res.status(500).json({ message: 'Failed to update vacancy.' });
+  }
+});
+
+// DELETE a vacancy
+app.delete('/api/admin/vacancies/:id', authenticateAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await pool.execute('SELECT imageFileId FROM vacancies WHERE id = ?', [id]);
+    if (rows.length === 0) return res.status(404).json({ message: 'Vacancy not found' });
+    
+    if (rows[0].imageFileId) {
+        await imagekit.deleteFile(rows[0].imageFileId).catch(err => console.error("ImageKit file delete failed:", err));
+    }
+    await pool.execute('DELETE FROM vacancies WHERE id = ?', [id]);
+    res.status(200).json({ message: 'Vacancy deleted successfully' });
+  } catch (error) {
+    console.error(`Error deleting vacancy ${id}:`, error);
+    res.status(500).json({ message: 'Failed to delete vacancy' });
+  }
+});
+
+// GET all form entries for the admin dashboard with filtering
+app.get('/admin/form-entries', authenticateAdmin, async (req, res) => {
+  try {
+    const [columns] = await pool.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'form_entries' AND COLUMN_NAME = 'originalFilename'`);
     const hasOriginalFilename = columns.length > 0;
     
-    let baseQuery = hasOriginalFilename 
-      ? 'SELECT *, originalFilename FROM form_entries'
-      : 'SELECT * FROM form_entries';
-      
+    let baseQuery = hasOriginalFilename ? 'SELECT *, originalFilename FROM form_entries' : 'SELECT * FROM form_entries';
     const conditions = [];
     const values = [];
 
@@ -540,56 +521,37 @@ app.post('/submit-form', upload.single('file'), async (req, res) => {
 
 app.get('/ipapi', async (req, res) => {
   try {
-    let clientIP =
-      req.headers['x-forwarded-for']?.split(',')[0] ||
-      req.connection?.remoteAddress ||
-      req.socket?.remoteAddress ||
-      req.connection?.socket?.remoteAddress;
-
-    // fallback if localhost (dev mode)
-    if (clientIP === '::1' || clientIP === '127.0.0.1') {
-      clientIP = '8.8.8.8';
-    }
-
-   
-
+    let clientIP = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || '8.8.8.8';
+    if (['::1', '127.0.0.1'].includes(clientIP)) clientIP = '8.8.8.8'; // Fallback for local dev
     const { data } = await axios.get(`https://freeipapi.com/api/json/${clientIP}`);
-    
-
     res.json(data);
   } catch (err) {
-   
+    console.error('IP API Error:', err.message);
     res.status(500).json({ error: 'Failed to fetch IP info' });
   }
 });
 
-// ImageKit authentication endpoint (for client-side uploads if needed)
+// ImageKit authentication endpoint (for client-side uploads if ever needed)
 app.get('/imagekit-auth', (req, res) => {
   try {
-    const authenticationParameters = imagekit.getAuthenticationParameters();
-    res.json(authenticationParameters);
+    res.json(imagekit.getAuthenticationParameters());
   } catch (err) {
-    
+    console.error('ImageKit auth error:', err);
     res.status(500).send('Error generating auth parameters');
   }
 });
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  pool.getConnection()
-    .then(connection => {
-      connection.release();
-      res.status(200).json({ status: 'healthy', database: 'connected' });
-    })
-    .catch(err => {
-      res.status(500).json({ status: 'unhealthy', database: 'disconnected' });
-    });
+  pool.query('SELECT 1')
+    .then(() => res.status(200).json({ status: 'healthy', database: 'connected' }))
+    .catch(err => res.status(500).json({ status: 'unhealthy', database: 'disconnected', error: err.message }));
 });
 
+// Root endpoint
 app.get('/', (req, res) => {
-  res.send('Server is working!');
+  res.send('Alshaheen Manpower API Server is running!');
 });
-
 // Error handling middleware
 app.use((err, req, res, next) => {
 

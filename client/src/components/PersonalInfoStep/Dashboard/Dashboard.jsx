@@ -54,12 +54,34 @@ const Dashboard = () => {
 
   const fetchEntries = async () => {
     setLoading(true);
+    const token = localStorage.getItem('adminToken');
+
+    // If no token exists, redirect to login page immediately
+    if (!token) {
+      toast.error("Access denied. Please log in.");
+      navigate("/alshaheen-pro-login"); // Use the correct login route
+      return;
+    }
+
     try {
-      const response = await axios.get(`${baseUrl}/admin/form-entries`);
+      const response = await axios.get(`${baseUrl}/admin/form-entries`, {
+        headers: {
+          // Send the token for authorization
+          'Authorization': `Bearer ${token}`
+        }
+      });
       setEntries(response.data);
       setFilteredEntries(response.data);
     } catch (err) {
       console.error('Failed to fetch entries:', err);
+      // Handle expired or invalid token
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        toast.error("Session expired. Please log in again.");
+        localStorage.removeItem('adminToken');
+        navigate("/alshaheen-pro-login");
+      } else {
+        toast.error("Failed to fetch candidate data.");
+      }
     } finally {
       setLoading(false);
     }
