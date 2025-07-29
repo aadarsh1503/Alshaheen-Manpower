@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import Filters from '../../Filters/Filters';
 import Skeleton from '../../Skeleton/Skeleton';
@@ -64,7 +65,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await axios.get(`${baseUrl}/admin/form-entries`, {
+      const response = await axios.get(`${baseUrl}/api/admin/form-entries`, {
         headers: {
           // Send the token for authorization
           'Authorization': `Bearer ${token}`
