@@ -424,7 +424,7 @@ const VacancyManager = () => {
       );
       setVacancies(response.data);
     } catch (err) {
-      handleAuthError(err); // Use the centralized error handler
+      handleAuthError(err);
       if (!err.response || (err.response.status !== 401 && err.response.status !== 403)) {
           toast.error("Failed to fetch vacancies.");
       }
