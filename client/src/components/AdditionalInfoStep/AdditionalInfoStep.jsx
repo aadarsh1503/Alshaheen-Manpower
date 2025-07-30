@@ -105,7 +105,7 @@ const AdditionalInfoStep = ({
         <div className="flex flex-col items-center justify-center">
           <FaUpload className="text-3xl text-[#3B82F6] mb-2" />
           <p className="text-sm text-gray-600 mb-2">
-            Upload 1 supported file: PDF, document, or image. Max 10 MB.
+            Upload 1 supported file: PDF, document, or image. Max 2 MB.
           </p>
           <label className="cursor-pointer bg-[#3B82F6] text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors duration-300">
             Choose File

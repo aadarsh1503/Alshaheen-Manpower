@@ -70,7 +70,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-// --- Vacancy Modal with Image Cropping --- (Unchanged)
+// --- Vacancy Modal with Image Cropping --- (MODIFIED)
 const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
   const [subject, setSubject] = useState("");
   const [imgSrc, setImgSrc] = useState("");
@@ -94,16 +94,30 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
     }
   }, [vacancy, isOpen]);
 
+  // ✅ --- [MODIFICATION START] --- THIS FUNCTION IS UPDATED --- ✅
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
+
+      // Check if the file size exceeds the limit
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error("Image size cannot exceed 2MB.");
+        e.target.value = null; // Clear the selected file
+        return; // Stop the function
+      }
+
+      // If the file is valid, proceed with reading it
       setCrop(undefined);
       const reader = new FileReader();
       reader.addEventListener("load", () =>
         setImgSrc(reader.result?.toString() || "")
       );
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   }
+  // ✅ --- [MODIFICATION END] --- ✅
+
 
   function onImageLoad(e) {
     const { width, height } = e.currentTarget;
@@ -199,7 +213,7 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
                         darkMode ? "text-gray-300" : "text-gray-700"
                       }`}
                     >
-                      Cover Image (16:9 aspect ratio)
+                      Cover Image (16:9 aspect ratio, max 2MB)
                     </label>
                     <input
                       type="file"
@@ -373,7 +387,7 @@ const LogoutConfirmationModal = ({ isOpen, onConfirm, onCancel, darkMode }) => {
   );
 };
 
-// --- [MAIN COMPONENT - MODIFIED FOR AUTHENTICATION] ---
+// --- [MAIN COMPONENT] --- (Unchanged)
 const VacancyManager = () => {
   const [vacancies, setVacancies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -395,20 +409,17 @@ const VacancyManager = () => {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  // ✅ MODIFIED: Function to handle expired tokens and redirect
   const handleAuthError = (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
         toast.error("Session expired. Please log in again.");
         localStorage.removeItem("adminToken");
         navigate("/alshaheen-pro-login");
     } else {
-        // For other errors, just show the toast
         throw error;
     }
   };
 
   const fetchVacancies = async () => {
-    // ✅ ADDED: Get token from storage
     const token = localStorage.getItem("adminToken");
     if (!token) {
         navigate("/alshaheen-pro-login");
@@ -418,7 +429,6 @@ const VacancyManager = () => {
     try {
       const response = await axios.get(
         `${baseUrl}/api/admin/vacancies`, {
-            // ✅ ADDED: Authorization header
             headers: { 'Authorization': `Bearer ${token}` }
         }
       );
@@ -462,14 +472,12 @@ const VacancyManager = () => {
 
   const handleSave = async (formData, id) => {
     const isEditing = !!id;
-    // ✅ ADDED: Get token from storage
     const token = localStorage.getItem("adminToken");
     if (!token) {
         navigate("/alshaheen-pro-login");
         return;
     }
     
-    // ✅ ADDED: Authorization header to config
     const config = { 
         headers: { 
             "Content-Type": "multipart/form-data",
@@ -499,7 +507,6 @@ const VacancyManager = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to permanently delete this vacancy?")) return;
     
-    // ✅ ADDED: Get token from storage
     const token = localStorage.getItem("adminToken");
     if (!token) {
         navigate("/alshaheen-pro-login");
@@ -508,7 +515,6 @@ const VacancyManager = () => {
     
     await toast.promise(
       axios.delete(`${baseUrl}/api/admin/vacancies/${id}`, {
-            // ✅ ADDED: Authorization header
             headers: { 'Authorization': `Bearer ${token}` }
       }).then(() => {
           fetchVacancies();

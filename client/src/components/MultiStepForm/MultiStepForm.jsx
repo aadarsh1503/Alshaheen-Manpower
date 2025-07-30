@@ -207,41 +207,43 @@ const MultiStepForm = () => {
 
   const handleFileChange = (e) => {
      
-      const selectedFile = e.target.files[0];
-      if (selectedFile) {
-          if (selectedFile.size > 10 * 1024 * 1024) {
-             
-              setFileError('File size must be less than 10 MB');
-              setFile(null);
-              toast.error("📁 File too big! Max 10MB allowed.", {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                  style: { backgroundColor: '#FEE2E2', color: '#B91C1C' }
-              });
-          } else {
-             
-              setFile(selectedFile);
-              setFileError('');
-              toast.success("📄 File uploaded successfully!", {
-                  position: "top-right",
-                  autoClose: 3000,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "colored",
-                  style: { backgroundColor: '#D1FAE5', color: '#065F46' }
-              });
-          }
-      }
-  };
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+        // Changed 10 to 2 for the 2 MB limit
+        if (selectedFile.size > 2 * 1024 * 1024) { 
+           
+            // Updated the error message to reflect the new limit
+            setFileError('File size must be less than 2 MB'); 
+            setFile(null);
+            toast.error("📁 File too big! Max 2MB allowed.", { // Also updated this toast message
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                style: { backgroundColor: '#FEE2E2', color: '#B91C1C' }
+            });
+        } else {
+           
+            setFile(selectedFile);
+            setFileError('');
+            toast.success("📄 File selected successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                style: { backgroundColor: '#D1FAE5', color: '#065F46' }
+            });
+        }
+    }
+};
 
   const validateStep = (step) => {
    

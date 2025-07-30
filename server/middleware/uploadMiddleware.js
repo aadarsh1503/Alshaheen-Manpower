@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-/**
+/*
  * 
  * @param {object} req 
  * @param {object} file 
