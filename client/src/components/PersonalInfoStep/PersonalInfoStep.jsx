@@ -2,12 +2,13 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
+// const baseUrl = import.meta.env.VITE_API_BASE_URL; // This is no longer needed for the IP lookup
+
 const PersonalInfoStep = ({ formData, errors, handleChange }) => {
   const [countries, setCountries] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
-  const [defaultCountry, setDefaultCountry] = useState('us');
+  const [defaultCountry, setDefaultCountry] = useState('us'); // Default to 'us' initially
   const [nationalitySuggestions, setNationalitySuggestions] = useState([]);
   const [showNationalitySuggestions, setShowNationalitySuggestions] = useState(false);
   const [countrySuggestions, setCountrySuggestions] = useState([]);
@@ -16,9 +17,9 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
   const locationInputRef = useRef(null);
 
 
-    // Fetch country data for both nationality and country fields
+    // Fetch country data and detect user's location
     useEffect(() => {
-      // Fetch country data for nationality and country fields
+      // Fetch country list for nationality and country dropdowns
       fetch('https://restcountries.com/v3.1/all?fields=name')
         .then(res => res.json())
         .then(data => {
@@ -38,24 +39,25 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
           setCountries([]);
         });
     
-      // Detect user's country code for phone input default
-      const fetchCountryCode = async () => {
+      // Detect user's country code for phone input default using ipapi.co
+      const fetchUserCountry = async () => {
         try {
-          const response = await fetch(`${baseUrl}/ipapi`);
+          const response = await fetch('https://ipapi.co/json/');
           const data = await response.json();
-          if (data.countryCode) {
-            setDefaultCountry(data.countryCode.toLowerCase());
+          // ipapi.co provides 'country_code' (e.g., "US", "IN")
+          if (data && data.country_code) {
+            setDefaultCountry(data.country_code.toLowerCase());
           } else {
-            setDefaultCountry('us');
+            setDefaultCountry('bh'); // Fallback to 'bh' (Bahrain) if detection fails
           }
         } catch (error) {
-          console.error("Error fetching country code:", error);
-          setDefaultCountry('us');
+          console.error("Error fetching user's country:", error);
+          setDefaultCountry('bh'); // Fallback to 'bh' (Bahrain) on error
         }
       };
-    
-      fetchCountryCode();
-    }, []);
+      
+      fetchUserCountry();
+    }, []); // Empty dependency array ensures this runs only once on mount
     
 
   const fetchLocationSuggestions = async (query, type) => {
@@ -66,8 +68,7 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
 
     setIsFetchingLocation(true);
     try {
-      // Using LocationIQ API for global location suggestions
-      // Note: Replace with your actual API key in production
+      // NOTE: Replace 'YOUR_API_KEY' with your actual LocationIQ API key
       let url = `https://api.locationiq.com/v1/autocomplete.php?key=pk.YOUR_API_KEY&q=${query}&limit=5`;
       
       const response = await fetch(url);
@@ -84,17 +85,14 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
       setShowLocationSuggestions(true);
     } catch (error) {
       console.error('Error fetching location suggestions:', error);
-      // Fallback mock data
+      // Fallback mock data for demonstration
       setLocationSuggestions([
         { city: 'New York', postalCode: '10001', country: 'United States', countryCode: 'us' },
         { city: 'London', postalCode: 'SW1A', country: 'United Kingdom', countryCode: 'gb' },
         { city: 'Paris', postalCode: '75000', country: 'France', countryCode: 'fr' },
-        { city: 'Tokyo', postalCode: '100-0001', country: 'Japan', countryCode: 'jp' },
-        { city: 'Sydney', postalCode: '2000', country: 'Australia', countryCode: 'au' }
       ].filter(item => 
-        type === 'city' ? item.city.toLowerCase().includes(query.toLowerCase()) :
-        type === 'postalCode' ? item.postalCode.toLowerCase().includes(query.toLowerCase()) :
-        item.country.toLowerCase().includes(query.toLowerCase())
+        (item.city && item.city.toLowerCase().includes(query.toLowerCase())) ||
+        (item.country && item.country.toLowerCase().includes(query.toLowerCase()))
       ));
       setShowLocationSuggestions(true);
     } finally {
@@ -228,32 +226,32 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
         </div>
       
         <div>
-  <label className="block text-sm font-semibold text-gray-800 mb-2">Gender</label>
-  <div className="flex gap-6">
-    {['male', 'female'].map((option) => (
-      <label
-        key={option}
-        className={`cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg border transition duration-200
-          ${
-            formData.gender === option
-              ? 'bg-blue-100 border-blue-500 text-blue-700'
-              : 'bg-white border-gray-300 hover:border-blue-400'
-          }`}
-      >
-        <input
-          type="radio"
-          name="gender"
-          value={option}
-          checked={formData.gender === option}
-          onChange={handleChange}
-          className="form-radio text-blue-600 focus:ring-0"
-        />
-        <span className="capitalize font-medium">{option}</span>
-      </label>
-    ))}
-  </div>
-  {errors.gender && <p className="text-red-500 text-xs mt-2">{errors.gender}</p>}
-</div>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">Gender</label>
+          <div className="flex gap-6">
+            {['male', 'female'].map((option) => (
+              <label
+                key={option}
+                className={`cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg border transition duration-200
+                  ${
+                    formData.gender === option
+                      ? 'bg-blue-100 border-blue-500 text-blue-700'
+                      : 'bg-white border-gray-300 hover:border-blue-400'
+                  }`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value={option}
+                  checked={formData.gender === option}
+                  onChange={handleChange}
+                  className="form-radio text-blue-600 focus:ring-0"
+                />
+                <span className="capitalize font-medium">{option}</span>
+              </label>
+            ))}
+          </div>
+          {errors.gender && <p className="text-red-500 text-xs mt-2">{errors.gender}</p>}
+        </div>
 
         
         <div>
@@ -298,12 +296,12 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
             }}
             inputStyle={{
               width: '100%',
-              height: '40px',
+              height: '42px',
               border: '1px solid #D1D5DB',
+              borderRadius: '0.5rem',
               color: '#4B5563',
             }}
-            containerClass={errors.mobileContact ? 'border-red-500' : ''}
-            buttonClass={errors.mobileContact ? 'border-red-500' : ''}
+            containerClass={errors.mobileContact ? 'phone-input-error' : ''}
           />
           {errors.mobileContact && <p className="text-red-500 text-xs mt-1">{errors.mobileContact}</p>}
         </div>
@@ -320,12 +318,12 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
             }}
             inputStyle={{
               width: '100%',
-              height: '40px',
+              height: '42px',
               border: '1px solid #D1D5DB',
+              borderRadius: '0.5rem',
               color: '#4B5563',
             }}
-            containerClass={errors.whatsapp ? 'border-red-500' : ''}
-            buttonClass={errors.whatsapp ? 'border-red-500' : ''}
+            containerClass={errors.whatsapp ? 'phone-input-error' : ''}
           />
           {errors.whatsapp && <p className="text-red-500 text-xs mt-1">{errors.whatsapp}</p>}
         </div>
@@ -415,7 +413,6 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
         </div>
       </div>
 
-      {/* Location suggestions dropdown (shared for city and postal code fields) */}
       {showLocationSuggestions && locationSuggestions.length > 0 && (
         <ul className="z-10 bg-white border border-gray-300 w-full mt-1 rounded max-h-60 overflow-auto shadow-lg">
           {locationSuggestions.map((suggestion, idx) => (
