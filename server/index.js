@@ -14,28 +14,33 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// --- CORS Configuration ---
+
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://gvs-services.vercel.app',
-  'https://alshaheen.pro'
+  'http://localhost:5173',          
+  'https://gvs-services.vercel.app',  
+  'https://alshaheen.pro'         
 ];
 
+// Create the CORS options object
 const corsOptions = {
   origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+    
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: 'GET,POST,PUT,DELETE,PATCH,HEAD,OPTIONS',
-  credentials: true
+  credentials: true, 
+  optionsSuccessStatus: 200 // For legacy browser support
 };
 
-// --- Global Middleware ---
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
+
+app.use(cors(corsOptions)); 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -61,10 +66,12 @@ app.get('/', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  // Check if the error is a CORS error
   if (err.message === 'Not allowed by CORS') {
-    console.error('CORS Blocked Request from:', req.headers.origin);
-    res.status(403).json({ error: 'This origin is not authorized to access this resource.' });
+    console.warn(`CORS Blocked: A request from origin '${req.header('origin')}' was blocked.`);
+    res.status(403).json({ message: 'This origin is not authorized to access this resource.' });
   } else {
+    // Handle other server errors
     console.error(err.stack);
     res.status(500).send('Internal Server Error');
   }
