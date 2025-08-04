@@ -202,6 +202,9 @@ const Navbar = () => {
         </div>
       )}
     </div>
+    <a href="/apply" className="bg-red-600 text-white lg:text-md  font-semibold hover:text-DarkRed outline hover:outline-Darkred hover:bg-white mt-0 px-4 py-2 rounded">
+          Click Here To Register
+        </a>
         </ul>
       </div>
     </nav>
