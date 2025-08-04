@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useNavigate } from "react-router-dom"; // ✅ Correct import
 // Import your images
 import i1 from "./i1.jpg";
 import i2 from "./i2.jpg";
@@ -74,7 +74,7 @@ const itemVariants = {
 
 const Hero = ({ onFindJobClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData.length);
@@ -141,22 +141,24 @@ const Hero = ({ onFindJobClick }) => {
 
               {/* Button Group: Aligned to the end (right) of the content block on large screens */}
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-end"
-                variants={itemVariants}
-              >
-                <button
-                  className="bg-lightgreen text-white px-8 py-3 font-raleway font-semibold hover:bg-DarkRed transition-colors duration-300"
-                  onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
-                >
-                  FIND TALENT
-                </button>
-                <button
-                  className="bg-transparent border-2 border-white text-white px-8 py-3 font-raleway font-semibold hover:bg-white hover:text-black transition-colors duration-300"
-                  onClick={onFindJobClick} // Use the prop here
-                >
-                  FIND A JOB
-                </button>
-              </motion.div>
+  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-end"
+  variants={itemVariants}
+>
+  <button
+    className="bg-lightgreen text-white px-8 py-3 font-raleway font-semibold hover:bg-DarkRed transition-colors duration-300"
+    onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
+  >
+    FIND TALENT
+  </button>
+  
+  <button
+    className="bg-transparent border-2 border-white text-white px-8 py-3 font-raleway font-semibold hover:bg-white hover:text-black transition-colors duration-300"
+    onClick={() => window.location.href = '/apply'}
+  >
+    FIND A JOB
+  </button>
+</motion.div>
+
 
               {/* Google Review - Aligned with content block */}
               {currentSlide.googleSrc && (

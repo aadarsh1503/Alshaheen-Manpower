@@ -4,15 +4,37 @@ import BrochureSection from "../BrochureSection/BrochureSection";
 import RecruitmentDays from "./RecruitmentDays";
 import Life from "./Life";
 import NewsEventsCarousel from "../NewsEventsCarousel/NewsEventsCarousel";
-import i11 from "./i11.png"
+import i11 from "./i11.png";
 
+// Framer Motion Variants for staggered animations
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+      delayChildren: 0.4,
+    },
+  },
+};
 
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+    },
+  },
+};
 
 const NewsEvents = () => {
   const images = [
     {
       src: i11,
-      alt: "Image 1",
+      alt: "AL SHAHEEN MANPOWER News & Events",
       text: "NEWS & EVENTS",
       description:
         "Recent news and updates from AL SHAHEEN MANPOWER on company <br /> activities and job openings.",
@@ -21,92 +43,76 @@ const NewsEvents = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex]);
-
-  const handleDotClick = (index) => {
-    setCurrentIndex(index);
-  };
-
   return (
     <div>
-      <div
-        className="relative w-full h-[400px] lg:h-[500px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${images[currentIndex].src})` }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-30"></div>
-
-        {/* Content Wrapper with Framer Motion */}
+      <div className="relative w-full h-[550px] lg:h-[600px] overflow-hidden">
+        {/* Background Image with Slow Zoom (Ken Burns Effect) */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
           key={currentIndex}
-          className="relative z-10 flex flex-col lg:flex-row items-center px-4 lg:px-8 py-8 lg:py-16 text-white"
-        >
-          <div className="w-full lg:w-1/2 font-raleway max-w-3xl lg:mt-24 lg:ml-32 text-center lg:text-left">
-            <motion.h1
-              className="text-3xl lg:text-5xl font-bold mb-2 lg:mb-4 leading-tight"
-              dangerouslySetInnerHTML={{ __html: images[currentIndex].text }}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            />
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${images[currentIndex].src})` }}
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 6, ease: [0.43, 0.13, 0.23, 0.96] }}
+        />
 
-            {/* Red Line */}
-            <motion.div
-              className="h-1 lg:h-2 w-16 bg-lightgreen mb-4 lg:mb-6 mx-auto lg:mx-0"
-              initial={{ width: 0 }}
-              animate={{ width: "4rem" }}
-              transition={{ duration: 0.6 }}
-            ></motion.div>
+        {/* Futuristic Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
-            <motion.p
-              className="text-sm lg:text-lg mb-4 lg:mb-6 break-words"
-              dangerouslySetInnerHTML={{ __html: images[currentIndex].description }}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }}
-            />
-
-            {images[currentIndex].googleSrc && (
-              <motion.img
-                src={images[currentIndex].googleSrc}
-                alt="Google Reviews"
-                className="mx-auto mb-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-              />
-            )}
-          </div>
-        </motion.div>
-
-        {/* Buttons */}
+        {/* --- CONTENT WRAPPER ---
+            This is now a flex column that pushes content to the bottom (`justify-end`) */}
         <motion.div
-          className="absolute top-2/4 lg:top-2/3 right-24 lg:ml-0  transform translate-x-1/2 lg:right-96 lg:translate-x-0 space-x-4 z-10 flex flex-col lg:flex-row items-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          className="relative z-10 flex h-full flex-col justify-end p-8 pb-12 text-white lg:pb-24"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed mb-2 lg:mb-0 lg:mr-4">
-            FIND TALENT
-          </button>
-          <button className="bg-lightgreen text-white px-4 py-2 lg:px-6 lg:py-3 font-raleway hover:bg-DarkRed ">
-            FIND A JOB
-          </button>
+          {/* --- TEXT BLOCK (Aligned Left) --- */}
+          <motion.div
+            className="w-full max-w-2xl text-center font-raleway lg:ml-16 lg:text-left"
+            variants={itemVariants}
+          >
+            <h1
+              className="text-4xl font-bold leading-tight lg:text-6xl"
+              dangerouslySetInnerHTML={{ __html: images[currentIndex].text }}
+            />
+            <div className="my-4 h-1 w-20 bg-lightgreen lg:my-6 mx-auto lg:mx-0" />
+            <p
+              className="mb-8 text-base lg:text-lg break-words"
+              dangerouslySetInnerHTML={{ __html: images[currentIndex].description }}
+            />
+          </motion.div>
+
+          {/* --- BUTTON BLOCK (Aligned Center) --- */}
+          <motion.div
+            className="flex w-full flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            variants={itemVariants}
+          >
+            <motion.button
+              className="w-full sm:w-auto bg-lightgreen px-8 py-3 font-semibold font-raleway tracking-wide uppercase text-white transition-colors duration-300 hover:bg-DarkRed focus:outline-none focus:ring-2 focus:ring-lightgreen focus:ring-opacity-50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Find Talent
+            </motion.button>
+            
+            <motion.a
+              href="/apply"
+              className="w-full sm:w-auto bg-lightgreen px-8 py-3 text-center font-semibold font-raleway tracking-wide uppercase text-white transition-colors duration-300 hover:bg-DarkRed focus:outline-none focus:ring-2 focus:ring-lightgreen focus:ring-opacity-50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Find a Job
+            </motion.a>
+          </motion.div>
         </motion.div>
       </div>
-<RecruitmentDays />
-<NewsEventsCarousel />
-<Life />
-<BrochureSection />
+
+      {/* The rest of your page components remain the same */}
+      <RecruitmentDays />
+      <NewsEventsCarousel />
+      <Life />
+      <BrochureSection />
     </div>
   );
 };

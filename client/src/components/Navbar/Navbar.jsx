@@ -173,7 +173,6 @@ const Navbar = () => {
     
     <li><a href="/training" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">Training</a></li>
     <li><a href="/newsEvents" className="font-semibold hover:text-lightgreen text-DarkRed text-2xl">News</a></li>
-    <li><a href="https://www.talentportal.bh/#pills-home" target="_blank" className="text-DarkRed font-semibold hover:text-lightgreen text-2xl">Find a Job</a></li>
     <li><a href="/contactUs" className="text-DarkRed font-semibold hover:text-lightgreen text-2xl">Contact Us</a></li>
 
     {/* Email Section - New Block Style */}
