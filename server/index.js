@@ -56,7 +56,7 @@ pool.getConnection()
   });
 
 // --- API Routes ---
-app.use('/', publicRoutes);
+app.use('/api', publicRoutes);
 app.use('/admin', authRoutes);
 app.use('/api/admin', adminRoutes);
 
