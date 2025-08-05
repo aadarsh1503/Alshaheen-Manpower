@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const imagekit = require('../config/imagekit');
+require('dotenv').config();
 
 const getAdminVacancies = async (req, res) => {
   try {

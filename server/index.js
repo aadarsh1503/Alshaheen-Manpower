@@ -1,50 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const pool = require('./config/db');
+
+console.log('ImageKit public keysssss:', process.env.IMAGEKIT_PUBLIC_KEY);
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware
+app.use(cors());
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
+
 
 // Route Imports
 const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-
-const allowedOrigins = [
-  'http://localhost:5173',          
-  'https://gvs-services.vercel.app',  
-  'https://alshaheen.pro'         
-];
-
-// Create the CORS options object
-const corsOptions = {
-  origin: (origin, callback) => {
-    
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, 
-  optionsSuccessStatus: 200 // For legacy browser support
-};
-
-
-
-app.use(cors(corsOptions)); 
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// --- Database Connection Check ---
+// Database Connection Check
 pool.getConnection()
   .then(connection => {
     console.log('✅ Successfully connected to MySQL database.');
@@ -77,7 +52,15 @@ app.use((err, req, res, next) => {
   }
 });
 
-// --- Start Server ---
+
+
+// // Error handler
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).send('Internal Server Error');
+// });
+
+// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

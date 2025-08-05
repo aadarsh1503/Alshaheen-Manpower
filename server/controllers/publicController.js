@@ -1,6 +1,8 @@
 const pool = require('../config/db');
-const imagekit = require('../config/imagekit');
 const axios = require('axios');
+
+require('dotenv').config();
+const imagekit = require('../config/imagekit');
 
 const getPublicVacancies = async (req, res) => {
   try {
@@ -50,18 +52,18 @@ const submitForm = async (req, res) => {
 
     const [columns] = await connection.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'form_entries' AND TABLE_SCHEMA = DATABASE()`);
     const columnNames = columns.map(col => col.COLUMN_NAME);
-    
+
     const allPossibleColumns = ['email', 'fullName', 'dateOfBirth', 'gender', 'nationality', 'mobileContact', 'whatsapp', 'currentAddress', 'postalCode', 'city', 'country', 'cprNationalId', 'passportId', 'passportValidity', 'educationLevel', 'courseDegree', 'currentlyEmployed', 'employmentDesired', 'yearsOfExperience', 'availableStart', 'shiftAvailable', 'canTravel', 'drivingLicense', 'skills', 'ref1Name', 'ref1Contact', 'ref1Email', 'ref2Name', 'ref2Contact', 'ref2Email', 'ref3Name', 'ref3Contact', 'ref3Email', 'visaStatus', 'visaValidity', 'expectedSalary', 'clientLeadsStrategy', 'resumeFile', 'fileType', 'originalFilename'];
-    
+
     const validColumns = allPossibleColumns.filter(col => columnNames.includes(col));
     const placeholders = validColumns.map(() => '?').join(', ');
     const sql = `INSERT INTO form_entries (${validColumns.join(', ')}) VALUES (${placeholders})`;
 
     const values = validColumns.map(col => {
-        if (col === 'resumeFile') return fileUrl;
-        if (col === 'fileType') return fileType;
-        if (col === 'originalFilename') return originalFilename;
-        return data[col] || null;
+      if (col === 'resumeFile') return fileUrl;
+      if (col === 'fileType') return fileType;
+      if (col === 'originalFilename') return originalFilename;
+      return data[col] || null;
     });
 
     await connection.query(sql, values);
