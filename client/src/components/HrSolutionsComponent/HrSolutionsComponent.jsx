@@ -1,19 +1,27 @@
 import React from 'react';
+import i1 from "./i1.png";
+import i2 from "./i2.png";
+import i3 from "./i3.png";
+import i4 from "./i4.png";
+import i5 from "./i5.png";
+import i6 from "./i6.png";
+import i7 from "./i7.png";
+import i8 from "./i8.png";
+import i9 from "./i9.png";
 
 // --- Data Abstraction ---
-// By moving the data out of the JSX, the component becomes much cleaner
-// and easier to update. Adding or removing a solution is now a one-line change.
 const solutionsData = [
-  { href: '/aviation', imgSrc: 'https://www.groupl.ae/images/srvc_3.png', label: 'AVIATION' },
-  { href: '/construction', imgSrc: 'https://www.groupl.ae/images/srvc_4.png', label: 'CONSTRUCTION' },
-  { href: '/events', imgSrc: 'https://www.groupl.ae/images/srvc_9.png', label: 'EVENTS' },
-  { href: '/healthcare', imgSrc: 'https://www.groupl.ae/images/srvc_11.png', label: 'HEALTHCARE' },
-  { href: '/hospitality', imgSrc: 'https://www.groupl.ae/images/srvc_6.png', label: 'HOSPITALITY' },
-  { href: '/logistics', imgSrc: 'https://www.groupl.ae/images/srvc_8.png', label: 'LOGISTICS' },
-  { href: '/manufacturing', imgSrc: 'https://www.groupl.ae/images/srvc_5.png', label: 'MANUFACTURING' },
-  { href: '/retail', imgSrc: 'https://www.groupl.ae/images/srvc_2.png', label: 'RETAIL' },
-  { href: '/security', imgSrc: 'https://www.groupl.ae/images/srvc_1.png', label: 'SECURITY' },
+  { href: '/aviation', imgSrc: i1, label: 'AVIATION' },
+  { href: '/construction', imgSrc: i2, label: 'CONSTRUCTION' },
+  { href: '/events', imgSrc: i3, label: 'EVENTS' },
+  { href: '/healthcare', imgSrc: i4, label: 'HEALTHCARE' },
+  { href: '/hospitality', imgSrc: i5, label: 'HOSPITALITY' },
+  { href: '/logistics', imgSrc: i6, label: 'LOGISTICS' },
+  { href: '/manufacturing', imgSrc: i7, label: 'MANUFACTURING' },
+  { href: '/retail', imgSrc: i8, label: 'RETAIL' },
+  { href: '/security', imgSrc: i9, label: 'SECURITY' },
 ];
+
 
 const SolutionItem = ({ href, imgSrc, label }) => (
   <a href={href} className="flex flex-col items-center group">

@@ -7,7 +7,7 @@ import i2 from "./i2.jpg";
 import i3 from "./i3.jpg";
 import i4 from "./i4.jpg";
 import i5 from "./i5.png";
-
+import gog from "./gog.png"
 // --- Data is moved outside the component for better organization ---
 const sliderData = [
   {
@@ -16,7 +16,7 @@ const sliderData = [
     text: "RECRUITMENT EXPERTS: <br /> RATED 4.8 ON GOOGLE",
     description:
       "Our aim is to give back to the society by enabling people to earn a better livelihood by empowering them with professional skills.",
-    googleSrc: "https://www.groupl.ae/images/gog.png",
+    googleSrc: gog,
   },
   {
     src: i2,

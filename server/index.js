@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const pool = require('./config/db');
 
-console.log('ImageKit public keysssss:', process.env.IMAGEKIT_PUBLIC_KEY);
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }));
 const publicRoutes = require('./routes/publicRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-
+const riderRoutes = require('./routes/riderRoutes');
 // Database Connection Check
 pool.getConnection()
   .then(connection => {
@@ -34,7 +34,7 @@ pool.getConnection()
 app.use('/api', publicRoutes);
 app.use('/admin', authRoutes);
 app.use('/api/admin', adminRoutes);
-
+app.use('/api/riders', riderRoutes); 
 // --- Root and Error Handling ---
 app.get('/', (req, res) => {
   res.send('Alshaheen Manpower API Server is running!');

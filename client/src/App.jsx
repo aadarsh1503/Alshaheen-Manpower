@@ -32,6 +32,7 @@ import ChatWidget from './components/ChatWidget/ChatWidget';
 import WhatsAppWidget from './components/WhatsappWidget/WhatsappWidget';
 import './app.css';
 import VacancyManager from './components/VacancyManager/VacancyManager';
+import RegistrationPage from './components/RiderRegistrationForm/RiderRegistrationForm';
 
 /**
  * MainLayout component handles the shared structure (Navbar, Footer, etc.)
@@ -68,6 +69,9 @@ function App() {
           <Route path="/logistics" element={<Logistics />} />
           <Route path="/manufacturing" element={<ManuFacturing />} />
           <Route path="/retail" element={<Retail />} />
+          
+
+          <Route path="/registration-form" element={<RegistrationPage />} />
           <Route path="/security" element={<Security />} />
           <Route path="/training" element={<Training />} />
           <Route path="/newsEvents" element={<NewsEvents />} />
