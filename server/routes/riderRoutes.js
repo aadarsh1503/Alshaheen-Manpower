@@ -23,6 +23,17 @@ try {
     throw new Error('Missing GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, or GOOGLE_SHEET_ID in .env');
   }
 
+  // --- START OF DEBUGGING CODE ---
+  console.log('--- DEBUGGING GOOGLE_PRIVATE_KEY ---');
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY || 'KEY_NOT_FOUND';
+  console.log(`Key Found: ${rawKey !== 'KEY_NOT_FOUND'}`);
+  console.log(`Does raw key contain the literal characters "\\n"?`, rawKey.includes('\\n'));
+  console.log(`Does raw key contain a real newline character?`, rawKey.includes('\n'));
+  console.log(`Raw key starts with: ${rawKey.substring(0, 40)}`);
+  console.log('--- END OF DEBUGGING ---');
+  // --- END OF DEBUGGING CODE ---
+
+
   // Fix private key formatting for Render deployment
   const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
 
@@ -37,7 +48,7 @@ try {
   console.log('✅ Google Sheets client configured successfully.');
 
 } catch (error) {
-  console.error('❌ Could not configure Google Sheets client:', error.message);
+  console.error('❌ Could not configure Google Sheets client:', error);
 }
 
 // --- API Endpoint: POST /api/riders/register ---
