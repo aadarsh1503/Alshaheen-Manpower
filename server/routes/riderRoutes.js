@@ -3,8 +3,6 @@ const router = express.Router();
 const multer = require('multer');
 const ImageKit = require('imagekit');
 const { google } = require('googleapis');
-const path = require('path'); // Import path module
-const fs = require('fs'); // Import file system module
 
 // --- ImageKit Initialization ---
 const imagekit = new ImageKit({
@@ -17,21 +15,40 @@ const imagekit = new ImageKit({
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// --- FIXED: Google Sheets API Setup ---
-// This is the modern and more robust way to load credentials.
-// It reads the file content directly, avoiding path issues.
-const GOOGLE_CREDENTIALS_PATH = path.join(process.cwd(), 'google-credentials.json');
-
+// --- UPDATED: Google Sheets API Setup (Loading from Environment Variables) ---
 let sheets;
 try {
-  const credentials = JSON.parse(fs.readFileSync(GOOGLE_CREDENTIALS_PATH));
+  // Check if essential environment variables are present
+  if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+    throw new Error('Missing GOOGLE_CLIENT_EMAIL or GOOGLE_PRIVATE_KEY in .env file');
+  }
+
+  // Construct the credentials object directly from environment variables
+  const credentials = {
+    type: 'service_account',
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+    // IMPORTANT: Un-escape the newline characters for the private key
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+    token_uri: 'https://oauth2.googleapis.com/token',
+    auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+    client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
+  };
+
+  // Authenticate using the constructed credentials object
   const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
   sheets = google.sheets({ version: 'v4', auth });
+  console.log('✅ Google Sheets client configured successfully from environment variables.');
+
 } catch (error) {
-  console.error('❌ Could not load Google credentials. Make sure google-credentials.json exists.', error);
+  console.error('❌ Could not configure Google Sheets client:', error.message);
+  // The 'sheets' variable will be undefined, and the API route will fail gracefully.
 }
 
 
@@ -81,8 +98,14 @@ router.post(
       
       const uploadResults = await Promise.all(uploadPromises);
 
-      if (files.cprDoc && files.cprDoc[0]) cprUrl = uploadResults.shift().url;
-      if (files.licenseDoc && files.licenseDoc[0]) licenseUrl = uploadResults.shift().url;
+      // A safer way to get URLs if order is not guaranteed
+      uploadResults.forEach(result => {
+        if (result.filePath.includes('cpr-')) {
+            cprUrl = result.url;
+        } else if (result.filePath.includes('license-')) {
+            licenseUrl = result.url;
+        }
+      });
 
       // 2. Append data to Google Sheets
       const newRow = [
@@ -93,7 +116,7 @@ router.post(
 
       await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
-        range: 'Sheet1!A1',
+        range: 'Sheet1!A1', // Appends after the last row in this range
         valueInputOption: 'USER_ENTERED',
         resource: {
           values: [newRow],
@@ -103,7 +126,8 @@ router.post(
       // 3. Send success response
       res.status(200).json({ message: 'Registration successful!' });
 
-    } catch (error) {
+    } catch (error)
+    {
       console.error('Registration Error:', error);
       // Send back a more specific error if available
       const errMsg = error.response?.data?.error?.message || 'An error occurred during registration.';
