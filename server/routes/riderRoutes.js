@@ -1,21 +1,49 @@
+// routes/riders.js
+
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const ImageKit = require('imagekit');
+// --- MODIFIED: Import Cloudinary packages and remove ImageKit ---
+const { v2: cloudinary } = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { google } = require('googleapis');
 const path = require('path');
 const fs = require('fs');
 
-// --- ImageKit Initialization (Unchanged) ---
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
+// --- NEW: Cloudinary Configuration ---
+// This automatically configures Cloudinary using your CLOUDINARY_URL environment variable.
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// --- Multer Setup (Unchanged) ---
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// --- NEW: Multer Configuration for Cloudinary ---
+// We configure multer to upload files directly to Cloudinary.
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'rider_registrations', // Folder name on Cloudinary
+    allowed_formats: ['jpg', 'jpeg', 'png'], // Allowed image formats
+    // Generate a unique public_id (filename) for each file
+    public_id: (req, file) => `${file.fieldname}-${Date.now()}`,
+  },
+});
+
+// --- NEW: Multer Middleware with Validation ---
+const upload = multer({
+  storage: storage,
+  // 1. Limit file size to 1MB (1 * 1024 * 1024 bytes)
+  limits: { fileSize: 1 * 1024 * 1024 },
+  // 2. Filter for image file types
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true); // Accept the file
+    } else {
+      cb(new Error('Invalid file type. Only images are allowed!'), false); // Reject
+    }
+  },
+});
 
 // --- Google Sheets API Setup (Unchanged) ---
 let sheets;
@@ -39,7 +67,7 @@ try {
 // --- API Endpoint: POST /api/riders/register ---
 router.post(
   '/register',
-  // --- MODIFIED: Multer now expects 4 separate files ---
+  // --- Multer middleware for handling the 4 separate file fields ---
   upload.fields([
     { name: 'cprFrontDoc', maxCount: 1 },
     { name: 'cprBackDoc', maxCount: 1 },
@@ -52,49 +80,23 @@ router.post(
     }
 
     try {
+      // --- MODIFIED: Files are already uploaded. Get their URLs from req.files ---
+      // The `req.files` object contains details of the uploaded files from Cloudinary.
       const { files } = req;
-      // --- MODIFIED: Destructure new fields from req.body ---
       const {
         title, firstName, lastName, email, residenceCountry, phone,
         nationality, originDestination, visaExpiry, licenseExpiry, experience,
         alternatePhone, currentAddress, permanentAddress, vehicleType
       } = req.body;
 
-      // 1. Upload all 4 files to ImageKit
-      const uploadPromises = [];
-      if (files.cprFrontDoc) {
-        uploadPromises.push(imagekit.upload({
-          file: files.cprFrontDoc[0].buffer, fileName: `cpr-front-${Date.now()}`, folder: '/rider_registrations',
-        }));
-      }
-      if (files.cprBackDoc) {
-        uploadPromises.push(imagekit.upload({
-          file: files.cprBackDoc[0].buffer, fileName: `cpr-back-${Date.now()}`, folder: '/rider_registrations',
-        }));
-      }
-      if (files.licenseFrontDoc) {
-         uploadPromises.push(imagekit.upload({
-          file: files.licenseFrontDoc[0].buffer, fileName: `license-front-${Date.now()}`, folder: '/rider_registrations',
-        }));
-      }
-       if (files.licenseBackDoc) {
-         uploadPromises.push(imagekit.upload({
-          file: files.licenseBackDoc[0].buffer, fileName: `license-back-${Date.now()}`, folder: '/rider_registrations',
-        }));
-      }
-      
-      const uploadResults = await Promise.all(uploadPromises);
+      // 1. Get URLs from the uploaded files.
+      // The `path` property contains the public URL of the image on Cloudinary.
+      const cprFrontUrl = files['cprFrontDoc'] ? files['cprFrontDoc'][0].path : '';
+      const cprBackUrl = files['cprBackDoc'] ? files['cprBackDoc'][0].path : '';
+      const licenseFrontUrl = files['licenseFrontDoc'] ? files['licenseFrontDoc'][0].path : '';
+      const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
-      // --- MODIFIED: Assign URLs based on the files that were uploaded ---
-      // This mapping relies on the order in which promises were added above.
-      let cprFrontUrl = '', cprBackUrl = '', licenseFrontUrl = '', licenseBackUrl = '';
-      if (files.cprFrontDoc) cprFrontUrl = uploadResults.shift().url;
-      if (files.cprBackDoc) cprBackUrl = uploadResults.shift().url;
-      if (files.licenseFrontDoc) licenseFrontUrl = uploadResults.shift().url;
-      if (files.licenseBackDoc) licenseBackUrl = uploadResults.shift().url;
-
-
-      // 2. --- MODIFIED: Prepare the new row with all fields for Google Sheets ---
+      // 2. Prepare the new row with all fields for Google Sheets
       const newRow = [
         new Date().toISOString(), title, firstName, lastName, email, residenceCountry, 
         phone, nationality, originDestination, visaExpiry, licenseExpiry, experience,
@@ -117,8 +119,18 @@ router.post(
 
     } catch (error) {
       console.error('Registration Error:', error);
-      const errMsg = error.message || 'An error occurred during the registration process.';
-      res.status(500).json({ message: 'Registration failed on the server.', error: errMsg });
+      
+      // --- MODIFIED: Better error messages for file validation ---
+      let errMsg = 'An error occurred during the registration process.';
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        errMsg = 'File is too large. Each image must be 1MB or less.';
+      } else if (error.message.includes('Invalid file type')) {
+        errMsg = 'Invalid file type. Please upload only images (JPG, JPEG, PNG).';
+      } else if (error.message) {
+        errMsg = error.message;
+      }
+      
+      res.status(500).json({ message: 'Registration failed.', error: errMsg });
     }
   }
 );

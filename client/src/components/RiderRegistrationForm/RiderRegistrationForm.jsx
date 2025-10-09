@@ -4,9 +4,9 @@ import { FiCheckCircle } from 'react-icons/fi';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import axios from 'axios';
-import './s.css'; 
+import './s.css';
 
-// --- Icon Components (No changes needed here) ---
+// --- Icon Components (Unchanged) ---
 const PhoneIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#D9232D]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
 );
@@ -35,22 +35,20 @@ const SuccessModal = () => (
 const RegistrationPage = () => {
   const [countries, setCountries] = useState([]);
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
-  
-  // --- MODIFIED: Added new fields to formData state ---
+
   const [formData, setFormData] = useState({
-    title: '', firstName: '', lastName: '', email: '', residenceCountry: '', nationality: '', 
+    title: '', firstName: '', lastName: '', email: '', residenceCountry: '', nationality: '',
     originDestination: '', visaExpiry: '', licenseExpiry: '', experience: '',
     alternatePhone: '', currentAddress: '', permanentAddress: '', vehicleType: ''
   });
-  
+
   const [phone, setPhone] = useState('');
-  
-  // --- MODIFIED: New state for the 4 required file uploads ---
+
   const [cprFrontFile, setCprFrontFile] = useState(null);
   const [cprBackFile, setCprBackFile] = useState(null);
   const [licenseFrontFile, setLicenseFrontFile] = useState(null);
   const [licenseBackFile, setLicenseBackFile] = useState(null);
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -63,7 +61,7 @@ const RegistrationPage = () => {
         let data = await response.json();
         data.sort((a, b) => a.name.common.localeCompare(b.name.common));
         setCountries(data);
-      } catch (error) { console.error("Failed to fetch countries:", error); } 
+      } catch (error) { console.error("Failed to fetch countries:", error); }
       finally { setIsLoadingCountries(false); }
     };
     fetchCountries();
@@ -74,13 +72,54 @@ const RegistrationPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // --- MODIFIED: Handle all four new file inputs ---
+  // --- MODIFIED: Added file validation logic ---
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    if (name === 'cprFrontDoc') setCprFrontFile(files[0]);
-    if (name === 'cprBackDoc') setCprBackFile(files[0]);
-    if (name === 'licenseFrontDoc') setLicenseFrontFile(files[0]);
-    if (name === 'licenseBackDoc') setLicenseBackFile(files[0]);
+    const file = files[0];
+
+    // If no file is selected, do nothing
+    if (!file) {
+      return;
+    }
+
+    // --- Validation Constants ---
+    const MAX_SIZE_MB = 1;
+    const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    // --- 1. File Type Validation ---
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setErrorMessage('Invalid file type. Please upload only images (JPG, JPEG, PNG).');
+      e.target.value = null; // Clear the invalid file from the input
+      return;
+    }
+
+    // --- 2. File Size Validation ---
+    if (file.size > MAX_SIZE_BYTES) {
+      setErrorMessage(`File is too large. Each image must be ${MAX_SIZE_MB}MB or less.`);
+      e.target.value = null; // Clear the invalid file from the input
+      return;
+    }
+    
+    // If validation passes, clear any previous error and set the file state
+    setErrorMessage('');
+
+    switch (name) {
+      case 'cprFrontDoc':
+        setCprFrontFile(file);
+        break;
+      case 'cprBackDoc':
+        setCprBackFile(file);
+        break;
+      case 'licenseFrontDoc':
+        setLicenseFrontFile(file);
+        break;
+      case 'licenseBackDoc':
+        setLicenseBackFile(file);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -88,17 +127,20 @@ const RegistrationPage = () => {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // --- MODIFIED: Append all new fields and files to FormData ---
     const submissionData = new FormData();
     Object.keys(formData).forEach(key => submissionData.append(key, formData[key]));
     submissionData.append('phone', `+${phone}`);
+
+    // Append files if they exist
     if (cprFrontFile) submissionData.append('cprFrontDoc', cprFrontFile);
     if (cprBackFile) submissionData.append('cprBackDoc', cprBackFile);
     if (licenseFrontFile) submissionData.append('licenseFrontDoc', licenseFrontFile);
     if (licenseBackFile) submissionData.append('licenseBackDoc', licenseBackFile);
-    
+
     try {
+      // Use your deployed API URL or http://localhost:PORT for local testing
       const API_URL = 'https://alshaheen-manpower.onrender.com/api/riders/register';
+      
       await axios.post(API_URL, submissionData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -110,11 +152,12 @@ const RegistrationPage = () => {
 
     } catch (error) {
       console.error("Submission failed:", error);
-      const message = error.response?.data?.message || 'Submission failed. Please check your details and try again.';
+      // The backend now provides specific error messages for file validation
+      const message = error.response?.data?.error || error.response?.data?.message || 'Submission failed. Please check your details and try again.';
       setErrorMessage(message);
       setIsSubmitting(false);
       window.scrollTo(0, 0);
-    } 
+    }
   };
 
   return (
@@ -132,7 +175,7 @@ const RegistrationPage = () => {
                 </div>
               )}
               <form onSubmit={handleSubmit} className="space-y-6">
-                 {/* Name section */}
+                {/* Name section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative">
                     <select name="title" value={formData.title} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
@@ -158,23 +201,23 @@ const RegistrationPage = () => {
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
                   </div>
                   <div>
-                      <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputStyle={{ width: '100%', height: '50px', border: '1px solid #D1D5DB', borderRadius: '0.5rem', color: '#4B5563'}} />
+                    <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputStyle={{ width: '100%', height: '50px', border: '1px solid #D1D5DB', borderRadius: '0.5rem', color: '#4B5563'}} />
                   </div>
                 </div>
-                {/* --- NEW: Alternate Phone & Vehicle Type --- */}
+                {/* --- Alternate Phone & Vehicle Type --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" name="alternatePhone" placeholder="Alternate Phone (Optional)" value={formData.alternatePhone} onChange={handleInputChange} className={inputStyle} />
-                    <div className="relative">
-                        <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
-                            <option value="" disabled>Vehicle Type *</option>
-                            <option value="Bike">Bike</option>
-                            <option value="Car">Car</option>
-                            <option value="Truck">Truck</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
-                    </div>
+                  <input type="text" name="alternatePhone" placeholder="Alternate Phone (Optional)" value={formData.alternatePhone} onChange={handleInputChange} className={inputStyle} />
+                  <div className="relative">
+                    <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
+                      <option value="" disabled>Vehicle Type *</option>
+                      <option value="Bike">Bike</option>
+                      <option value="Car">Car</option>
+                      <option value="Truck">Truck</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                  </div>
                 </div>
-                {/* --- NEW: Current & Permanent Address --- */}
+                {/* --- Current & Permanent Address --- */}
                 <div><textarea name="currentAddress" placeholder="Current Address *" rows="3" value={formData.currentAddress} onChange={handleInputChange} className={`${inputStyle} resize-none`} required></textarea></div>
                 <div><textarea name="permanentAddress" placeholder="Permanent Address *" rows="3" value={formData.permanentAddress} onChange={handleInputChange} className={`${inputStyle} resize-none`} required></textarea></div>
                 {/* Nationality */}
@@ -195,27 +238,28 @@ const RegistrationPage = () => {
                 </div>
                 {/* Experience */}
                 <div><textarea name="experience" placeholder="Tell us a bit about your experience..." rows="4" value={formData.experience} onChange={handleInputChange} className={`${inputStyle} resize-none`}></textarea></div>
-                {/* --- MODIFIED: Attachments section for 4 files --- */}
+                {/* --- Attachments section for 4 files --- */}
                 <div className="pt-2">
-                  <p className="text-gray-500 font-medium mb-3">Upload your documents</p>
+                  <p className="text-gray-500 font-medium mb-3">Upload your documents (1MB Max per image)</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* CPR Files */}
                     <label htmlFor="cpr-front-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
                       <UploadIcon /><span className="mt-2 text-sm text-center">{cprFrontFile ? cprFrontFile.name : 'CPR (Front Side) *'}</span>
-                      <input type="file" name="cprFrontDoc" id="cpr-front-upload" onChange={handleFileChange} className="hidden" required />
+                      {/* --- MODIFIED: Added accept attribute --- */}
+                      <input type="file" name="cprFrontDoc" id="cpr-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg" />
                     </label>
                     <label htmlFor="cpr-back-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
                       <UploadIcon /><span className="mt-2 text-sm text-center">{cprBackFile ? cprBackFile.name : 'CPR (Back Side) *'}</span>
-                      <input type="file" name="cprBackDoc" id="cpr-back-upload" onChange={handleFileChange} className="hidden" required />
+                      <input type="file" name="cprBackDoc" id="cpr-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg" />
                     </label>
                     {/* License Files */}
                     <label htmlFor="license-front-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
                       <UploadIcon /><span className="mt-2 text-sm text-center">{licenseFrontFile ? licenseFrontFile.name : 'Driving License (Front) *'}</span>
-                      <input type="file" name="licenseFrontDoc" id="license-front-upload" onChange={handleFileChange} className="hidden" required />
+                      <input type="file" name="licenseFrontDoc" id="license-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg" />
                     </label>
                     <label htmlFor="license-back-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
                       <UploadIcon /><span className="mt-2 text-sm text-center">{licenseBackFile ? licenseBackFile.name : 'Driving License (Back) *'}</span>
-                      <input type="file" name="licenseBackDoc" id="license-back-upload" onChange={handleFileChange} className="hidden" required />
+                      <input type="file" name="licenseBackDoc" id="license-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg" />
                     </label>
                   </div>
                 </div>
@@ -227,13 +271,14 @@ const RegistrationPage = () => {
                 </div>
               </form>
             </div>
+            {/* --- Side Panel (Unchanged) --- */}
             <div className="lg:col-span-1 animate-fadeInUp [animation-delay:200ms]">
               <div className="sticky top-12">
-                  <h2 className="text-2xl font-bold mb-8">Need Help?</h2>
-                  <div className="space-y-8">
-                    <div className="flex items-start gap-4"> <PhoneIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">PHONE</p><a href="tel:+97313303301" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">+973 13303301 (Ext. 100 / 102 / 103)</a></div> </div>
-                    <div className="flex items-start gap-4"> <MailIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">EMAIL</p><a href="mailto:info@alshaheen.pro" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">info@alshaheen.pro</a></div> </div>
-                  </div>
+                <h2 className="text-2xl font-bold mb-8">Need Help?</h2>
+                <div className="space-y-8">
+                  <div className="flex items-start gap-4"> <PhoneIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">PHONE</p><a href="tel:+97313303301" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">+973 13303301 (Ext. 100 / 102 / 103)</a></div> </div>
+                  <div className="flex items-start gap-4"> <MailIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">EMAIL</p><a href="mailto:info@alshaheen.pro" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">info@alshaheen.pro</a></div> </div>
+                </div>
               </div>
             </div>
           </main>
