@@ -42,3 +42,52 @@
   .animate-fadeInUp {
     animation: fadeInUp 0.5s ease-out forwards;
   }
+  /* Custom styles for react-phone-input-2 */
+.phone-input-container .react-tel-input {
+  /* This makes our container a flexbox, which is key */
+  display: flex; 
+  width: 100%;
+}
+
+.phone-input-container .flag-dropdown {
+  /* Take the dropdown out of its absolute positioning */
+  position: static !important;
+  
+  /* Style it like the left part of our input */
+  border: 1px solid #e5e7eb !important; /* gray-200 */
+  border-right: none !important; /* Remove the right border to merge with the input */
+  border-radius: 0.5rem 0 0 0.5rem !important; /* Round the left corners */
+  background-color: #f9fafb !important; /* gray-50 */
+}
+
+/* Ensure the dropdown button itself is sized correctly */
+.phone-input-container .flag-dropdown.open, 
+.phone-input-container .selected-flag {
+  background-color: #f9fafb !important; /* gray-50 */
+}
+
+.phone-input-container .form-control {
+  /* Make the input field take up the remaining space */
+  flex-grow: 1 !important;
+  width: 100% !important;
+
+  /* Style it like the right part of our input */
+  border-radius: 0 0.5rem 0.5rem 0 !important; /* Round the right corners */
+  border: 1px solid #e5e7eb !important; /* gray-200 */
+  height: 50px !important; /* Match your other inputs */
+
+  /* Remove the default left padding that makes space for the flag */
+  padding-left: 1rem !important;
+}
+
+/* When the input is focused, apply the focus styles to BOTH parts */
+.phone-input-container .form-control:focus {
+  border-color: #ef4444 !important; /* red-500 */
+  box-shadow: 0 0 0 1px #ef4444 !important;
+}
+
+.phone-input-container .form-control:focus + .flag-dropdown,
+.phone-input-container .form-control:focus ~ .flag-dropdown {
+  border-color: #ef4444 !important; /* red-500 */
+  box-shadow: 0 0 0 1px #ef4444; /* Add a ring to match */
+}

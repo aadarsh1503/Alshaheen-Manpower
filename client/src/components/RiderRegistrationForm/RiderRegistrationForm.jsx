@@ -85,7 +85,6 @@ const RegistrationPage = () => {
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      // --- MODIFIED: Updated error message to be more accurate ---
       toast.error('Invalid file type. Please upload JPG, JPEG, or PNG images.');
       e.target.value = null;
       return;
@@ -196,9 +195,9 @@ const RegistrationPage = () => {
         theme="light"
       />
 
-      <div className="bg-gray-50 font-raleway min-h-screen mt-10 text-gray-800">
+      <div className="bg-gray-50 font-raleway min-h-screen  text-gray-800">
         <div className="container mx-auto p-4 md:p-8 lg:p-12">
-          <main className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12">
+          <main className="grid grid-cols-1 mt-10 lg:grid-cols-3 gap-x-16 gap-y-12">
             <div className="lg:col-span-2 bg-white p-8 md:p-10 rounded-2xl shadow-lg animate-fadeInUp">
               <h1 className="text-4xl font-bold mb-2">Become a Rider</h1>
               <p className="text-gray-500 mb-10">Fill in your details below to join our team.</p>
@@ -229,15 +228,21 @@ const RegistrationPage = () => {
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
                   </div>
-                  <div>
-                    <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputProps={{ name: 'phone', required: true, placeholder: 'Primary Phone Number *'}} inputStyle={{ width: '100%', height: '50px', border: '1px solid #D1D5DB', borderRadius: '0.5rem', color: '#4B5563'}} />
+                  {/* --- MODIFICATION START: Primary Phone --- */}
+                  <div className="relative">
+                    <label className="absolute top-[-15px]  bg-white px-1 text-xs text-gray-400">Primary Phone Number *</label>
+                    <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputProps={{ name: 'phone', required: true }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
                   </div>
+                  {/* --- MODIFICATION END: Primary Phone --- */}
                 </div>
                 {/* Alternate Phone & Vehicle Type */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <PhoneInput country={'bh'} value={alternatePhone} onChange={setAlternatePhone} inputProps={{ name: 'alternatePhone', placeholder: 'Alternate Phone (Optional)' }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #D1D5DB', borderRadius: '0.5rem', color: '#4B5563'}} />
+                  {/* --- MODIFICATION START: Alternate Phone --- */}
+                  <div className="relative">
+                     <label className="absolute top-[-15px]  bg-white px-1 text-xs text-gray-400">Alternate Phone (Optional)</label>
+                    <PhoneInput country={'bh'} value={alternatePhone} onChange={setAlternatePhone} inputProps={{ name: 'alternatePhone' }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
                   </div>
+                   {/* --- MODIFICATION END: Alternate Phone --- */}
                   <div className="relative">
                     <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
                       <option value="" disabled>Vehicle Type *</option>
