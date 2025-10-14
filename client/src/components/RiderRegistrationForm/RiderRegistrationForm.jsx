@@ -41,8 +41,14 @@ const RegistrationPage = () => {
 
   const [formData, setFormData] = useState({
     title: '', firstName: '', lastName: '', email: '', residenceCountry: '', nationality: '',
-    originDestination: '', visaExpiry: '', licenseExpiry: '', experience: '',
-    currentAddress: '', permanentAddress: '', vehicleType: ''
+    originDestination: '', visaExpiry: '', licenseExpiry: '',
+    // New Address Fields
+    currentAddress_flat: '', currentAddress_road: '', currentAddress_block: '', currentAddress_town: '',
+    permanentAddress_flat: '', permanentAddress_road: '', permanentAddress_block: '', permanentAddress_town: '',
+    vehicleType: '',
+    // New Employer/Experience Fields
+    currentEmployer: '', previousCompany: '', previousExperience: '',
+    experience: '' // General experience description
   });
 
   const [phone, setPhone] = useState('');
@@ -112,8 +118,15 @@ const RegistrationPage = () => {
       email: 'Email Address',
       residenceCountry: 'Residence Country',
       vehicleType: 'Vehicle Type',
-      currentAddress: 'Current Address',
-      permanentAddress: 'Permanent Address',
+      currentAddress_flat: 'Current Address: Flat/Building No.',
+      currentAddress_road: 'Current Address: Road',
+      currentAddress_block: 'Current Address: Block',
+      currentAddress_town: 'Current Address: Town/City',
+      permanentAddress_flat: 'Permanent Address: Flat/Building No.',
+      permanentAddress_road: 'Permanent Address: Road',
+      permanentAddress_block: 'Permanent Address: Block',
+      permanentAddress_town: 'Permanent Address: Town/City',
+      currentEmployer: 'Current Supplier/Employer',
       nationality: 'Nationality',
       originDestination: 'Destination/Origin',
       visaExpiry: 'Visa Expiry Date',
@@ -142,11 +155,7 @@ const RegistrationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-        return;
-    }
-    
+    if (!validateForm()) return;
     setIsSubmitting(true);
 
     const submissionData = new FormData();
@@ -182,20 +191,8 @@ const RegistrationPage = () => {
   return (
     <>
       {showSuccessModal && <SuccessModal />}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-
-      <div className="bg-gray-50 font-raleway min-h-screen  text-gray-800">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+      <div className="bg-gray-50 font-raleway min-h-screen text-gray-800">
         <div className="container mx-auto p-4 md:p-8 lg:p-12">
           <main className="grid grid-cols-1 mt-10 lg:grid-cols-3 gap-x-16 gap-y-12">
             <div className="lg:col-span-2 bg-white p-8 md:p-10 rounded-2xl shadow-lg animate-fadeInUp">
@@ -203,7 +200,7 @@ const RegistrationPage = () => {
               <p className="text-gray-500 mb-10">Fill in your details below to join our team.</p>
               
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                {/* Name section */}
+                {/* --- Personal Details --- */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="relative">
                     <select name="title" value={formData.title} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
@@ -217,9 +214,7 @@ const RegistrationPage = () => {
                   <input type="text" name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleInputChange} className={inputStyle} required />
                   <input type="text" name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleInputChange} className={inputStyle} required />
                 </div>
-                {/* Email */}
                 <input type="email" name="email" placeholder="Email Address *" value={formData.email} onChange={handleInputChange} className={inputStyle} required />
-                {/* Residence & Mobile */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative">
                     <select name="residenceCountry" value={formData.residenceCountry} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
@@ -228,21 +223,16 @@ const RegistrationPage = () => {
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
                   </div>
-                  {/* --- MODIFICATION START: Primary Phone --- */}
                   <div className="relative">
-                    <label className="absolute top-[-15px]  bg-white px-1 text-xs text-gray-400">Primary Phone Number *</label>
+                    <label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Primary Phone Number *</label>
                     <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputProps={{ name: 'phone', required: true }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
                   </div>
-                  {/* --- MODIFICATION END: Primary Phone --- */}
                 </div>
-                {/* Alternate Phone & Vehicle Type */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* --- MODIFICATION START: Alternate Phone --- */}
                   <div className="relative">
-                     <label className="absolute top-[-15px]  bg-white px-1 text-xs text-gray-400">Alternate Phone (Optional)</label>
+                     <label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Alternate Phone (Optional)</label>
                     <PhoneInput country={'bh'} value={alternatePhone} onChange={setAlternatePhone} inputProps={{ name: 'alternatePhone' }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
                   </div>
-                   {/* --- MODIFICATION END: Alternate Phone --- */}
                   <div className="relative">
                     <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
                       <option value="" disabled>Vehicle Type *</option>
@@ -253,10 +243,12 @@ const RegistrationPage = () => {
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
                   </div>
                 </div>
-                {/* Current & Permanent Address */}
-                <div><textarea name="currentAddress" placeholder="Current Address *" rows="3" value={formData.currentAddress} onChange={handleInputChange} className={`${inputStyle} resize-none`} required></textarea></div>
-                <div><textarea name="permanentAddress" placeholder="Permanent Address *" rows="3" value={formData.permanentAddress} onChange={handleInputChange} className={`${inputStyle} resize-none`} required></textarea></div>
-                {/* Nationality */}
+
+                {/* --- Address Details --- */}
+                <div className="pt-2"><p className="font-medium text-gray-700 mb-3">Current Address *</p><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><input type="text" name="currentAddress_flat" placeholder="Flat/Building No. *" value={formData.currentAddress_flat} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_road" placeholder="Road *" value={formData.currentAddress_road} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_block" placeholder="Block *" value={formData.currentAddress_block} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_town" placeholder="Town/City *" value={formData.currentAddress_town} onChange={handleInputChange} className={inputStyle} required /></div></div>
+                <div><p className="font-medium text-gray-700 mb-3">Permanent Address *</p><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><input type="text" name="permanentAddress_flat" placeholder="Flat/Building No. *" value={formData.permanentAddress_flat} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_road" placeholder="Road *" value={formData.permanentAddress_road} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_block" placeholder="Block *" value={formData.permanentAddress_block} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_town" placeholder="Town/City *" value={formData.permanentAddress_town} onChange={handleInputChange} className={inputStyle} required /></div></div>
+
+                {/* --- Nationality & Legal --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative">
                     <select name="nationality" value={formData.nationality} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
@@ -267,14 +259,23 @@ const RegistrationPage = () => {
                   </div>
                   <input type="text" name="originDestination" placeholder="Destination/Origin *" value={formData.originDestination} onChange={handleInputChange} className={inputStyle} required />
                 </div>
-                {/* Expiry Dates */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Visa Expiry Date *</label><input type="date" name="visaExpiry" value={formData.visaExpiry} onChange={handleInputChange} className={inputStyle} required /></div>
                   <div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Driving License Expiry *</label><input type="date" name="licenseExpiry" value={formData.licenseExpiry} onChange={handleInputChange} className={inputStyle} required /></div>
                 </div>
-                {/* Experience (Optional) */}
-                <div><textarea name="experience" placeholder="Tell us about your experience... (Optional)" rows="4" value={formData.experience} onChange={handleInputChange} className={`${inputStyle} resize-none`}></textarea></div>
-                {/* Attachments section */}
+                
+                {/* --- Work Experience --- */}
+                <input type="text" name="currentEmployer" placeholder="Current Supplier/Employer *" value={formData.currentEmployer} onChange={handleInputChange} className={inputStyle} required />
+                <div className="pt-2">
+                    <p className="font-medium text-gray-700 mb-3">Past Work Experience</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="previousCompany" placeholder="Past Company Name" value={formData.previousCompany} onChange={handleInputChange} className={inputStyle} />
+                        <input type="text" name="previousExperience" placeholder="Years of Experience" value={formData.previousExperience} onChange={handleInputChange} className={inputStyle} />
+                    </div>
+                </div>
+                <div><textarea name="experience" placeholder="Tell us more about your experience... (Optional)" rows="4" value={formData.experience} onChange={handleInputChange} className={`${inputStyle} resize-none`}></textarea></div>
+
+                {/* --- Document Uploads --- */}
                 <div className="pt-2">
                   <p className="text-gray-500 font-medium mb-3">Upload your documents (JPG, JPEG, PNG - 1MB Max per image)</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -296,7 +297,8 @@ const RegistrationPage = () => {
                     </label>
                   </div>
                 </div>
-                {/* Submit Button */}
+
+                {/* --- Submit Button --- */}
                 <div className="flex justify-end pt-4">
                   <button type="submit" disabled={isSubmitting} className="bg-[#D9232D] text-white font-bold py-3 px-10 rounded-full hover:bg-red-700 hover:shadow-lg hover:-translate-y-1 transform transition-all duration-300 flex items-center justify-center gap-2 disabled:bg-red-300 disabled:cursor-not-allowed">
                     <AiFillRightCircle size={20} />{isSubmitting ? 'Submitting...' : 'Submit Application'}
