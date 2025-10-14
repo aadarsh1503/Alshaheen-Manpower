@@ -3,53 +3,56 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-// --- MODIFIED: Import Cloudinary packages and remove ImageKit ---
 const { v2: cloudinary } = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { google } = require('googleapis');
 const path = require('path');
 const fs = require('fs');
 
-// --- NEW: Cloudinary Configuration ---
-// This automatically configures Cloudinary using your CLOUDINARY_URL environment variable.
+// ===================== CLOUDINARY CONFIG =====================
+console.log('🔧 Initializing Cloudinary configuration...');
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+console.log('✅ Cloudinary configured successfully.');
 
-// --- NEW: Multer Configuration for Cloudinary ---
-// We configure multer to upload files directly to Cloudinary.
+// ===================== MULTER CONFIG =====================
+console.log('🔧 Setting up Multer storage for Cloudinary...');
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'rider_registrations', // Folder name on Cloudinary
-    allowed_formats: ['jpg', 'jpeg', 'png'], // Allowed image formats
-    // Generate a unique public_id (filename) for each file
+    folder: 'rider_registrations',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
     public_id: (req, file) => `${file.fieldname}-${Date.now()}`,
   },
 });
 
-// --- NEW: Multer Middleware with Validation ---
 const upload = multer({
   storage: storage,
-  // 1. Limit file size to 1MB (1 * 1024 * 1024 bytes)
-  limits: { fileSize: 1 * 1024 * 1024 },
-  // 2. Filter for image file types
+  limits: { fileSize: 1 * 1024 * 1024 }, // 1MB limit
   fileFilter: (req, file, cb) => {
+    console.log(`📤 Validating file: ${file.originalname} (${file.mimetype})`);
     if (file.mimetype.startsWith('image/')) {
-      cb(null, true); // Accept the file
+      cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only images are allowed!'), false); // Reject
+      console.warn(`🚫 Rejected file: ${file.originalname} (Invalid type)`);
+      cb(new Error('Invalid file type. Only images are allowed!'), false);
     }
   },
 });
+console.log('✅ Multer configured successfully.');
 
-// --- Google Sheets API Setup (Unchanged) ---
+// ===================== GOOGLE SHEETS SETUP =====================
 let sheets;
 try {
+  console.log('🔧 Initializing Google Sheets API...');
   const GOOGLE_CREDENTIALS_PATH = path.join(process.cwd(), 'google-credentials.json');
+  console.log(`🗂 Checking for credentials at: ${GOOGLE_CREDENTIALS_PATH}`);
+
   if (fs.existsSync(GOOGLE_CREDENTIALS_PATH)) {
+    console.log('✅ google-credentials.json found.');
     const credentials = JSON.parse(fs.readFileSync(GOOGLE_CREDENTIALS_PATH));
     const auth = new google.auth.GoogleAuth({
       credentials,
@@ -64,10 +67,9 @@ try {
   console.error('❌ Error initializing Google Sheets API client:', error);
 }
 
-// --- API Endpoint: POST /api/riders/register ---
+// ===================== API ENDPOINT =====================
 router.post(
   '/register',
-  // --- Multer middleware for handling the 4 separate file fields ---
   upload.fields([
     { name: 'cprFrontDoc', maxCount: 1 },
     { name: 'cprBackDoc', maxCount: 1 },
@@ -75,52 +77,94 @@ router.post(
     { name: 'licenseBackDoc', maxCount: 1 },
   ]),
   async (req, res) => {
+    console.log('🚀 Received new registration request.');
+
     if (!sheets) {
-        return res.status(500).json({ message: 'Server configuration error: Google Sheets service is not available.' });
+      console.error('⚠️ Google Sheets not configured. Cannot proceed.');
+      return res.status(500).json({
+        message: 'Server configuration error: Google Sheets service is not available.',
+      });
     }
 
     try {
-      // --- MODIFIED: Files are already uploaded. Get their URLs from req.files ---
-      // The `req.files` object contains details of the uploaded files from Cloudinary.
+      console.log('📝 Parsing form data and uploaded files...');
       const { files } = req;
+
+      // --- MODIFICATION START: Destructure all new form fields from req.body ---
       const {
         title, firstName, lastName, email, residenceCountry, phone,
         nationality, originDestination, visaExpiry, licenseExpiry, experience,
-        alternatePhone, currentAddress, permanentAddress, vehicleType
+        alternatePhone, vehicleType,
+        // New detailed address fields
+        currentAddress_flat, currentAddress_road, currentAddress_block, currentAddress_town,
+        permanentAddress_flat, permanentAddress_road, permanentAddress_block, permanentAddress_town,
+        // New employment fields
+        currentEmployer, previousCompany, previousExperience
       } = req.body;
+      // --- MODIFICATION END ---
 
-      // 1. Get URLs from the uploaded files.
-      // The `path` property contains the public URL of the image on Cloudinary.
+      console.log('📦 Form fields received:', req.body);
+      console.log('🖼 Uploaded files info:', files);
+
+      // --- Combine address fields for cleaner spreadsheet entry ---
+      const fullCurrentAddress = `Flat: ${currentAddress_flat}, Road: ${currentAddress_road}, Block: ${currentAddress_block}, Town: ${currentAddress_town}`;
+      const fullPermanentAddress = `Flat: ${permanentAddress_flat}, Road: ${permanentAddress_road}, Block: ${permanentAddress_block}, Town: ${permanentAddress_town}`;
+
+      // --- Extract Cloudinary URLs ---
       const cprFrontUrl = files['cprFrontDoc'] ? files['cprFrontDoc'][0].path : '';
       const cprBackUrl = files['cprBackDoc'] ? files['cprBackDoc'][0].path : '';
       const licenseFrontUrl = files['licenseFrontDoc'] ? files['licenseFrontDoc'][0].path : '';
       const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
-      // 2. Prepare the new row with all fields for Google Sheets
-      const newRow = [
-        new Date().toISOString(), title, firstName, lastName, email, residenceCountry, 
-        phone, nationality, originDestination, visaExpiry, licenseExpiry, experience,
-        alternatePhone, currentAddress, permanentAddress, vehicleType,
-        cprFrontUrl, cprBackUrl, licenseFrontUrl, licenseBackUrl
-      ];
+      console.log('✅ Cloudinary URLs generated.');
 
-      // 3. Append data to Google Sheets
+      // --- MODIFICATION START: Prepare new row with all fields ---
+      const newRow = [
+        new Date().toISOString(),
+        title,
+        firstName,
+        lastName,
+        email,
+        phone,
+        alternatePhone || 'N/A', // Use N/A if optional field is empty
+        residenceCountry,
+        nationality,
+        fullCurrentAddress,
+        fullPermanentAddress,
+        vehicleType,
+        originDestination,
+        visaExpiry,
+        licenseExpiry,
+        currentEmployer,
+        previousCompany || 'N/A',
+        previousExperience || 'N/A',
+        experience || 'N/A',
+        cprFrontUrl,
+        cprBackUrl,
+        licenseFrontUrl,
+        licenseBackUrl,
+      ];
+      // --- MODIFICATION END ---
+
+      console.log('🧾 Prepared data row for Google Sheets:', newRow);
+
+      // --- Append to Google Sheets ---
+      console.log('📤 Appending data to Google Sheet...');
       await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
-        range: 'Sheet1!A1',
+        range: 'Sheet1!A1', // Appends to the first empty row in Sheet1
         valueInputOption: 'USER_ENTERED',
-        resource: {
-          values: [newRow],
-        },
+        resource: { values: [newRow] },
       });
 
-      // 4. Send success response
+      console.log('✅ Data successfully appended to Google Sheets.');
+
       res.status(200).json({ message: 'Registration successful!' });
+      console.log('🎉 Registration completed successfully for:', email);
 
     } catch (error) {
-      console.error('Registration Error:', error);
-      
-      // --- MODIFIED: Better error messages for file validation ---
+      console.error('❌ Registration Error:', error);
+
       let errMsg = 'An error occurred during the registration process.';
       if (error.code === 'LIMIT_FILE_SIZE') {
         errMsg = 'File is too large. Each image must be 1MB or less.';
@@ -129,10 +173,12 @@ router.post(
       } else if (error.message) {
         errMsg = error.message;
       }
-      
+
+      console.warn('⚠️ Sending error response to client:', errMsg);
       res.status(500).json({ message: 'Registration failed.', error: errMsg });
     }
   }
 );
 
+console.log('✅ Riders route successfully loaded.');
 module.exports = router;
