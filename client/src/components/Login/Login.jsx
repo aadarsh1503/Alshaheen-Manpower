@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Assuming your .env file is set up correctly
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -74,21 +74,21 @@ const Login = () => {
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
+            <div className="flex items-center justify-between mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                {/* NEW: Forgot password link */}
+                <Link to="/forgot-password" className="text-sm text-red-600 hover:text-red-500">
+                  Forgot password?
+                </Link>
+              </div>
               <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                // Changed focus ring color to red
-                className="w-full px-4 py-3 rounded-lg border border-gray-300  transition"
-                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 transition" required
               />
-            </div>
+            
 
             <button
               type="submit"

@@ -33,6 +33,8 @@ import WhatsAppWidget from './components/WhatsappWidget/WhatsappWidget';
 import './app.css';
 import VacancyManager from './components/VacancyManager/VacancyManager';
 import RegistrationPage from './components/RiderRegistrationForm/RiderRegistrationForm';
+import ForgotPassword from './components/Login/ForgotPassword';
+import ResetPassword from './components/Login/ResetPassword';
 
 /**
  * MainLayout component handles the shared structure (Navbar, Footer, etc.)
@@ -86,6 +88,8 @@ function App() {
 
         {/* Standalone routes (like login, signup, dashboard) without the main layout */}
         <Route path="/alshaheen-pro-login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/signup-gvs3245" element={<Signup />} />
         <Route
           path="/dashboard"

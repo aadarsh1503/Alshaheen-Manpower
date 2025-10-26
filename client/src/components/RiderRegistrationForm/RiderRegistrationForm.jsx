@@ -172,7 +172,7 @@ const RegistrationPage = () => {
     if (licenseBackFile) submissionData.append('licenseBackDoc', licenseBackFile);
 
     try {
-      const API_URL = 'https://alshaheen-manpower.onrender.com/api/riders/register';
+      const API_URL = 'https://app.crmgcc.net/api/riders/register';
       await axios.post(API_URL, submissionData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
