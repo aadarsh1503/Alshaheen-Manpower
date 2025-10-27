@@ -203,7 +203,7 @@ const RegistrationPage = () => {
     if (vehicleRegFile) submissionData.append('vehicleRegDoc', vehicleRegFile);
 
     try {
-      const API_URL = 'https://alshaheen-manpower.onrender.com/api/riders/register'; 
+      const API_URL = 'https://app.crmgcc.net/api/riders/register'; 
       await axios.post(API_URL, submissionData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setShowSuccessModal(true);
       setTimeout(() => { window.location.reload(); }, 3500);

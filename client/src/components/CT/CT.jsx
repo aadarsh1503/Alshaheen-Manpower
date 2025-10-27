@@ -44,7 +44,7 @@ const CT = () => {
     formData.append('document', file);
 
     try {
-      const response = await fetch('https://alshaheen-manpower.onrender.com/upload', {
+      const response = await fetch('https://app.crmgcc.net/upload', {
         method: 'POST',
         body: formData,
       });
