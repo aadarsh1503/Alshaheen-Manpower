@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaMotorcycle, FaCar, FaTruck } from 'react-icons/fa';
 import { AiFillRightCircle } from 'react-icons/ai';
 import { FiCheckCircle } from 'react-icons/fi';
 import PhoneInput from 'react-phone-input-2';
@@ -20,7 +21,7 @@ const UploadIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 group-hover:text-[#D9232D] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
 );
 
-const inputStyle = "w-full bg-gray-50 border border-gray-200 rounded-lg px-5 py-3 text-gray-700 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all duration-300";
+const inputStyle = "w-full bg-gray-50 border border-gray-200 rounded-lg px-5 py-3 text-gray-700 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all duration-300 disabled:bg-gray-200 disabled:cursor-not-allowed";
 
 const SuccessModal = () => (
   <div className="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
@@ -35,6 +36,21 @@ const SuccessModal = () => (
   </div>
 );
 
+const DeliveryOption = ({ icon, label, isSelected, onSelect }) => (
+  <div
+    onClick={() => onSelect(label)}
+    className={`border-2 rounded-lg p-6 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-200 ${
+      isSelected
+        ? 'border-red-500 bg-red-50 text-red-600 shadow-md'
+        : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-400'
+    }`}
+  >
+    {icon}
+    <span className="font-semibold">{label}</span>
+  </div>
+);
+
+
 const RegistrationPage = () => {
   const [countries, setCountries] = useState([]);
   const [isLoadingCountries, setIsLoadingCountries] = useState(true);
@@ -42,25 +58,32 @@ const RegistrationPage = () => {
   const [formData, setFormData] = useState({
     title: '', firstName: '', lastName: '', email: '', residenceCountry: '', nationality: '',
     originDestination: '', visaExpiry: '', licenseExpiry: '',
-    // New Address Fields
     currentAddress_flat: '', currentAddress_road: '', currentAddress_block: '', currentAddress_town: '',
-    permanentAddress_flat: '', permanentAddress_road: '', permanentAddress_block: '', permanentAddress_town: '',
     vehicleType: '',
-    // New Employer/Experience Fields
-    currentEmployer: '', previousCompany: '', previousExperience: '',
-    experience: '' // General experience description
+    companyName: '',
+    otherCompanyName: '',
+    isVehicleOwner: '',
+    readyToStartDate: '',
+    previousExperience: '',
+    experience: ''
   });
-
+  
+  const [isFresher, setIsFresher] = useState(false);
   const [phone, setPhone] = useState('');
   const [alternatePhone, setAlternatePhone] = useState('');
-
+  
   const [cprFrontFile, setCprFrontFile] = useState(null);
   const [cprBackFile, setCprBackFile] = useState(null);
   const [licenseFrontFile, setLicenseFrontFile] = useState(null);
   const [licenseBackFile, setLicenseBackFile] = useState(null);
+  const [applicantPhotoFile, setApplicantPhotoFile] = useState(null);
+  const [vehicleRegFile, setVehicleRegFile] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
+  // MODIFICATION: Add state for validation errors
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -76,9 +99,13 @@ const RegistrationPage = () => {
     fetchCountries();
   }, []);
 
+  // MODIFICATION: Clear errors on input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleFileChange = (e) => {
@@ -86,19 +113,16 @@ const RegistrationPage = () => {
     const file = files[0];
     if (!file) return;
 
+    // File type and size validation remains
     const MAX_SIZE_MB = 1;
     const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error('Invalid file type. Please upload JPG, JPEG, or PNG images.');
-      e.target.value = null;
-      return;
-    }
-    if (file.size > MAX_SIZE_BYTES) {
-      toast.error(`File is too large. Each image must be ${MAX_SIZE_MB}MB or less.`);
-      e.target.value = null;
-      return;
+    if (!ALLOWED_TYPES.includes(file.type)) { toast.error('Invalid file type. Please upload JPG, JPEG, or PNG images.'); e.target.value = null; return; }
+    if (file.size > MAX_SIZE_BYTES) { toast.error(`File is too large. Each image must be ${MAX_SIZE_MB}MB or less.`); e.target.value = null; return; }
+    
+    // MODIFICATION: Clear error on successful file selection
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
 
     switch (name) {
@@ -106,86 +130,99 @@ const RegistrationPage = () => {
       case 'cprBackDoc': setCprBackFile(file); break;
       case 'licenseFrontDoc': setLicenseFrontFile(file); break;
       case 'licenseBackDoc': setLicenseBackFile(file); break;
+      case 'applicantPhoto': setApplicantPhotoFile(file); break;
+      case 'vehicleRegDoc': setVehicleRegFile(file); break;
       default: break;
     }
   };
   
+  // MODIFICATION: Revamped validation function for visual feedback
   const validateForm = () => {
-    const requiredFields = {
-      title: 'Title',
-      firstName: 'First Name',
-      lastName: 'Last Name',
-      email: 'Email Address',
-      residenceCountry: 'Residence Country',
-      vehicleType: 'Vehicle Type',
-      currentAddress_flat: 'Current Address: Flat/Building No.',
-      currentAddress_road: 'Current Address: Road',
-      currentAddress_block: 'Current Address: Block',
-      currentAddress_town: 'Current Address: Town/City',
-      permanentAddress_flat: 'Permanent Address: Flat/Building No.',
-      permanentAddress_road: 'Permanent Address: Road',
-      permanentAddress_block: 'Permanent Address: Block',
-      permanentAddress_town: 'Permanent Address: Town/City',
-      currentEmployer: 'Current Supplier/Employer',
-      nationality: 'Nationality',
-      originDestination: 'Destination/Origin',
-      visaExpiry: 'Visa Expiry Date',
-      licenseExpiry: 'Driving License Expiry'
-    };
-    
-    for (const [key, label] of Object.entries(requiredFields)) {
-      if (!formData[key]) {
-        toast.error(`${label} is a required field.`);
-        return false;
-      }
-    }
-    
-    if (!phone || phone.length < 7) {
-      toast.error('Please enter a valid Primary Phone Number.');
-      return false;
+    const newErrors = {};
+
+    // --- Text, Select, and other fields Validation ---
+    if (!formData.title) newErrors.title = 'Title is required.';
+    if (!formData.firstName) newErrors.firstName = 'First Name is required.';
+    if (!formData.lastName) newErrors.lastName = 'Last Name is required.';
+    if (!formData.email) newErrors.email = 'Email is required.';
+    if (!formData.residenceCountry) newErrors.residenceCountry = 'Residence Country is required.';
+    if (!phone || phone.length < 7) newErrors.phone = 'A valid phone number is required.';
+    if (!formData.vehicleType) newErrors.vehicleType = 'Please select a delivery method.';
+    if (!formData.currentAddress_flat) newErrors.currentAddress_flat = 'Flat/Building is required.';
+    if (!formData.currentAddress_road) newErrors.currentAddress_road = 'Road is required.';
+    if (!formData.currentAddress_block) newErrors.currentAddress_block = 'Block is required.';
+    if (!formData.currentAddress_town) newErrors.currentAddress_town = 'Town/City is required.';
+    if (!formData.nationality) newErrors.nationality = 'Nationality is required.';
+    if (!formData.originDestination) newErrors.originDestination = 'Destination/Origin is required.';
+    if (!formData.visaExpiry) newErrors.visaExpiry = 'Visa Expiry is required.';
+    if (!formData.licenseExpiry) newErrors.licenseExpiry = 'License Expiry is required.';
+    if (!formData.readyToStartDate) newErrors.readyToStartDate = 'Start Date is required.';
+    if (!formData.isVehicleOwner) newErrors.isVehicleOwner = 'Please answer this question.';
+    if (!isFresher) {
+        if (!formData.companyName) newErrors.companyName = 'Company Name is required.';
+        if (formData.companyName === 'Others' && !formData.otherCompanyName) newErrors.otherCompanyName = 'Please specify your company.';
     }
 
-    if (!cprFrontFile) { toast.error('Please upload the Front Side of your CPR.'); return false; }
-    if (!cprBackFile) { toast.error('Please upload the Back Side of your CPR.'); return false; }
-    if (!licenseFrontFile) { toast.error('Please upload the Front of your Driving License.'); return false; }
-    if (!licenseBackFile) { toast.error('Please upload the Back of your Driving License.'); return false; }
+    // --- File Upload Validation ---
+    if (!applicantPhotoFile) newErrors.applicantPhoto = 'Your photo is required.';
+    if (!vehicleRegFile) newErrors.vehicleRegDoc = 'Vehicle registration is required.';
+    if (!cprFrontFile) newErrors.cprFrontDoc = 'CPR (Front) is required.';
+    if (!cprBackFile) newErrors.cprBackDoc = 'CPR (Back) is required.';
+    if (!licenseFrontFile) newErrors.licenseFrontDoc = 'License (Front) is required.';
+    if (!licenseBackFile) newErrors.licenseBackDoc = 'License (Back) is required.';
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+        toast.error('Please fix the errors highlighted below.');
+        return false;
+    }
 
     return true;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) return; // Validation check happens here
     setIsSubmitting(true);
 
     const submissionData = new FormData();
-    Object.keys(formData).forEach(key => submissionData.append(key, formData[key]));
-    
+    // Submission logic remains the same...
+    const finalCompanyName = formData.companyName === 'Others' ? formData.otherCompanyName : formData.companyName;
+    submissionData.append('companyName', isFresher ? 'Fresher' : finalCompanyName);
+    submissionData.append('previousExperience', isFresher ? '0' : formData.previousExperience);
+    submissionData.append('experience', isFresher ? 'N/A' : formData.experience);
+    Object.keys(formData).forEach(key => { if (!['companyName', 'otherCompanyName', 'previousExperience', 'experience'].includes(key)) { submissionData.append(key, formData[key]); } });
     submissionData.append('phone', `+${phone}`);
-    if (alternatePhone) {
-        submissionData.append('alternatePhone', `+${alternatePhone}`);
-    }
-
+    if (alternatePhone) { submissionData.append('alternatePhone', `+${alternatePhone}`); }
     if (cprFrontFile) submissionData.append('cprFrontDoc', cprFrontFile);
     if (cprBackFile) submissionData.append('cprBackDoc', cprBackFile);
     if (licenseFrontFile) submissionData.append('licenseFrontDoc', licenseFrontFile);
     if (licenseBackFile) submissionData.append('licenseBackDoc', licenseBackFile);
+    if (applicantPhotoFile) submissionData.append('applicantPhoto', applicantPhotoFile);
+    if (vehicleRegFile) submissionData.append('vehicleRegDoc', vehicleRegFile);
 
     try {
-      const API_URL = 'https://app.crmgcc.net/api/riders/register';
-      await axios.post(API_URL, submissionData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-
+      const API_URL = 'https://alshaheen-manpower.onrender.com/api/riders/register'; 
+      await axios.post(API_URL, submissionData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setShowSuccessModal(true);
       setTimeout(() => { window.location.reload(); }, 3500);
-
     } catch (error) {
       console.error("Submission failed:", error);
       const message = error.response?.data?.error || error.response?.data?.message || 'Submission failed. Please check your details and try again.';
       toast.error(message);
       setIsSubmitting(false);
     }
+  };
+  
+  const companyOptions = ["Talabat", "Jahez", "Ahlan", "Fatafat", "eFood", "Caravan", "Mrsool", "HungerStation", "InstaShop", "Machla", "Saffary", "Others"];
+  
+  const getTodayString = () => {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const year = today.getFullYear();
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -200,122 +237,88 @@ const RegistrationPage = () => {
               <p className="text-gray-500 mb-10">Fill in your details below to join our team.</p>
               
               <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                {/* --- Personal Details --- */}
+                {/* Personal Details */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="relative">
-                    <select name="title" value={formData.title} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
-                      <option value="" disabled>Title *</option>
-                      <option value="Mr">Mr.</option>
-                      <option value="Mrs">Mrs.</option>
-                      <option value="Ms">Ms.</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                  <div>
+                    <div className="relative"><select name="title" value={formData.title} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.title ? 'border-red-500' : ''}`} required><option value="" disabled>Title *</option><option value="Mr">Mr.</option><option value="Mrs">Mrs.</option><option value="Ms">Ms.</option></select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>
+                    {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
                   </div>
-                  <input type="text" name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleInputChange} className={inputStyle} required />
-                  <input type="text" name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleInputChange} className={inputStyle} required />
-                </div>
-                <input type="email" name="email" placeholder="Email Address *" value={formData.email} onChange={handleInputChange} className={inputStyle} required />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                    <select name="residenceCountry" value={formData.residenceCountry} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
-                      <option value="" disabled>Residence Country *</option>
-                      {isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((c) => <option key={c.cca3} value={c.name.common}>{c.name.common}</option>)}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                  <div>
+                    <input type="text" name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleInputChange} className={`${inputStyle} ${errors.firstName ? 'border-red-500' : ''}`} required />
+                    {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                   </div>
-                  <div className="relative">
-                    <label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Primary Phone Number *</label>
-                    <PhoneInput country={'bh'} value={phone} onChange={setPhone} inputProps={{ name: 'phone', required: true }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
+                  <div>
+                    <input type="text" name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleInputChange} className={`${inputStyle} ${errors.lastName ? 'border-red-500' : ''}`} required />
+                    {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                     <label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Alternate Phone (Optional)</label>
-                    <PhoneInput country={'bh'} value={alternatePhone} onChange={setAlternatePhone} inputProps={{ name: 'alternatePhone' }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} />
-                  </div>
-                  <div className="relative">
-                    <select name="vehicleType" value={formData.vehicleType} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
-                      <option value="" disabled>Vehicle Type *</option>
-                      <option value="Bike">Bike</option>
-                      <option value="Car">Car</option>
-                      <option value="Truck">Truck</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
-                  </div>
-                </div>
-
-                {/* --- Address Details --- */}
-                <div className="pt-2"><p className="font-medium text-gray-700 mb-3">Current Address *</p><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><input type="text" name="currentAddress_flat" placeholder="Flat/Building No. *" value={formData.currentAddress_flat} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_road" placeholder="Road *" value={formData.currentAddress_road} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_block" placeholder="Block *" value={formData.currentAddress_block} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="currentAddress_town" placeholder="Town/City *" value={formData.currentAddress_town} onChange={handleInputChange} className={inputStyle} required /></div></div>
-                <div><p className="font-medium text-gray-700 mb-3">Permanent Address *</p><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><input type="text" name="permanentAddress_flat" placeholder="Flat/Building No. *" value={formData.permanentAddress_flat} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_road" placeholder="Road *" value={formData.permanentAddress_road} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_block" placeholder="Block *" value={formData.permanentAddress_block} onChange={handleInputChange} className={inputStyle} required /><input type="text" name="permanentAddress_town" placeholder="Town/City *" value={formData.permanentAddress_town} onChange={handleInputChange} className={inputStyle} required /></div></div>
-
-                {/* --- Nationality & Legal --- */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-                    <select name="nationality" value={formData.nationality} onChange={handleInputChange} className={`${inputStyle} appearance-none`} required>
-                      <option value="" disabled>Nationality *</option>
-                      {isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((c) => <option key={c.cca3} value={c.name.common}>{c.name.common}</option>)}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
-                  </div>
-                  <input type="text" name="originDestination" placeholder="Destination/Origin *" value={formData.originDestination} onChange={handleInputChange} className={inputStyle} required />
+                <div>
+                  <input type="email" name="email" placeholder="Email Address *" value={formData.email} onChange={handleInputChange} className={`${inputStyle} ${errors.email ? 'border-red-500' : ''}`} required />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Visa Expiry Date *</label><input type="date" name="visaExpiry" value={formData.visaExpiry} onChange={handleInputChange} className={inputStyle} required /></div>
-                  <div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Driving License Expiry *</label><input type="date" name="licenseExpiry" value={formData.licenseExpiry} onChange={handleInputChange} className={inputStyle} required /></div>
+                  <div>
+                    <div className="relative"><select name="residenceCountry" value={formData.residenceCountry} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.residenceCountry ? 'border-red-500' : ''}`} required><option value="" disabled>Residence Country *</option>{isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((c) => <option key={c.cca3} value={c.name.common}>{c.name.common}</option>)}</select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>
+                    {errors.residenceCountry && <p className="text-red-500 text-xs mt-1">{errors.residenceCountry}</p>}
+                  </div>
+                  <div>
+                    <div className="relative"><label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Primary Phone Number *</label><PhoneInput country={'bh'} value={phone} onChange={(phoneVal) => {setPhone(phoneVal); if(errors.phone) setErrors(p => ({...p, phone: undefined}))}} inputProps={{ name: 'phone', required: true }} containerStyle={{borderColor: errors.phone ? '#ef4444' : ''}} inputStyle={{ width: '100%', height: '50px', border: errors.phone ? '1px solid #ef4444' : '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} /></div>
+                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="relative"><label className="absolute top-[-15px] bg-white px-1 text-xs text-gray-400">Alternate Phone (Optional)</label><PhoneInput country={'bh'} value={alternatePhone} onChange={setAlternatePhone} inputProps={{ name: 'alternatePhone' }} inputStyle={{ width: '100%', height: '50px', border: '1px solid #e5e7eb', borderRadius: '0.5rem', color: '#374151'}} /></div>
                 </div>
                 
-                {/* --- Work Experience --- */}
-                <input type="text" name="currentEmployer" placeholder="Current Supplier/Employer *" value={formData.currentEmployer} onChange={handleInputChange} className={inputStyle} required />
-                <div className="pt-2">
-                    <p className="font-medium text-gray-700 mb-3">Past Work Experience</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input type="text" name="previousCompany" placeholder="Past Company Name" value={formData.previousCompany} onChange={handleInputChange} className={inputStyle} />
-                        <input type="text" name="previousExperience" placeholder="Years of Experience" value={formData.previousExperience} onChange={handleInputChange} className={inputStyle} />
-                    </div>
+                {/* --- Delivery Method --- */}
+                <div>
+                  <p className="font-medium text-gray-700 mb-3">How do you deliver? *</p>
+                  <div className="grid grid-cols-3 gap-4">
+                    <DeliveryOption icon={<FaMotorcycle size={32}/>} label="Motorcycle" isSelected={formData.vehicleType === 'Motorcycle'} onSelect={(val) => {setFormData(p => ({...p, vehicleType: val})); if(errors.vehicleType) setErrors(p => ({...p, vehicleType: undefined}))}} />
+                    <DeliveryOption icon={<FaCar size={32}/>} label="Car" isSelected={formData.vehicleType === 'Car'} onSelect={(val) => {setFormData(p => ({...p, vehicleType: val})); if(errors.vehicleType) setErrors(p => ({...p, vehicleType: undefined}))}} />
+                    <DeliveryOption icon={<FaTruck size={32}/>} label="Truck" isSelected={formData.vehicleType === 'Truck'} onSelect={(val) => {setFormData(p => ({...p, vehicleType: val})); if(errors.vehicleType) setErrors(p => ({...p, vehicleType: undefined}))}} />
+                  </div>
+                  {errors.vehicleType && <p className="text-red-500 text-xs mt-2">{errors.vehicleType}</p>}
                 </div>
-                <div><textarea name="experience" placeholder="Tell us more about your experience... (Optional)" rows="4" value={formData.experience} onChange={handleInputChange} className={`${inputStyle} resize-none`}></textarea></div>
+                
+                {/* --- Address & Legal --- */}
+                <div className="pt-2"><p className="font-medium text-gray-700 mb-3">Current Address *</p><div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div><input type="text" name="currentAddress_flat" placeholder="Flat/Building No. *" value={formData.currentAddress_flat} onChange={handleInputChange} className={`${inputStyle} ${errors.currentAddress_flat ? 'border-red-500' : ''}`} required />{errors.currentAddress_flat && <p className="text-red-500 text-xs mt-1">{errors.currentAddress_flat}</p>}</div>
+                  <div><input type="text" name="currentAddress_road" placeholder="Road *" value={formData.currentAddress_road} onChange={handleInputChange} className={`${inputStyle} ${errors.currentAddress_road ? 'border-red-500' : ''}`} required />{errors.currentAddress_road && <p className="text-red-500 text-xs mt-1">{errors.currentAddress_road}</p>}</div>
+                  <div><input type="text" name="currentAddress_block" placeholder="Block *" value={formData.currentAddress_block} onChange={handleInputChange} className={`${inputStyle} ${errors.currentAddress_block ? 'border-red-500' : ''}`} required />{errors.currentAddress_block && <p className="text-red-500 text-xs mt-1">{errors.currentAddress_block}</p>}</div>
+                  <div><input type="text" name="currentAddress_town" placeholder="Town/City *" value={formData.currentAddress_town} onChange={handleInputChange} className={`${inputStyle} ${errors.currentAddress_town ? 'border-red-500' : ''}`} required />{errors.currentAddress_town && <p className="text-red-500 text-xs mt-1">{errors.currentAddress_town}</p>}</div>
+                </div></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div><div className="relative"><select name="nationality" value={formData.nationality} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.nationality ? 'border-red-500' : ''}`} required><option value="" disabled>Nationality *</option>{isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((c) => <option key={c.cca3} value={c.name.common}>{c.name.common}</option>)}</select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>{errors.nationality && <p className="text-red-500 text-xs mt-1">{errors.nationality}</p>}</div>
+                  <div><input type="text" name="originDestination" placeholder="Destination/Origin *" value={formData.originDestination} onChange={handleInputChange} className={`${inputStyle} ${errors.originDestination ? 'border-red-500' : ''}`} required />{errors.originDestination && <p className="text-red-500 text-xs mt-1">{errors.originDestination}</p>}</div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div><div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Visa Expiry Date *</label><input type="date" name="visaExpiry" value={formData.visaExpiry} onChange={handleInputChange} className={`${inputStyle} ${errors.visaExpiry ? 'border-red-500' : ''}`} required /></div>{errors.visaExpiry && <p className="text-red-500 text-xs mt-1">{errors.visaExpiry}</p>}</div>
+                  <div><div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Driving License Expiry *</label><input type="date" name="licenseExpiry" value={formData.licenseExpiry} onChange={handleInputChange} className={`${inputStyle} ${errors.licenseExpiry ? 'border-red-500' : ''}`} required /></div>{errors.licenseExpiry && <p className="text-red-500 text-xs mt-1">{errors.licenseExpiry}</p>}</div>
+                </div>
+                <div><div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">When are you ready to start? *</label><input type="date" name="readyToStartDate" value={formData.readyToStartDate} onChange={handleInputChange} className={`${inputStyle} ${errors.readyToStartDate ? 'border-red-500' : ''}`} required min={getTodayString()} /></div>{errors.readyToStartDate && <p className="text-red-500 text-xs mt-1">{errors.readyToStartDate}</p>}</div>
+                <div><p className="font-medium text-gray-700 mb-3">Are you the vehicle owner? *</p><div className="flex gap-6 items-center"><label className="flex items-center gap-2 cursor-pointer"><input type="radio" name="isVehicleOwner" value="Yes" checked={formData.isVehicleOwner === 'Yes'} onChange={handleInputChange} className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300" /> Yes</label><label className="flex items-center gap-2 cursor-pointer"><input type="radio" name="isVehicleOwner" value="No" checked={formData.isVehicleOwner === 'No'} onChange={handleInputChange} className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300" /> No</label></div>{errors.isVehicleOwner && <p className="text-red-500 text-xs mt-2">{errors.isVehicleOwner}</p>}</div>
+                
+                {/* --- Work Experience --- */}
+                <div className="pt-2 space-y-6 border-t border-gray-200 pt-6"><div className="flex justify-between items-center"><p className="font-medium text-gray-700">Work Experience</p><label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600"><input type="checkbox" checked={isFresher} onChange={(e) => setIsFresher(e.target.checked)} className="h-4 w-4 rounded text-red-600 focus:ring-red-500 border-gray-300"/>I am a fresher</label></div><div className="grid grid-cols-1 md:grid-cols-2 gap-6"><div><div className="relative"><select name="companyName" value={formData.companyName} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.companyName ? 'border-red-500' : ''}`} required disabled={isFresher}><option value="" disabled>Current/Last Company *</option>{companyOptions.map(c => <option key={c} value={c}>{c}</option>)}</select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>{errors.companyName && <p className="text-red-500 text-xs mt-1">{errors.companyName}</p>}</div>{formData.companyName === 'Others' && !isFresher && (<div><input type="text" name="otherCompanyName" placeholder="Please specify company *" value={formData.otherCompanyName} onChange={handleInputChange} className={`${inputStyle} animate-fadeIn ${errors.otherCompanyName ? 'border-red-500' : ''}`} required />{errors.otherCompanyName && <p className="text-red-500 text-xs mt-1">{errors.otherCompanyName}</p>}</div>)}<input type="text" name="previousExperience" placeholder="Total Years of Experience" value={formData.previousExperience} onChange={handleInputChange} className={inputStyle} disabled={isFresher} /></div><div><textarea name="experience" placeholder="Tell us more about your experience..." rows="4" value={formData.experience} onChange={handleInputChange} className={`${inputStyle} resize-none`} disabled={isFresher}></textarea></div></div>
 
-                {/* --- Document Uploads --- */}
+                {/* --- Document Uploads with Validation --- */}
                 <div className="pt-2">
                   <p className="text-gray-500 font-medium mb-3">Upload your documents (JPG, JPEG, PNG - 1MB Max per image)</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <label htmlFor="cpr-front-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
-                      <UploadIcon /><span className="mt-2 text-sm text-center">{cprFrontFile ? cprFrontFile.name : 'CPR (Front Side) *'}</span>
-                      <input type="file" name="cprFrontDoc" id="cpr-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" />
-                    </label>
-                    <label htmlFor="cpr-back-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
-                      <UploadIcon /><span className="mt-2 text-sm text-center">{cprBackFile ? cprBackFile.name : 'CPR (Back Side) *'}</span>
-                      <input type="file" name="cprBackDoc" id="cpr-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" />
-                    </label>
-                    <label htmlFor="license-front-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
-                      <UploadIcon /><span className="mt-2 text-sm text-center">{licenseFrontFile ? licenseFrontFile.name : 'Driving License (Front) *'}</span>
-                      <input type="file" name="licenseFrontDoc" id="license-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" />
-                    </label>
-                    <label htmlFor="license-back-upload" className="w-full bg-white border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 hover:text-red-500 transition-colors group">
-                      <UploadIcon /><span className="mt-2 text-sm text-center">{licenseBackFile ? licenseBackFile.name : 'Driving License (Back) *'}</span>
-                      <input type="file" name="licenseBackDoc" id="license-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" />
-                    </label>
+                    <div><label htmlFor="applicant-photo-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.applicantPhoto ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{applicantPhotoFile ? applicantPhotoFile.name : 'Your Photo *'}</span><input type="file" name="applicantPhoto" id="applicant-photo-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.applicantPhoto && <p className="text-red-500 text-xs mt-1">{errors.applicantPhoto}</p>}</div>
+                    <div><label htmlFor="vehicle-reg-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.vehicleRegDoc ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{vehicleRegFile ? vehicleRegFile.name : 'Vehicle Registration Card *'}</span><input type="file" name="vehicleRegDoc" id="vehicle-reg-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.vehicleRegDoc && <p className="text-red-500 text-xs mt-1">{errors.vehicleRegDoc}</p>}</div>
+                    <div><label htmlFor="cpr-front-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.cprFrontDoc ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{cprFrontFile ? cprFrontFile.name : 'CPR (Front Side) *'}</span><input type="file" name="cprFrontDoc" id="cpr-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.cprFrontDoc && <p className="text-red-500 text-xs mt-1">{errors.cprFrontDoc}</p>}</div>
+                    <div><label htmlFor="cpr-back-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.cprBackDoc ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{cprBackFile ? cprBackFile.name : 'CPR (Back Side) *'}</span><input type="file" name="cprBackDoc" id="cpr-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.cprBackDoc && <p className="text-red-500 text-xs mt-1">{errors.cprBackDoc}</p>}</div>
+                    <div><label htmlFor="license-front-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.licenseFrontDoc ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{licenseFrontFile ? licenseFrontFile.name : 'Driving License (Front) *'}</span><input type="file" name="licenseFrontDoc" id="license-front-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.licenseFrontDoc && <p className="text-red-500 text-xs mt-1">{errors.licenseFrontDoc}</p>}</div>
+                    <div><label htmlFor="license-back-upload" className={`w-full bg-white border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer hover:border-red-500 transition-colors group ${errors.licenseBackDoc ? 'border-red-500 text-red-500' : 'border-gray-300 text-gray-500'}`}><UploadIcon /><span className="mt-2 text-sm text-center">{licenseBackFile ? licenseBackFile.name : 'Driving License (Back) *'}</span><input type="file" name="licenseBackDoc" id="license-back-upload" onChange={handleFileChange} className="hidden" required accept="image/png, image/jpeg, image/jpg" /></label>{errors.licenseBackDoc && <p className="text-red-500 text-xs mt-1">{errors.licenseBackDoc}</p>}</div>
                   </div>
                 </div>
 
-                {/* --- Submit Button --- */}
-                <div className="flex justify-end pt-4">
-                  <button type="submit" disabled={isSubmitting} className="bg-[#D9232D] text-white font-bold py-3 px-10 rounded-full hover:bg-red-700 hover:shadow-lg hover:-translate-y-1 transform transition-all duration-300 flex items-center justify-center gap-2 disabled:bg-red-300 disabled:cursor-not-allowed">
-                    <AiFillRightCircle size={20} />{isSubmitting ? 'Submitting...' : 'Submit Application'}
-                  </button>
-                </div>
+                <div className="flex justify-end pt-4"><button type="submit" disabled={isSubmitting} className="bg-[#D9232D] text-white font-bold py-3 px-10 rounded-full hover:bg-red-700 hover:shadow-lg hover:-translate-y-1 transform transition-all duration-300 flex items-center justify-center gap-2 disabled:bg-red-300 disabled:cursor-not-allowed"><AiFillRightCircle size={20} />{isSubmitting ? 'Submitting...' : 'Submit Application'}</button></div>
               </form>
             </div>
-            {/* --- Side Panel (Unchanged) --- */}
-            <div className="lg:col-span-1 animate-fadeInUp [animation-delay:200ms]">
-              <div className="sticky top-12">
-                <h2 className="text-2xl font-bold mb-8">Need Help?</h2>
-                <div className="space-y-8">
-                  <div className="flex items-start gap-4"> <PhoneIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">PHONE</p><a href="tel:+97313303301" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">+973 13303301 (Ext. 100 / 102 / 103)</a></div> </div>
-                  <div className="flex items-start gap-4"> <MailIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">EMAIL</p><a href="mailto:info@alshaheen.pro" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">info@alshaheen.pro</a></div> </div>
-                </div>
-              </div>
-            </div>
+            <div className="lg:col-span-1 animate-fadeInUp [animation-delay:200ms]"><div className="sticky top-12"><h2 className="text-2xl font-bold mb-8">Need Help?</h2><div className="space-y-8"><div className="flex items-start gap-4"> <PhoneIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">PHONE</p><a href="tel:+97313303301" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">+973 13303301 (Ext. 100 / 102 / 103)</a></div> </div><div className="flex items-start gap-4"> <MailIcon /> <div><p className="text-sm text-gray-500 font-semibold tracking-wider">EMAIL</p><a href="mailto:info@alshaheen.pro" className="text-xl font-semibold text-[#D9232D] mt-1 hover:underline">info@alshaheen.pro</a></div> </div></div></div></div>
           </main>
         </div>
       </div>
