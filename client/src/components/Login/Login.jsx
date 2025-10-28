@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // For demonstration, using a placeholder URL. Replace with your actual base URL logic.
-// const baseUrl = 'https://alshaheen-manpower.onrender.com/api';
+// const baseUrl = 'https://app.crmgcc.net/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');

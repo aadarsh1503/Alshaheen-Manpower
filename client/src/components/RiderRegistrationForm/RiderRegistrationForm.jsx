@@ -86,19 +86,35 @@ const RegistrationPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // --- MODIFICATION START: Country list is now filtered ---
   useEffect(() => {
+    const allowedCountriesSet = new Set([
+      "Algeria", "Armenia", "Bahrain", "Belarus", "Cameroon", "China", "Egypt", 
+      "Eritrea", "Ethiopia", "Ghana", "India", "Indonesia", "Iran", "Iraq", 
+      "Jordan", "Kenya", "Kuwait", "Lebanon", "Libya", "Morocco", "Nepal", 
+      "Nigeria", "Oman", "Pakistan", "Palestine", "Panama", "Philippines", 
+      "Qatar", "Romania", "Russia", "Saudi Arabia", "Singapore", "Slovakia", 
+      "South Africa", "Sri Lanka", "Sudan", "Syria", "Tanzania", "Thailand", 
+      "Tunisia", "Turkey", "United Arab Emirates", "United Kingdom", 
+      "United States", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+    ]);
+
     const fetchCountries = async () => {
       try {
         const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca3');
         if (!response.ok) throw new Error('Network response was not ok');
         let data = await response.json();
-        data.sort((a, b) => a.name.common.localeCompare(b.name.common));
-        setCountries(data);
+        
+        const filteredData = data.filter(country => allowedCountriesSet.has(country.name.common));
+
+        filteredData.sort((a, b) => a.name.common.localeCompare(b.name.common));
+        setCountries(filteredData);
       } catch (error) { console.error("Failed to fetch countries:", error); }
       finally { setIsLoadingCountries(false); }
     };
     fetchCountries();
   }, []);
+  // --- MODIFICATION END ---
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
