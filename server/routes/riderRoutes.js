@@ -22,15 +22,38 @@ const upload = multer({ storage: storage, limits: { fileSize: 1 * 1024 * 1024 },
 // Google Sheets setup remains the same...
 let sheets;
 try {
-  const GOOGLE_CREDENTIALS_PATH = path.join(process.cwd(), 'google-credentials.json');
-  if (fs.existsSync(GOOGLE_CREDENTIALS_PATH)) {
-    const credentials = JSON.parse(fs.readFileSync(GOOGLE_CREDENTIALS_PATH));
-    const auth = new google.auth.GoogleAuth({ credentials, scopes: ['https://www.googleapis.com/auth/spreadsheets'] });
-    sheets = google.sheets({ version: 'v4', auth });
-    console.log('✅ Google Sheets API client initialized successfully.');
-  } else { console.error('❌ Could not find google-credentials.json.'); }
-} catch (error) { console.error('❌ Error initializing Google Sheets API client:', error); }
+  // Check if essential environment variables are loaded
+  if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+    throw new Error('Google credentials environment variables not set.');
+  }
 
+  // Construct the credentials object from environment variables
+  const credentials = {
+    type: process.env.GOOGLE_TYPE,
+    project_id: process.env.GOOGLE_PROJECT_ID,
+    private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+    // The dotenv package handles the \n characters correctly when the key is quoted.
+    private_key: process.env.GOOGLE_PRIVATE_KEY,
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    // These are standard URLs and can be hardcoded or put in .env if you prefer
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.GOOGLE_CLIENT_EMAIL)}`
+  };
+
+  const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
+
+  sheets = google.sheets({ version: 'v4', auth });
+  console.log('✅ Google Sheets API client initialized successfully from environment variables.');
+
+} catch (error) {
+  console.error('❌ Error initializing Google Sheets API client:', error.message);
+}
 
 router.post(
   '/register',

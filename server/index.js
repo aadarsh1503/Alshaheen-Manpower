@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 5000;
 // --- 1. DEFINE YOUR ALLOWED ORIGINS (WHITELIST) ---
 // These are the only URLs that will be allowed to access your API.
 const allowedOrigins = [
-  'http://localhost:5173',          // Your local development environment
-  'https://alshaheen.pro',          // Your production domain
-  'https://gvs-services.vercel.app' // Your other production/staging domain
+  'http://localhost:5173',    
+  'https://alshaheen.pro',       
+  'https://gvs-services.vercel.app'
 ];
 
 // --- 2. CONFIGURE CORS OPTIONS ---
