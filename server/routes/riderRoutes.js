@@ -45,16 +45,19 @@ router.post(
     try {
       const { files } = req;
 
-      // MODIFICATION: Removed `previousCompany` from destructuring
+      // --- MODIFICATION START ---
+      // Changed 'title' to 'gender'
+      // Removed 'residenceCountry' and 'originDestination'
       const {
-        title, firstName, lastName, email, residenceCountry, phone,
-        nationality, originDestination, visaExpiry, licenseExpiry, experience,
+        gender, firstName, lastName, email, phone,
+        nationality, visaExpiry, licenseExpiry, experience,
         alternatePhone, vehicleType,
         currentAddress_flat, currentAddress_road, currentAddress_block, currentAddress_town,
         companyName, isVehicleOwner, readyToStartDate, previousExperience
       } = req.body;
+      // --- MODIFICATION END ---
 
-      console.log('📦 Form fields received:', req.body);
+    
 
       const fullCurrentAddress = `Flat: ${currentAddress_flat}, Road: ${currentAddress_road}, Block: ${currentAddress_block}, Town: ${currentAddress_town}`;
 
@@ -65,27 +68,26 @@ router.post(
       const licenseFrontUrl = files['licenseFrontDoc'] ? files['licenseFrontDoc'][0].path : '';
       const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
-      // MODIFICATION: Removed `previousCompany` from the newRow array
+      // --- MODIFICATION START ---
+      // Updated the newRow array to match the new form fields
       const newRow = [
         new Date().toISOString(),
-        title,
+        gender,
         firstName,
         lastName,
         email,
         phone,
         alternatePhone || 'N/A',
-        residenceCountry,
         nationality,
         fullCurrentAddress,
         vehicleType,
         isVehicleOwner,
-        originDestination,
         visaExpiry,
         licenseExpiry,
         readyToStartDate,
-        companyName, // This will now correctly be "Fresher" or the company name
-        previousExperience, // This will be "0" or the years of experience
-        experience, // This will be "N/A" or the details
+        companyName,
+        previousExperience,
+        experience,
         applicantPhotoUrl,
         cprFrontUrl,
         cprBackUrl,
@@ -93,8 +95,9 @@ router.post(
         licenseBackUrl,
         vehicleRegUrl,
       ];
+      // --- MODIFICATION END ---
 
-      console.log('🧾 Preparing data row for Google Sheets:', newRow);
+    
       
       await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
@@ -103,7 +106,7 @@ router.post(
         resource: { values: [newRow] },
       });
 
-      console.log('✅ Data successfully appended to Google Sheets.');
+    
       res.status(200).json({ message: 'Registration successful!' });
 
     } catch (error) {

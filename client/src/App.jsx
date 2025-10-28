@@ -84,6 +84,7 @@ function App() {
           <Route path="/healthcare" element={<HealthCare2 />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/apply" element={<MultiStepForm />} />
+          
         </Route>
 
         {/* Standalone routes (like login, signup, dashboard) without the main layout */}
