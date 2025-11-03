@@ -24,7 +24,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await fetch(`${baseUrl}/admin/signup`, {
+      const res = await fetch(`${baseUrl}/api/admin/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

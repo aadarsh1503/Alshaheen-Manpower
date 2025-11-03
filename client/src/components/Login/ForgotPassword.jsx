@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     setError('');
 
     try {
-      const res = await fetch(`${baseUrl}/admin/forgot-password`, {
+      const res = await fetch(`${baseUrl}/api/admin/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
