@@ -89,7 +89,7 @@ const RegistrationPage = () => {
   // --- MODIFICATION START: Country list is now filtered ---
   useEffect(() => {
     const allowedCountriesSet = new Set([
-      "Algeria", "Armenia", "Bahrain", "Belarus", "Cameroon", "China", "Egypt", 
+      "Algeria", "Armenia", "Bahrain","Bangladesh", "Belarus", "Cameroon", "China", "Egypt", 
       "Eritrea", "Ethiopia", "Ghana", "India", "Indonesia", "Iran", "Iraq", 
       "Jordan", "Kenya", "Kuwait", "Lebanon", "Libya", "Morocco", "Nepal", 
       "Nigeria", "Oman", "Pakistan", "Palestine", "Panama", "Philippines", 
