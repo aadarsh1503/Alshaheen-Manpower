@@ -422,7 +422,7 @@ const MultiStepForm = () => {
         if (file) formDataToSend.append('file', file);
 
        
-        const response = await fetch(`${baseUrl}/api/submit-form`, {
+        const response = await fetch(`/api/submit-form`, {
             method: 'POST',
             body: formDataToSend,
         });

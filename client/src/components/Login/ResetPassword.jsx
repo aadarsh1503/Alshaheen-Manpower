@@ -27,7 +27,7 @@ const ResetPassword = () => {
     setError('');
 
     try {
-      const res = await fetch(`${baseUrl}/api/admin/reset-password/${token}`, {
+      const res = await fetch(`/api/admin/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),

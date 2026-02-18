@@ -132,7 +132,7 @@ const InternshipForm = () => {
       if (file) formDataToSend.append('resume', file);
 
       const response = await axios.post(
-        `${baseUrl}/api/internships/submit`,
+        `/api/internships/submit`,
         formDataToSend,
         {
           headers: { 'Content-Type': 'multipart/form-data' }

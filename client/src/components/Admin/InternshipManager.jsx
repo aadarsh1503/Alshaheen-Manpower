@@ -67,7 +67,7 @@ const InternshipManager = () => {
   const fetchApplications = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get(`${baseUrl}/api/internships/applications`, {
+      const response = await axios.get(`/api/internships/applications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setApplications(response.data.data);
@@ -171,7 +171,7 @@ const InternshipManager = () => {
     try {
       const token = localStorage.getItem('adminToken');
       await axios.post(
-        `${baseUrl}/api/internships/applications/send-custom-email`,
+        `/api/internships/applications/send-custom-email`,
         {
           applicationIds: [selectedApplication.id],
           subject: customEmailData.subject,
@@ -198,7 +198,7 @@ const InternshipManager = () => {
       toast.info('📊 Preparing Excel file...');
       const token = localStorage.getItem('adminToken');
       const response = await axios.get(
-        `${baseUrl}/api/internships/export`,
+        `/api/internships/export`,
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: 'blob'
@@ -273,13 +273,13 @@ const InternshipManager = () => {
       
       if (deleteTarget.type === 'single') {
         await axios.delete(
-          `${baseUrl}/api/internships/applications/${deleteTarget.data.id}`,
+          `/api/internships/applications/${deleteTarget.data.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success('✅ Application deleted successfully');
       } else {
         await axios.post(
-          `${baseUrl}/api/internships/applications/bulk-delete`,
+          `/api/internships/applications/bulk-delete`,
           { applicationIds: deleteTarget.data },
           { headers: { Authorization: `Bearer ${token}` } }
         );

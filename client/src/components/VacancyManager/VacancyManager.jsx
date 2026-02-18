@@ -313,7 +313,7 @@ const VacancyManager = () => {
 
     try {
       const response = await axios.get(
-        `${baseUrl}/api/admin/vacancies`, {
+        `/api/admin/vacancies`, {
             headers: { 'Authorization': `Bearer ${token}` }
         }
       );
@@ -372,8 +372,8 @@ const VacancyManager = () => {
 
     await toast.promise(
       (isEditing
-        ? axios.put(`${baseUrl}/api/admin/vacancies/${id}`, formData, config)
-        : axios.post(`${baseUrl}/api/admin/vacancies`, formData, config)
+        ? axios.put(`/api/admin/vacancies/${id}`, formData, config)
+        : axios.post(`/api/admin/vacancies`, formData, config)
       ).then(() => {
         setIsModalOpen(false);
         fetchVacancies();
@@ -399,7 +399,7 @@ const VacancyManager = () => {
     }
     
     await toast.promise(
-      axios.delete(`${baseUrl}/api/admin/vacancies/${id}`, {
+      axios.delete(`/api/admin/vacancies/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
       }).then(() => {
           fetchVacancies();

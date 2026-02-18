@@ -209,7 +209,7 @@ exports.submitInternshipApplication = async (req, res) => {
       </div>
     `;
 
-    await sendEmail('aadarshchauhan35@gmail.com', `New Internship Application - ${name}`, adminEmailHtml);
+    await sendEmail('info@alshaheen.pro', `New Internship Application - ${name}`, adminEmailHtml);
 
     res.status(201).json({
       success: true,

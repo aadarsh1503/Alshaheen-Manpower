@@ -6,8 +6,6 @@ import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom'; // 1. Import Link from react-router-dom
 
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
 const VacanciesCarousel = () => {
   // ... (all your state and useEffect hooks remain exactly the same)
   const [vacancies, setVacancies] = useState([]);
@@ -20,7 +18,7 @@ const VacanciesCarousel = () => {
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/api/vacancies`);
+        const response = await axios.get('/api/vacancies');
         if (Array.isArray(response.data)) {
           setVacancies(response.data);
         } else {

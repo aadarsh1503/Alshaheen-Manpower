@@ -215,7 +215,7 @@ const RegistrationPage = () => {
     if (vehicleRegFile) submissionData.append('vehicleRegDoc', vehicleRegFile);
 
     try {
-      const API_URL = `${baseUrl}/api/riders/register`; 
+      const API_URL = `/api/riders/register`; 
       await axios.post(API_URL, submissionData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setShowSuccessModal(true);
       setTimeout(() => { window.location.reload(); }, 3500);

@@ -39,7 +39,7 @@ const Footer = () => {
     const fetchVersion = async () => {
       try {
         // Use proxy path when baseUrl is empty (development)
-        const apiUrl = `${baseUrl}/api/settings`;
+        const apiUrl = `/api/settings`;
         const response = await axios.get(apiUrl);
         if (response.data.version) {
           setVersion(response.data.version);

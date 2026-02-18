@@ -183,7 +183,7 @@ GVS Internship Team`
 
       const token = localStorage.getItem('adminToken');
       const response = await axios.post(
-        `${baseUrl}/api/internships/upload-certificate`,
+        `/api/internships/upload-certificate`,
         formData,
         {
           headers: {
@@ -243,7 +243,7 @@ GVS Internship Team`
       if (selectedApplications.length === 1) {
         // Single email
         await axios.post(
-          `${baseUrl}/api/internships/applications/${selectedApplications[0].id}/send-stage-email`,
+          `/api/internships/applications/${selectedApplications[0].id}/send-stage-email`,
           {
             stage: newStage,
             subject: formData.subject,
@@ -260,7 +260,7 @@ GVS Internship Team`
       } else {
         // Bulk email
         await axios.post(
-          `${baseUrl}/api/internships/applications/bulk-send-email`,
+          `/api/internships/applications/bulk-send-email`,
           {
             applicationIds: selectedApplications.map(app => app.id),
             stage: newStage,

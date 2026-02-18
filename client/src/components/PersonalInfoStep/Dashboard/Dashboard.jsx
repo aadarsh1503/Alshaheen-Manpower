@@ -70,7 +70,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await axios.get(`${baseUrl}/api/admin/form-entries`, {
+      const response = await axios.get(`/api/admin/form-entries`, {
         headers: {
           // Send the token for authorization
           'Authorization': `Bearer ${token}`
@@ -266,7 +266,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.put(
-        `${baseUrl}/api/admin/form-entries/${editedEntry.id}`,
+        `/api/admin/form-entries/${editedEntry.id}`,
         editedEntry,
         {
           headers: {
@@ -308,7 +308,7 @@ const Dashboard = () => {
 
     try {
       await axios.delete(
-        `${baseUrl}/api/admin/form-entries/${entryToDelete.id}`,
+        `/api/admin/form-entries/${entryToDelete.id}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -354,7 +354,7 @@ const Dashboard = () => {
   const fetchSettings = async () => {
     const token = localStorage.getItem('adminToken');
     try {
-      const response = await axios.get(`${baseUrl}/api/admin/settings`, {
+      const response = await axios.get(`/api/admin/settings`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       setVersion(response.data.version || '1.0.0');
@@ -367,7 +367,7 @@ const Dashboard = () => {
   const updateVersion = async (newVersion) => {
     const token = localStorage.getItem('adminToken');
     try {
-      await axios.put(`${baseUrl}/api/admin/settings`, 
+      await axios.put(`/api/admin/settings`, 
         { key: 'version', value: newVersion },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
@@ -391,7 +391,7 @@ const Dashboard = () => {
     
     try {
       await axios.patch(
-        `${baseUrl}/api/admin/form-entries/${entry.id}/blacklist`,
+        `/api/admin/form-entries/${entry.id}/blacklist`,
         { isBlacklisted: newStatus },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
@@ -424,7 +424,7 @@ const Dashboard = () => {
     
     try {
       await axios.post(
-        `${baseUrl}/api/admin/change-password`,
+        `/api/admin/change-password`,
         { currentPassword, newPassword },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
@@ -500,12 +500,12 @@ const Dashboard = () => {
       toast.loading("Fetching all data...");
       
       // Fetch vacancies data
-      const vacanciesResponse = await axios.get(`${baseUrl}/api/admin/vacancies`, {
+      const vacanciesResponse = await axios.get(`/api/admin/vacancies`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
       // Fetch internship applications data
-      const internshipsResponse = await axios.get(`${baseUrl}/api/internships/applications`, {
+      const internshipsResponse = await axios.get(`/api/internships/applications`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       

@@ -36,7 +36,7 @@ const BlacklistManager = () => {
     }
 
     try {
-      const response = await axios.get(`${baseUrl}/api/admin/form-entries`, {
+      const response = await axios.get(`/api/admin/form-entries`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -79,7 +79,7 @@ const BlacklistManager = () => {
     
     try {
       await axios.patch(
-        `${baseUrl}/api/admin/form-entries/${entryToUnblock.id}/blacklist`,
+        `/api/admin/form-entries/${entryToUnblock.id}/blacklist`,
         { isBlacklisted: false },
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
@@ -105,7 +105,7 @@ const BlacklistManager = () => {
     
     try {
       await axios.delete(
-        `${baseUrl}/api/admin/form-entries/${entry.id}`,
+        `/api/admin/form-entries/${entry.id}`,
         { headers: { 'Authorization': `Bearer ${token}` } }
       );
       
