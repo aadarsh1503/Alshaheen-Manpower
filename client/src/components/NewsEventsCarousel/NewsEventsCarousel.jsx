@@ -35,16 +35,22 @@ const NewsEventsCarousel = () => {
     const fetchNewsEvents = async () => {
       try {
         const response = await axios.get('/api/settings/news-events/public');
-        const formattedData = response.data.map(event => ({
-          src: event.image_url || 'https://via.placeholder.com/800x600?text=No+Image',
-          alt: event.heading,
-          heading: event.heading,
-          description: event.description
-        }));
-        setImages(formattedData);
+        if (Array.isArray(response.data)) {
+          const formattedData = response.data.map(event => ({
+            src: event.image_url || 'https://via.placeholder.com/800x600?text=No+Image',
+            alt: event.heading,
+            heading: event.heading,
+            description: event.description
+          }));
+          setImages(formattedData);
+        } else {
+          console.error('News/events data is not an array:', response.data);
+          setImages([]);
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error fetching news/events:', error);
+        setImages([]);
         setLoading(false);
       }
     };

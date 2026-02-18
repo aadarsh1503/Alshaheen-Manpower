@@ -21,10 +21,16 @@ const VacanciesCarousel = () => {
     const fetchVacancies = async () => {
       try {
         const response = await axios.get(`${baseUrl}/api/vacancies`);
-        setVacancies(response.data);
+        if (Array.isArray(response.data)) {
+          setVacancies(response.data);
+        } else {
+          console.error('Vacancies data is not an array:', response.data);
+          setVacancies([]);
+        }
       } catch (err) {
         setError('Could not load vacancies at this time.');
         console.error("Fetch error:", err);
+        setVacancies([]);
       } finally {
         setIsLoading(false);
       }
