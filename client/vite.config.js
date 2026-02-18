@@ -9,17 +9,19 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // Proxy for sending emails
+      // This will proxy all requests starting with /api to your Node server
       '/api': {
-        target: 'https://alshaheen.pro/send_to_a_mail.php',
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''), // Remove `/api` prefix
+        secure: false,
+        // rewrite: (path) => path.replace(/^\/api/, ''), 
+        // ^ KEEP COMMENTED OUT because your Node routes expect the "/api" prefix
       },
-      // Proxy for file upload
-      '/upload': {
+      // If you still need the old PHP upload script, keep this:
+      '/upload-legacy': {
         target: 'https://alshaheen.pro/upload_file.php',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/upload/, ''), // Remove `/upload` prefix
+        rewrite: (path) => path.replace(/^\/upload-legacy/, ''),
       },
     },
   },

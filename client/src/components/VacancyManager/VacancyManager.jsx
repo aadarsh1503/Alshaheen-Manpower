@@ -6,11 +6,6 @@ import {
   Edit,
   Trash2,
   X,
-  Briefcase,
-  Power,
-  Sun,
-  Moon,
-  UserCogIcon,
   Search,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -19,47 +14,6 @@ import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
-// --- [INTERNAL] --- Admin Navbar Component (Unchanged)
-const AdminNavbar = ({ onLogoutClick, darkMode, toggleDarkMode }) => {
-  return (
-    <div className="flex flex-col w-20 xl:w-64 bg-gray-900 text-gray-200 p-4 border-r border-gray-700/50">
-      <div className="flex items-center justify-center xl:justify-start gap-3 mb-10 h-12">
-        <motion.div
-          className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-700 rounded-lg flex items-center justify-center"
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        >
-          <Briefcase size={22} className="text-white" />
-        </motion.div>
-        <h1 className="hidden xl:block text-xl font-bold text-white tracking-wider">
-          V-MANAGER
-        </h1>
-      </div>
-      <nav className="flex-grow ">
-        <ul>
-          <a href="/dashboard">
-            <li className="relative">
-              <button className="w-full flex mt-4 justify-center xl:justify-start items-center gap-4 py-3 px-3 rounded-lg bg-red-600/30 text-white font-semibold border border-red-500/50 shadow-inner shadow-red-900/50">
-                <UserCogIcon size={22} />
-                <span className="hidden xl:block">Dashboard</span>
-              </button>
-            </li>
-          </a>
-        </ul>
-      </nav>
-      <div className="mt-auto space-y-2">
-        <button
-          onClick={onLogoutClick}
-          className="w-full flex justify-center xl:justify-start items-center gap-4 py-3 px-3 rounded-lg text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors"
-        >
-          <Power size={22} />
-          <span className="hidden xl:block">Logout</span>
-        </button>
-      </div>
-    </div>
-  );
-};
 
 // --- [HELPER FUNCTION FOR CROPPING] --- (Unchanged)
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
@@ -321,78 +275,11 @@ const VacancyModal = ({ isOpen, onClose, onSave, vacancy, darkMode }) => {
   );
 };
 
-// --- [INTERNAL] --- Logout Confirmation Modal (Unchanged)
-const LogoutConfirmationModal = ({ isOpen, onConfirm, onCancel, darkMode }) => {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4 font-noto-serif">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            onClick={(e) => e.stopPropagation()}
-            className={`relative w-full max-w-md rounded-2xl p-8 text-center shadow-2xl ${
-              darkMode ? "bg-gray-800 border border-red-500/30" : "bg-white"
-            }`}
-          >
-            <motion.div
-              animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="absolute -top-8 left-48 -translate-x-1/2 w-16 h-16 bg-red-500 rounded-full flex items-center justify-center shadow-lg shadow-red-500/50"
-            >
-              <Power size={32} className="text-white " />
-            </motion.div>
-            <h2
-              className={`text-2xl font-bold mt-8 ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
-              Confirm Logout
-            </h2>
-            <p
-              className={`mt-2 text-base ${
-                darkMode ? "text-gray-400" : "text-gray-600"
-              }`}
-            >
-              Are you sure you want to end your current session?
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onCancel}
-                className={`px-8 py-2 rounded-lg font-semibold transition-colors ${
-                  darkMode
-                    ? "bg-gray-700 hover:bg-gray-600 text-gray-200"
-                    : "bg-gray-200 hover:bg-gray-300 text-gray-800"
-                }`}
-              >
-                Stay
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={onConfirm}
-                className="px-8 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md shadow-red-500/30 transition-all"
-              >
-                Logout
-              </motion.button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
-  );
-};
-
 // --- [MAIN COMPONENT] --- (Unchanged)
 const VacancyManager = () => {
   const [vacancies, setVacancies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVacancy, setEditingVacancy] = useState(null);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("date_desc");
   const [darkMode, setDarkMode] = useState(() => {
@@ -406,8 +293,6 @@ const VacancyManager = () => {
     else document.documentElement.classList.remove("dark");
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const handleAuthError = (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -530,13 +415,6 @@ const VacancyManager = () => {
     );
   };
 
-  const handleLogout = () => {
-    setShowLogoutModal(false);
-    localStorage.removeItem("adminToken");
-    toast.success("Logged out successfully!");
-    navigate("/alshaheen-pro-login");
-  };
-
   return (
     <>
       <Toaster
@@ -555,25 +433,13 @@ const VacancyManager = () => {
         vacancy={editingVacancy}
         darkMode={darkMode}
       />
-      <LogoutConfirmationModal
-        isOpen={showLogoutModal}
-        onConfirm={handleLogout}
-        onCancel={() => setShowLogoutModal(false)}
-        darkMode={darkMode}
-      />
 
       <div
-        className={`flex min-h-screen font-noto-serif transition-colors duration-300 ${
+        className={`min-h-screen font-noto-serif transition-colors duration-300 ${
           darkMode ? "dark bg-gray-900" : "bg-gray-100"
         }`}
       >
-        <AdminNavbar
-          onLogoutClick={() => setShowLogoutModal(true)}
-          darkMode={darkMode}
-          toggleDarkMode={toggleDarkMode}
-        />
-
-        <main className="flex-1 p-6 lg:p-10 overflow-y-auto">
+        <main className="p-6 lg:p-10 overflow-y-auto">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
             <motion.h1
               initial={{ opacity: 0, y: -20 }}

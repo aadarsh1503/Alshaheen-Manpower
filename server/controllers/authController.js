@@ -122,10 +122,50 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// NEW: Change Password (for logged-in admin)
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.userId; // From auth middleware
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Current password and new password are required' });
+    }
+
+    // Get user from database
+    const [results] = await pool.execute('SELECT * FROM admin_users WHERE id = ?', [userId]);
+    
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = results[0];
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Current password is incorrect' });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password
+    await pool.execute('UPDATE admin_users SET password = ? WHERE id = ?', [hashedPassword, userId]);
+
+    res.status(200).json({ message: 'Password changed successfully' });
+
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ message: 'An error occurred while changing the password' });
+  }
+};
+
 
 module.exports = {
   signupAdmin,
   loginAdmin,
   forgotPassword, // Export new function
   resetPassword,  // Export new function
+  changePassword, // Export new function
 };

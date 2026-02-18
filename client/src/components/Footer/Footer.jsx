@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { AiOutlinePhone, AiOutlineMail } from 'react-icons/ai';
 import { GoLocation } from 'react-icons/go'; // A better icon for location
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [version, setVersion] = useState('1.0.0');
+
+  useEffect(() => {
+    // Fetch version from public settings endpoint
+    const fetchVersion = async () => {
+      try {
+        // Use proxy path when baseUrl is empty (development)
+        const apiUrl = `${baseUrl}/api/settings`;
+        const response = await axios.get(apiUrl);
+        if (response.data.version) {
+          setVersion(response.data.version);
+        }
+      } catch (error) {
+        console.error('Error fetching version:', error);
+      }
+    };
+    fetchVersion();
+    
+    // Poll for version updates every 30 seconds
+    const interval = setInterval(fetchVersion, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -130,6 +155,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Al Shaheen Manpower. All Rights Reserved.</p>
+          <p className="mt-1 text-xs text-gray-400">Version {version}</p>
         </div>
       </div>
     </footer>

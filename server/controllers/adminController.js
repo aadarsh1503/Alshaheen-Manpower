@@ -136,7 +136,8 @@ const getFormEntries = async (req, res) => {
       ...entry,
       currentlyEmployed: entry.currentlyEmployed,
       visaStatus: entry.visaStatus || null,
-      originalFilename: hasOriginalFilename ? entry.originalFilename : null
+      originalFilename: hasOriginalFilename ? entry.originalFilename : null,
+      isBlacklisted: entry.isBlacklisted || false
     }));
 
     res.status(200).json(processedResults);
@@ -146,10 +147,144 @@ const getFormEntries = async (req, res) => {
   }
 };
 
+const updateFormEntry = async (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  try {
+    // Build dynamic update query
+    const fields = Object.keys(updatedData).filter(key => key !== '_id' && key !== 'id');
+    const setClause = fields.map(field => `${field} = ?`).join(', ');
+    
+    // Format date fields to MySQL DATE format (YYYY-MM-DD)
+    const values = fields.map(field => {
+      const value = updatedData[field];
+      
+      // Check if field is a date field and value is not null/empty
+      if ((field === 'dateOfBirth' || field === 'passportValidity' || field === 'visaValidity' || field === 'submittedAt') && value) {
+        // Convert to YYYY-MM-DD format
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          return date.toISOString().split('T')[0];
+        }
+      }
+      
+      return value;
+    });
+    
+    values.push(id);
+
+    const query = `UPDATE form_entries SET ${setClause} WHERE id = ?`;
+    await pool.execute(query, values);
+
+    res.status(200).json({ message: 'Form entry updated successfully' });
+  } catch (err) {
+    console.error('Error updating form entry:', err);
+    res.status(500).json({ message: 'Failed to update form entry' });
+  }
+};
+
+const deleteFormEntry = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await pool.execute('DELETE FROM form_entries WHERE id = ?', [id]);
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Form entry not found' });
+    }
+
+    res.status(200).json({ message: 'Form entry deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting form entry:', err);
+    res.status(500).json({ message: 'Failed to delete form entry' });
+  }
+};
+
+// Toggle blacklist status
+const toggleBlacklist = async (req, res) => {
+  const { id } = req.params;
+  const { isBlacklisted } = req.body;
+
+  try {
+    // Check if isBlacklisted column exists, if not add it
+    const [columns] = await pool.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'form_entries' AND COLUMN_NAME = 'isBlacklisted'`);
+    
+    if (columns.length === 0) {
+      await pool.execute('ALTER TABLE form_entries ADD COLUMN isBlacklisted BOOLEAN DEFAULT FALSE');
+    }
+
+    await pool.execute('UPDATE form_entries SET isBlacklisted = ? WHERE id = ?', [isBlacklisted, id]);
+    res.status(200).json({ message: 'Blacklist status updated successfully' });
+  } catch (err) {
+    console.error('Error updating blacklist status:', err);
+    res.status(500).json({ message: 'Failed to update blacklist status' });
+  }
+};
+
+// Get settings
+const getSettings = async (req, res) => {
+  try {
+    // Check if settings table exists
+    const [tables] = await pool.execute(`SHOW TABLES LIKE 'settings'`);
+    
+    if (tables.length === 0) {
+      // Create settings table
+      await pool.execute(`
+        CREATE TABLE settings (
+          id INT PRIMARY KEY AUTO_INCREMENT,
+          setting_key VARCHAR(255) UNIQUE NOT NULL,
+          setting_value TEXT,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )
+      `);
+      
+      // Insert default version
+      await pool.execute(`INSERT INTO settings (setting_key, setting_value) VALUES ('version', '1.0.0')`);
+    }
+
+    const [settings] = await pool.execute('SELECT * FROM settings');
+    const settingsObj = {};
+    settings.forEach(setting => {
+      settingsObj[setting.setting_key] = setting.setting_value;
+    });
+    
+    res.status(200).json(settingsObj);
+  } catch (err) {
+    console.error('Error retrieving settings:', err);
+    res.status(500).json({ message: 'Failed to retrieve settings' });
+  }
+};
+
+// Update settings
+const updateSettings = async (req, res) => {
+  const { key, value } = req.body;
+
+  try {
+    const [existing] = await pool.execute('SELECT * FROM settings WHERE setting_key = ?', [key]);
+    
+    if (existing.length > 0) {
+      await pool.execute('UPDATE settings SET setting_value = ? WHERE setting_key = ?', [value, key]);
+    } else {
+      await pool.execute('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)', [key, value]);
+    }
+
+    res.status(200).json({ message: 'Settings updated successfully' });
+  } catch (err) {
+    console.error('Error updating settings:', err);
+    res.status(500).json({ message: 'Failed to update settings' });
+  }
+};
+
 module.exports = {
   getAdminVacancies,
   createVacancy,
   updateVacancy,
   deleteVacancy,
-  getFormEntries
+  getFormEntries,
+  updateFormEntry,
+  deleteFormEntry,
+  toggleBlacklist,
+  getSettings,
+  updateSettings
 };

@@ -35,6 +35,10 @@ import VacancyManager from './components/VacancyManager/VacancyManager';
 import RegistrationPage from './components/RiderRegistrationForm/RiderRegistrationForm';
 import ForgotPassword from './components/Login/ForgotPassword';
 import ResetPassword from './components/Login/ResetPassword';
+import InternshipForm from './components/InternshipForm/InternshipForm';
+import InternshipManager from './components/Admin/InternshipManager';
+import AdminLayout from './components/Admin/AdminLayout';
+import BlacklistManager from './components/Admin/BlacklistManager';
 
 /**
  * MainLayout component handles the shared structure (Navbar, Footer, etc.)
@@ -84,29 +88,37 @@ function App() {
           <Route path="/healthcare" element={<HealthCare2 />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/apply" element={<MultiStepForm />} />
+          <Route path="/internship" element={<InternshipForm />} />
           
         </Route>
 
-        {/* Standalone routes (like login, signup, dashboard) without the main layout */}
+        {/* Standalone routes (like login, signup) without the main layout */}
         <Route path="/alshaheen-pro-login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/signup-gvs3245" element={<Signup />} />
+        
+        {/* Admin routes with sidebar layout */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="vacancies" element={<VacancyManager />} />
+          <Route path="internships" element={<InternshipManager />} />
+          <Route path="blacklist" element={<BlacklistManager />} />
+        </Route>
+
+        {/* Redirect old dashboard route to new admin dashboard */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        
-        {/* Admin route for managing vacancies - NOW PROTECTED */}
-        <Route
-          path="/admin/vacancies"
-          element={
-            <ProtectedRoute>
-              <VacancyManager />
             </ProtectedRoute>
           }
         />

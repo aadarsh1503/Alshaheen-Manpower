@@ -5,7 +5,8 @@ import {
   FaBars, 
   FaTimes, 
   FaUserPlus, 
-  FaMotorcycle 
+  FaMotorcycle,
+  FaBriefcase 
 } from 'react-icons/fa';
 import i1 from "./i1.jpg";
 import i21 from "./i21.jpg";
@@ -124,6 +125,13 @@ const Navbar = () => {
                   <FaMotorcycle className="text-red-500" />
                   <span className="font-semibold">Rider registration</span>
                 </a>
+                <a 
+                  href="/internship" 
+                  className="flex items-center gap-3 w-full px-4 py-3 text-left text-gray-700 hover:text-red-600 hover:bg-gray-500/10 rounded-lg transition-colors duration-200"
+                >
+                  <FaBriefcase className="text-red-500" />
+                  <span className="font-semibold">Internship</span>
+                </a>
               </div>
             </div>
           </div>
@@ -169,6 +177,9 @@ const Navbar = () => {
                 </a>
                 <a href="/registration-form" className="block text-center py-2 px-4 text-black hover:text-lightgreen hover:bg-gray-100 rounded-md">
                   Rider registration
+                </a>
+                <a href="/internship" className="block text-center py-2 px-4 text-black hover:text-lightgreen hover:bg-gray-100 rounded-md">
+                  Internship
                 </a>
               </div>
             )}

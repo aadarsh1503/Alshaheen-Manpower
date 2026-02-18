@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // ✅ Correct import
-// Import your images
-import i1 from "./i1.jpg";
-import i2 from "./i2.jpg";
-import i3 from "./i3.jpg";
-import i4 from "./i4.jpg";
-import i5 from "./i5.png";
+import { useNavigate } from "react-router-dom";
+
+// ========== COMMENTED OUT - IMAGE IMPORTS ==========
+// import i1 from "./i1.jpg";
+// import i2 from "./i2.jpg";
+// import i3 from "./i3.jpg";
+// import i4 from "./i4.jpg";
+// import i5 from "./i5.png";
 import gog from "./gog.png"
-// --- Data is moved outside the component for better organization ---
+// ========== END COMMENTED OUT ==========
+
+// Video URL from Pexels
+const videoUrl = "https://res.cloudinary.com/ds1dt3qub/video/upload/v1771239490/3716143-hd_1920_1080_25fps_1_jmprdc.mp4";
+
+// --- Data with text content (images commented out) ---
 const sliderData = [
   {
-    src: i1,
+    // src: i1, // COMMENTED OUT
     alt: "Recruitment experts working in an office",
     text: "RECRUITMENT EXPERTS: <br /> RATED 4.8 ON GOOGLE",
     description:
@@ -19,7 +25,7 @@ const sliderData = [
     googleSrc: gog,
   },
   {
-    src: i2,
+    // src: i2, // COMMENTED OUT
     alt: "Diverse group of professionals",
     text: "BRINGING SKILLS <br /> AND OPPORTUNITY TOGETHER",
     description:
@@ -27,7 +33,7 @@ const sliderData = [
     googleSrc: "",
   },
   {
-    src: i3,
+    // src: i3, // COMMENTED OUT
     alt: "Business growth chart",
     text: "HIRE SMART, <br /> GROW FAST",
     description:
@@ -35,7 +41,7 @@ const sliderData = [
     googleSrc: "",
   },
   {
-    src: i4,
+    // src: i4, // COMMENTED OUT
     alt: "Grid of candidate profiles",
     text: "160,000+ SCREENED <br />CANDIDATES",
     description:
@@ -43,7 +49,7 @@ const sliderData = [
     googleSrc: "",
   },
   {
-    src: i5,
+    // src: i5, // COMMENTED OUT
     alt: "Human Resources lifecycle diagram",
     text: "FULL SERVICE HR",
     description:
@@ -75,6 +81,7 @@ const itemVariants = {
 const Hero = ({ onFindJobClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % sliderData.length);
@@ -82,7 +89,6 @@ const Hero = ({ onFindJobClick }) => {
 
     return () => clearInterval(interval);
   }, []);
-
 
   const handleDotClick = (index) => {
     setCurrentIndex(index);
@@ -92,8 +98,20 @@ const Hero = ({ onFindJobClick }) => {
 
   return (
     <div className="relative w-full h-[600px] lg:h-[650px] overflow-hidden">
-      {/* Background Image & Overlay */}
-      <AnimatePresence>
+      {/* ========== VIDEO BACKGROUND (replaces image slider) ========== */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      {/* ========== COMMENTED OUT - IMAGE BACKGROUND ========== */}
+      {/* <AnimatePresence>
         <motion.div
           key={currentIndex}
           className="absolute inset-0 bg-cover bg-center"
@@ -103,7 +121,9 @@ const Hero = ({ onFindJobClick }) => {
           exit={{ opacity: 0.8 }}
           transition={{ duration: 1, ease: "easeInOut" }}
         />
-      </AnimatePresence>
+      </AnimatePresence> */}
+      {/* ========== END COMMENTED OUT ========== */}
+      
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
 
       {/* Main Content Container with Offset */}
@@ -113,7 +133,7 @@ const Hero = ({ onFindJobClick }) => {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              className="max-w-3xl text-center lg:text-left" // Limits line length, aligns text
+              className="max-w-3xl text-center lg:text-left"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -128,7 +148,7 @@ const Hero = ({ onFindJobClick }) => {
 
               {/* Decorative Line */}
               <motion.div
-                className="h-1.5 w-16 bg-lightgreen mb-6 mx-auto lg:mx-0" // Centered on mobile, left on desktop
+                className="h-1.5 w-16 bg-lightgreen mb-6 mx-auto lg:mx-0"
                 variants={itemVariants}
               ></motion.div>
 
@@ -139,26 +159,25 @@ const Hero = ({ onFindJobClick }) => {
                 variants={itemVariants}
               />
 
-              {/* Button Group: Aligned to the end (right) of the content block on large screens */}
+              {/* Button Group */}
               <motion.div
-  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-end"
-  variants={itemVariants}
->
-  <button
-    className="bg-lightgreen text-white px-8 py-3 font-raleway font-semibold hover:bg-DarkRed transition-colors duration-300"
-    onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
-  >
-    FIND TALENT
-  </button>
-  
-  <button
-    className="bg-transparent border-2 border-white text-white px-8 py-3 font-raleway font-semibold hover:bg-white hover:text-black transition-colors duration-300"
-    onClick={() => window.location.href = '/apply'}
-  >
-    FIND A JOB
-  </button>
-</motion.div>
-
+                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-end"
+                variants={itemVariants}
+              >
+                <button
+                  className="bg-lightgreen text-white px-8 py-3 font-raleway font-semibold hover:bg-DarkRed transition-colors duration-300"
+                  onClick={() => window.open("https://www.talentportal.bh/#pills-profile", "_blank")}
+                >
+                  FIND TALENT
+                </button>
+                
+                <button
+                  className="bg-transparent border-2 border-white text-white px-8 py-3 font-raleway font-semibold hover:bg-white hover:text-black transition-colors duration-300"
+                  onClick={() => window.location.href = '/apply'}
+                >
+                  FIND A JOB
+                </button>
+              </motion.div>
 
               {/* Google Review - Aligned with content block */}
               {currentSlide.googleSrc && (

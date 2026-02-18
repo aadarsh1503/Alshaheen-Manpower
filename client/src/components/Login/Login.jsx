@@ -28,7 +28,7 @@ const Login = () => {
       
       if (res.ok) {
         localStorage.setItem('adminToken', data.token);
-        navigate('/dashboard');
+        navigate('/admin/dashboard');
       } else {
         // You can replace this with a more elegant notification like react-hot-toast
         alert(data.message || 'Login failed');
