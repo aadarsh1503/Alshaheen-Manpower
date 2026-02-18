@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FiHome, FiBriefcase, FiUsers, FiMenu, FiX, FiLogOut, FiAlertCircle, FiShield } from 'react-icons/fi';
+import { FiHome, FiBriefcase, FiUsers, FiMenu, FiX, FiLogOut, FiAlertCircle, FiShield, FiUserCheck, FiSettings } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 const AdminLayout = () => {
@@ -42,6 +42,18 @@ const AdminLayout = () => {
       icon: <FiUsers size={20} />,
       label: 'Internship Manager',
       description: 'Internship Applications'
+    },
+    {
+      path: '/admin/team',
+      icon: <FiUserCheck size={20} />,
+      label: 'Team Manager',
+      description: 'Manage Team Members'
+    },
+    {
+      path: '/admin/settings',
+      icon: <FiSettings size={20} />,
+      label: 'Settings',
+      description: 'Contact & News/Events'
     },
     {
       path: '/admin/blacklist',

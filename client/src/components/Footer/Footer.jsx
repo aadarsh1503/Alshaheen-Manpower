@@ -13,8 +13,28 @@ const Footer = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [version, setVersion] = useState('1.0.0');
+  const [settings, setSettings] = useState({
+    contact_address: 'FLAT 22, BLDG 661, BLOCK 712, ROAD 1208, MANAMA, BAHRAIN',
+    contact_phone: '+973 13303301 (Ext. 100 / 102 / 103)',
+    contact_email: 'info@alshaheen.pro',
+    social_facebook: 'https://www.facebook.com/Alshaheen.pro/',
+    social_instagram: 'https://www.instagram.com/alshaheen_manpower/',
+    social_linkedin: 'https://www.linkedin.com/in/alshaheen-manpower-144096339/',
+    social_twitter: 'https://x.com/Alshaheen_Pro'
+  });
 
   useEffect(() => {
+    // Fetch settings from API
+    const fetchSettings = async () => {
+      try {
+        const response = await axios.get('/api/settings/public');
+        setSettings(response.data);
+      } catch (error) {
+        console.error('Error fetching settings:', error);
+      }
+    };
+    fetchSettings();
+
     // Fetch version from public settings endpoint
     const fetchVersion = async () => {
       try {
@@ -93,15 +113,15 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-gray-600">
               <p className="flex items-start gap-3">
                 <GoLocation className="text-DarkRed text-lg flex-shrink-0 mt-1" />
-                <span>FLAT 22, BLDG 661, BLOCK 712, ROAD 1208, MANAMA, BAHRAIN</span>
+                <span>{settings.contact_address}</span>
               </p>
               <p className="flex items-center gap-3">
                 <AiOutlinePhone className="text-DarkRed text-lg flex-shrink-0" />
-                <span>+973 13303301 (Ext. 100 / 102 / 103)</span>
+                <span>{settings.contact_phone}</span>
               </p>
               <p className="flex items-center gap-3">
                 <AiOutlineMail className="text-DarkRed text-lg flex-shrink-0" />
-                <span>info@alshaheen.pro</span>
+                <span>{settings.contact_email}</span>
               </p>
             </div>
           </div>
@@ -110,18 +130,26 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-lightblue tracking-widest uppercase">Follow Us</h3>
             <div className="flex space-x-5">
-              <a href="https://www.facebook.com/Alshaheen.pro/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
-                <FaFacebookF size={22} />
-              </a>
-              <a href="https://www.instagram.com/alshaheen_manpower/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
-                <FaInstagram size={22} />
-              </a>
-              <a href="https://www.linkedin.com/in/alshaheen-manpower-144096339/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
-                <FaLinkedinIn size={22} />
-              </a>
-              <a href="https://x.com/Alshaheen_Pro" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
-                <FontAwesomeIcon icon={faXTwitter} size="lg" />
-              </a>
+              {settings.social_facebook && (
+                <a href={settings.social_facebook} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                  <FaFacebookF size={22} />
+                </a>
+              )}
+              {settings.social_instagram && (
+                <a href={settings.social_instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                  <FaInstagram size={22} />
+                </a>
+              )}
+              {settings.social_linkedin && (
+                <a href={settings.social_linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                  <FaLinkedinIn size={22} />
+                </a>
+              )}
+              {settings.social_twitter && (
+                <a href={settings.social_twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-DarkRed transition-colors duration-300 transform hover:scale-110">
+                  <FontAwesomeIcon icon={faXTwitter} size="lg" />
+                </a>
+              )}
             </div>
             <a href="/privacy-policy" className="inline-block text-sm text-gray-500 hover:text-DarkRed transition-colors mt-4">
               Privacy Policy

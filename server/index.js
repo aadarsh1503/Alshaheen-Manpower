@@ -16,6 +16,8 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const riderRoutes = require('./routes/riderRoutes');
 const internshipRoutes = require('./routes/internshipRoutes');
+const teamRoutes = require('./routes/teamRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
 
 // Database Connection Check with Auto-Retry
 const initializeDatabase = async () => {
@@ -53,6 +55,8 @@ app.use('/api/admin', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/riders', riderRoutes);
 app.use('/api/internships', internshipRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/settings', settingsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Alshaheen Manpower API Server is running!');

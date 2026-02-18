@@ -12,7 +12,7 @@ import gog from "./gog.png"
 // ========== END COMMENTED OUT ==========
 
 // Video URL from Pexels
-const videoUrl = "https://res.cloudinary.com/ds1dt3qub/video/upload/v1771239490/3716143-hd_1920_1080_25fps_1_jmprdc.mp4";
+const videoUrl = "https://res.cloudinary.com/ds1dt3qub/video/upload/v1771420424/3191887-uhd_3840_2160_25fps_xrts9v.mp4";
 
 // --- Data with text content (images commented out) ---
 const sliderData = [

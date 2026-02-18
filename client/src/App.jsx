@@ -39,6 +39,8 @@ import InternshipForm from './components/InternshipForm/InternshipForm';
 import InternshipManager from './components/Admin/InternshipManager';
 import AdminLayout from './components/Admin/AdminLayout';
 import BlacklistManager from './components/Admin/BlacklistManager';
+import TeamManager from './components/Admin/TeamManager';
+import SettingsManager from './components/Admin/SettingsManager';
 
 /**
  * MainLayout component handles the shared structure (Navbar, Footer, etc.)
@@ -110,6 +112,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="vacancies" element={<VacancyManager />} />
           <Route path="internships" element={<InternshipManager />} />
+          <Route path="team" element={<TeamManager />} />
+          <Route path="settings" element={<SettingsManager />} />
           <Route path="blacklist" element={<BlacklistManager />} />
         </Route>
 

@@ -1,32 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
-import b1 from "./b1.jpg";
-import b2 from "./b2.jpg";
-import b3 from "./b3.jpg";
-import b4 from "./b4.jpg";
-import b5 from "./b5.jpg";
+import axios from 'axios';
 
 // --- Configuration ---
-const images = [
-    { src: b1, alt: "Event 1", heading: "AL SHAHEEN MANPOWER Dubai LAUNCH", description: "We are thrilled to announce our Healthcare Wellness Day, a special event designed to promote healthier living and provide valuable resources." },
-    { src: b2, alt: "Event 2", heading: "LAUNCH OF AL SHAHEEN MANPOWER AT DUBAI", description: "Announcing the official launch of our new Dubai office, a milestone in our journey to extend our reach in a dynamic global hub." },
-    { src: b3, alt: "Event 3", heading: "AL SHAHEEN MANPOWER LAUNCHES WORKA", description: "Al Shaheen Manpower was founded to empower people worldwide, connecting them with the right job opportunities and talent across all industries." },
-    { src: b4, alt: "Event 4", heading: "STRATEGIC PARTNERSHIP ANNOUNCED", description: "A new strategic partnership that will redefine industry standards and create unparalleled value for our clients and stakeholders." },
-    { src: b5, alt: "Event 5", heading: "INNOVATION IN GLOBAL RECRUITMENT", description: "Discover how our new technology platform is revolutionizing global recruitment, making it faster and more efficient than ever before." },
-];
-
 const CARD_WIDTH = 320; // w-80
 const GAP = 16; // gap-4
 const CLONE_COUNT = 3; // Number of items to clone on each side for a seamless loop
 
 // --- Helper to create the extended array for looping ---
-const createExtendedImages = () => {
-  const clonesStart = images.slice(-CLONE_COUNT);
-  const clonesEnd = images.slice(0, CLONE_COUNT);
+const createExtendedImages = (images) => {
+  if (images.length === 0) return [];
+  const clonesStart = images.slice(-Math.min(CLONE_COUNT, images.length));
+  const clonesEnd = images.slice(0, Math.min(CLONE_COUNT, images.length));
   return [...clonesStart, ...images, ...clonesEnd];
 };
-const extendedImages = createExtendedImages();
 
 // Animation for mobile view (single card fade/slide)
 const mobileVariants = {
@@ -36,21 +24,44 @@ const mobileVariants = {
 };
 
 const NewsEventsCarousel = () => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [virtualIndex, setVirtualIndex] = useState(CLONE_COUNT);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mobileDirection, setMobileDirection] = useState(0);
 
-  const realCurrentIndex = (virtualIndex - CLONE_COUNT + images.length) % images.length;
+  useEffect(() => {
+    const fetchNewsEvents = async () => {
+      try {
+        const response = await axios.get('/api/settings/news-events/public');
+        const formattedData = response.data.map(event => ({
+          src: event.image_url || 'https://via.placeholder.com/800x600?text=No+Image',
+          alt: event.heading,
+          heading: event.heading,
+          description: event.description
+        }));
+        setImages(formattedData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching news/events:', error);
+        setLoading(false);
+      }
+    };
+    fetchNewsEvents();
+  }, []);
+
+  const extendedImages = createExtendedImages(images);
+  const realCurrentIndex = images.length > 0 ? (virtualIndex - CLONE_COUNT + images.length) % images.length : 0;
 
   const handleNext = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || images.length === 0) return;
     setVirtualIndex((prev) => prev + 1);
     setMobileDirection(1);
-  }, [isTransitioning]);
+  }, [isTransitioning, images.length]);
 
   const handlePrev = () => {
-    if (isTransitioning) return;
+    if (isTransitioning || images.length === 0) return;
     setVirtualIndex((prev) => prev - 1);
     setMobileDirection(-1);
   };
@@ -62,6 +73,7 @@ const NewsEventsCarousel = () => {
   }, [isTransitioning]);
 
   const handleAnimationComplete = () => {
+    if (images.length === 0) return;
     if (virtualIndex >= images.length + CLONE_COUNT) {
       setIsTransitioning(true);
       setVirtualIndex(CLONE_COUNT);
@@ -72,12 +84,27 @@ const NewsEventsCarousel = () => {
   };
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || images.length === 0) return;
     const timer = setInterval(handleNext, 2000);
     return () => clearInterval(timer);
-  }, [isPaused, handleNext]);
+  }, [isPaused, handleNext, images.length]);
 
   const offset = -virtualIndex * (CARD_WIDTH + GAP);
+
+  if (loading) {
+    return (
+      <div className="w-full bg-llgray py-20 px-4 font-sans">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-lightblue mx-auto"></div>
+          <p className="mt-4 text-gray-600 font-semibold">Loading news & events...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (images.length === 0) {
+    return null; // Don't show the section if there are no events
+  }
 
   return (
     <div className="w-full bg-llgray py-20 px-4 font-sans">

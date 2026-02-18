@@ -67,7 +67,7 @@ const HrSolutionsComponent = () => {
       <div className="w-full lg:w-1/2 bg-lgray flex items-center justify-center p-8 lg:p-16">
         <div className="max-w-xl">
           <h1 className="text-lightblue text-2xl lg:text-3xl font-sans font-bold mb-5 leading-tight">
-            THE UAE'S LEADING PROVIDER OF UNIQUE AND INNOVATIVE HR SOLUTIONS
+            THE BAHRAIN'S LEADING PROVIDER OF UNIQUE AND INNOVATIVE HR SOLUTIONS
           </h1>
           <div className="h-1 w-20 bg-lightgreen mb-6"></div>
           <p className="text-gray-600 text-base lg:text-lg mb-8">
