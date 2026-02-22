@@ -85,16 +85,19 @@ exports.submitInternshipApplication = async (req, res) => {
       
       // Check file type
       const isPdf = req.file.mimetype === 'application/pdf';
+      const isDocx = req.file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || 
+                     req.file.mimetype === 'application/msword';
+      const isImage = req.file.mimetype.startsWith('image/');
       
-      if (isPdf) {
-        // Upload PDF to ImageKit
+      if (isPdf || isDocx) {
+        // Upload PDF/DOCX to ImageKit
         const uploadResult = await imagekit.upload({
           file: fileBuffer.toString('base64'),
           fileName: fileName,
           folder: '/internship_resumes'
         });
         resumeUrl = uploadResult.url;
-      } else {
+      } else if (isImage) {
         // Upload image to Cloudinary
         const uploadResult = await new Promise((resolve, reject) => {
           const uploadStream = cloudinary.uploader.upload_stream(
@@ -124,89 +127,48 @@ exports.submitInternshipApplication = async (req, res) => {
 
     // Send confirmation email to applicant
     const applicantEmailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px;">
-        <div style="background-color: #0284C7; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
-          <div style="background-color: #ffffff; display: inline-block; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-            <img src="https://res.cloudinary.com/ds1dt3qub/image/upload/v1771333289/gvs-Il-kmUlQ-removebg-preview_p33n0j.png" 
-                 alt="GVS Logo" style="width: 150px; display: block;">
-          </div>
-          <h2 style="color: #ffffff; margin: 0;">Thank You for Your Application!</h2>
-        </div>
-        
-        <div style="padding: 30px; background-color: #ffffff; color: #000000;">
-          <p style="font-size: 16px; line-height: 1.6;">Dear <strong>${name}</strong>,</p>
-          <p style="font-size: 16px; line-height: 1.6;">We have received your internship application for the <strong style="color: #0284C7;">${department}</strong> department.</p>
-          <p style="font-size: 16px; line-height: 1.6;">Our team will review your application and get back to you soon.</p>
-          
-          <div style="background-color: #f0f9ff; border-left: 4px solid #0284C7; padding: 15px; margin: 20px 0;">
-            <p style="margin: 0; font-size: 14px; color: #000000;">
-              <strong>Need Help?</strong><br>
-              If you have any questions, please reply to this email at 
-              <a href="mailto:info@gvs-bh.com" style="color: #0284C7; text-decoration: none;">info@gvs-bh.com</a>
-            </p>
-          </div>
-          
-          <p style="font-size: 16px; line-height: 1.6; margin-top: 30px;">
-            Best regards,<br>
-            <strong style="color: #0284C7;">GVS Internship Team</strong>
-          </p>
-        </div>
-        
-        <div style="background-color: #000000; color: #ffffff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0; font-size: 12px;">© ${new Date().getFullYear()} Global Vision Solutions. All rights reserved.</p>
-        </div>
-      </div>
+      <p>Dear ${name},</p>
+      
+      <p>Thank you for applying for the internship position in the ${department} department at Global Vision Solutions.</p>
+      
+      <p>We have received your application and our team will review it shortly. We will contact you regarding the next steps.</p>
+      
+      <p>If you have any questions, please contact us at info@gvs-bh.com</p>
+      
+      <p>Best regards,<br>
+      GVS Internship Team<br>
+      Global Vision Solutions</p>
     `;
 
     await sendEmail(email, 'Internship Application Received - GVS', applicantEmailHtml);
 
     // Send notification email to admin
     const adminEmailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px;">
-        <div style="background-color: #0284C7; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
-          <div style="background-color: #ffffff; display: inline-block; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-            <img src="https://res.cloudinary.com/ds1dt3qub/image/upload/v1771333289/gvs-Il-kmUlQ-removebg-preview_p33n0j.png" 
-                 alt="GVS Logo" style="width: 150px; display: block;">
-          </div>
-          <h2 style="color: #ffffff; margin: 0;">New Internship Application Received</h2>
-        </div>
-        
-        <div style="padding: 30px; background-color: #ffffff; color: #000000;">
-          <div style="background-color: #f0f9ff; border: 2px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0284C7; margin-top: 0;">Applicant Details:</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Name:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${name}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Email:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${email}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Mobile:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${mobile}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Date of Birth:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${new Date(dob).toLocaleDateString()}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Gender:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${gender}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Qualification:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${qualification}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>University:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${university}</td></tr>
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Department:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong style="color: #0284C7;">${department}</strong></td></tr>
-              ${internship_coordinator ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Coordinator:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${internship_coordinator}</td></tr>` : ''}
-              ${hours ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Hours:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${hours}</td></tr>` : ''}
-              ${joining_date ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Joining Date:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${new Date(joining_date).toLocaleDateString()}</td></tr>` : ''}
-              ${place ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Place:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${place}</td></tr>` : ''}
-              <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Disability:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${disability}</td></tr>
-              ${disability_type ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Disability Type:</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${disability_type}</td></tr>` : ''}
-              ${resumeUrl ? `<tr><td style="padding: 8px 0;"><strong>Resume:</strong></td><td style="padding: 8px 0;"><a href="${resumeUrl}" target="_blank" style="color: #0284C7; text-decoration: none;">View Resume</a></td></tr>` : ''}
-            </table>
-          </div>
-
-          <div style="background-color: #000000; color: #ffffff; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 5px 0;"><strong>Application ID:</strong> ${result.insertId}</p>
-            <p style="margin: 5px 0;"><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
-          </div>
-          
-          <p style="font-size: 16px; line-height: 1.6;">
-            Please review this application in the admin panel.
-          </p>
-        </div>
-        
-        <div style="background-color: #000000; color: #ffffff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0; font-size: 12px;">© ${new Date().getFullYear()} Global Vision Solutions. All rights reserved.</p>
-        </div>
-      </div>
+      <p><strong>New Internship Application Received</strong></p>
+      
+      <p><strong>Applicant Details:</strong></p>
+      <ul>
+        <li>Name: ${name}</li>
+        <li>Email: ${email}</li>
+        <li>Mobile: ${mobile}</li>
+        <li>Date of Birth: ${new Date(dob).toLocaleDateString()}</li>
+        <li>Gender: ${gender}</li>
+        <li>Qualification: ${qualification}</li>
+        <li>University: ${university}</li>
+        <li>Department: ${department}</li>
+        ${internship_coordinator ? `<li>Coordinator: ${internship_coordinator}</li>` : ''}
+        ${hours ? `<li>Hours: ${hours}</li>` : ''}
+        ${joining_date ? `<li>Joining Date: ${new Date(joining_date).toLocaleDateString()}</li>` : ''}
+        ${place ? `<li>Place: ${place}</li>` : ''}
+        <li>Disability: ${disability}</li>
+        ${disability_type ? `<li>Disability Type: ${disability_type}</li>` : ''}
+        ${resumeUrl ? `<li>Resume: <a href="${resumeUrl}">View Resume</a></li>` : ''}
+      </ul>
+      
+      <p><strong>Application ID:</strong> ${result.insertId}</p>
+      <p><strong>Submitted at:</strong> ${new Date().toLocaleString()}</p>
+      
+      <p>Please review this application in the admin panel.</p>
     `;
 
     await sendEmail('info@alshaheen.pro', `New Internship Application - ${name}`, adminEmailHtml);
@@ -360,59 +322,24 @@ exports.sendInterviewInvitation = async (req, res) => {
 
     // Send interview invitation email
     const interviewEmailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px;">
-        <div style="background-color: #0284C7; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
-          <div style="background-color: #ffffff; display: inline-block; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-            <img src="https://res.cloudinary.com/ds1dt3qub/image/upload/v1771333289/gvs-Il-kmUlQ-removebg-preview_p33n0j.png" 
-                 alt="GVS Logo" style="width: 150px; display: block;">
-          </div>
-          <h2 style="color: #ffffff; margin: 0;">🎉 Congratulations! You're Invited for an Interview</h2>
-        </div>
-        
-        <div style="padding: 30px; background-color: #ffffff; color: #000000;">
-          <p style="font-size: 16px; line-height: 1.6;">Dear <strong>${applicant.name}</strong>,</p>
-          <p style="font-size: 16px; line-height: 1.6;">
-            We are pleased to inform you that your application for the internship position in the 
-            <strong style="color: #0284C7;">${applicant.department}</strong> department has been shortlisted.
-          </p>
-          
-          <div style="background-color: #f0f9ff; border: 2px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0284C7; margin-top: 0;">📅 Interview Details:</h3>
-            <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;"><strong>Date:</strong></td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">${new Date(interview_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;"><strong>Time:</strong></td>
-                <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">${interview_time}</td>
-              </tr>
-              <tr>
-                <td style="padding: 10px 0;"><strong>Venue:</strong></td>
-                <td style="padding: 10px 0;">${interview_venue}</td>
-              </tr>
-            </table>
-          </div>
-
-          <div style="background-color: #000000; color: #ffffff; padding: 15px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0; font-size: 14px;">
-              ⚠️ <strong>Important:</strong> Please confirm your attendance by replying to this email at 
-              <a href="mailto:info@gvs-bh.com" style="color: #0284C7; text-decoration: none;">info@gvs-bh.com</a>
-            </p>
-          </div>
-          
-          <p style="font-size: 16px; line-height: 1.6;">We look forward to meeting you!</p>
-          
-          <p style="font-size: 16px; line-height: 1.6; margin-top: 30px;">
-            Best regards,<br>
-            <strong style="color: #0284C7;">GVS Internship Team</strong>
-          </p>
-        </div>
-        
-        <div style="background-color: #000000; color: #ffffff; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
-          <p style="margin: 0; font-size: 12px;">© ${new Date().getFullYear()} Global Vision Solutions. All rights reserved.</p>
-        </div>
-      </div>
+      <p>Dear ${applicant.name},</p>
+      
+      <p>Congratulations! Your application for the internship position in the ${applicant.department} department has been shortlisted.</p>
+      
+      <p><strong>Interview Details:</strong></p>
+      <ul>
+        <li>Date: ${new Date(interview_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</li>
+        <li>Time: ${interview_time}</li>
+        <li>Venue: ${interview_venue}</li>
+      </ul>
+      
+      <p>Please confirm your attendance by replying to this email at info@gvs-bh.com</p>
+      
+      <p>We look forward to meeting you!</p>
+      
+      <p>Best regards,<br>
+      GVS Internship Team<br>
+      Global Vision Solutions</p>
     `;
 
     await sendEmail(applicant.email, 'Interview Invitation - GVS Internship Program', interviewEmailHtml);

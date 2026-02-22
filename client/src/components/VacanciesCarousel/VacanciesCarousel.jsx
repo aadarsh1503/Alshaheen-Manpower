@@ -101,9 +101,13 @@ const VacanciesCarousel = () => {
           <div className="p-6 text-4xl font-raleway text-white mb-6 bg-lightgreen text-center">Current Vacancies</div>
           <div className="flex flex-col items-center space-y-6">
             {vacancies.map((item, index) => (
-              // 2. Change 'a' to 'Link' and 'href' to 'to'
-              <Link key={item.id || index} to="/apply" className="w-full max-w-[356px] h-auto">
-                <img src={item.imageUrl} alt={item.subject} className="w-full h-auto object-cover rounded-lg shadow-md" />
+              <Link key={item.id || index} to="/apply" className="w-full max-w-[356px]">
+                <div className="relative group">
+                  <img src={item.imageUrl} alt={item.subject} className="w-full h-auto object-cover rounded-lg shadow-md" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
+                    <h3 className="text-white font-bold text-lg">{item.subject}</h3>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
@@ -127,9 +131,11 @@ const VacanciesCarousel = () => {
               >
                 {visibleImages.map((item) => (
                   item && (
-                    // 3. Change 'a' to 'Link' and 'href' to 'to' here as well
-                    <Link key={item.id} to="/apply" className="w-[356px] h-[338px] flex-shrink-0">
+                    <Link key={item.id} to="/apply" className="w-[356px] h-[338px] flex-shrink-0 relative">
                       <img src={item.imageUrl} alt={item.subject} className="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-500 ease-in-out transform hover:scale-105" />
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b-lg">
+                        <h3 className="text-white font-bold text-lg">{item.subject}</h3>
+                      </div>
                     </Link>
                   )
                 ))}

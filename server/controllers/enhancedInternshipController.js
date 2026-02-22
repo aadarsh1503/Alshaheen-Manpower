@@ -165,298 +165,90 @@ const generateEmailTemplate = (stage, applicant, customData = {}) => {
     'Interview': {
       subject: 'Interview Invitation - GVS Internship Program',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F3F4F6;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            ${emailHeader}
-            
-            <div style="padding: 40px 30px;">
-              <h2 style="color: #0284C7; margin: 0 0 20px 0; font-size: 24px; font-weight: 700;">
-                🎉 Congratulations, ${applicant.name}!
-              </h2>
-              
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                We are pleased to inform you that your application for the internship position in the 
-                <strong style="color: #0284C7;">${applicant.department}</strong> department has been shortlisted.
-              </p>
-              
-              <div style="background: #F0F9FF; border-left: 4px solid #0284C7; padding: 25px; border-radius: 8px; margin: 30px 0;">
-                <h3 style="color: #0284C7; margin: 0 0 15px 0; font-size: 20px; font-weight: 700;">
-                  📅 Interview Details
-                </h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  <tr>
-                    <td style="padding: 8px 0; color: #000000; font-weight: 600; width: 100px;">Date:</td>
-                    <td style="padding: 8px 0; color: #000000;">${date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '[Date]'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; color: #000000; font-weight: 600;">Time:</td>
-                    <td style="padding: 8px 0; color: #000000;">${time || '[Time]'}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; color: #000000; font-weight: 600;">Venue:</td>
-                    <td style="padding: 8px 0; color: #000000;">${venue || '[Venue]'}</td>
-                  </tr>
-                </table>
-              </div>
-
-              ${customMessage ? `
-                <div style="background-color: #F9FAFB; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">${customMessage}</p>
-                </div>
-              ` : ''}
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0;">
-                Please confirm your attendance by replying to this email.
-              </p>
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0 0 0;">
-                We look forward to meeting you!
-              </p>
-
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #F3F4F6;">
-                <p style="color: #000000; font-size: 14px; margin: 0;">
-                  Best regards,<br>
-                  <strong style="color: #0284C7;">GVS Internship Team</strong>
-                </p>
-              </div>
-            </div>
-
-            ${emailFooter}
-          </div>
-        </body>
-        </html>
+        <p>Dear ${applicant.name},</p>
+        
+        <p>Congratulations! Your application for the internship position in the ${applicant.department} department has been shortlisted.</p>
+        
+        <p><strong>Interview Details:</strong></p>
+        <ul>
+          <li>Date: ${date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '[Date]'}</li>
+          <li>Time: ${time || '[Time]'}</li>
+          <li>Venue: ${venue || '[Venue]'}</li>
+        </ul>
+        
+        ${customMessage ? `<p>${customMessage}</p>` : ''}
+        
+        <p>Please confirm your attendance by replying to this email.</p>
+        
+        <p>We look forward to meeting you!</p>
+        
+        <p>Best regards,<br>
+        GVS Internship Team<br>
+        Global Vision Solutions</p>
       `
     },
     'Accepted': {
       subject: 'Congratulations! Internship Offer - GVS',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F3F4F6;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            ${emailHeader}
-            
-            <div style="padding: 40px 30px;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <div style="display: inline-block; background: #0284C7; color: white; padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: 700;">
-                  ✨ YOU'RE SELECTED! ✨
-                </div>
-              </div>
-
-              <h2 style="color: #0284C7; margin: 0 0 20px 0; font-size: 24px; font-weight: 700;">
-                Dear ${applicant.name},
-              </h2>
-              
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                We are delighted to inform you that you have been <strong style="color: #0284C7;">selected</strong> for the internship position in the 
-                <strong style="color: #0284C7;">${applicant.department}</strong> department at Global Vision Solutions.
-              </p>
-
-              ${customMessage ? `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">${customMessage}</p>
-                </div>
-              ` : `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">
-                    Further details regarding your joining date and onboarding process will be shared with you shortly.
-                  </p>
-                </div>
-              `}
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0 0 0;">
-                We look forward to having you on our team!
-              </p>
-
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #F3F4F6;">
-                <p style="color: #000000; font-size: 14px; margin: 0;">
-                  Best regards,<br>
-                  <strong style="color: #0284C7;">GVS Internship Team</strong>
-                </p>
-              </div>
-            </div>
-
-            ${emailFooter}
-          </div>
-        </body>
-        </html>
+        <p>Dear ${applicant.name},</p>
+        
+        <p>Congratulations! You have been selected for the internship position in the ${applicant.department} department at Global Vision Solutions.</p>
+        
+        ${customMessage ? `<p>${customMessage}</p>` : `<p>Further details regarding your joining date and onboarding process will be shared with you shortly.</p>`}
+        
+        <p>We look forward to having you on our team!</p>
+        
+        <p>Best regards,<br>
+        GVS Internship Team<br>
+        Global Vision Solutions</p>
       `
     },
     'Rejected': {
       subject: 'Update on Your Internship Application - GVS',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F3F4F6;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            ${emailHeader}
-            
-            <div style="padding: 40px 30px;">
-              <h2 style="color: #0284C7; margin: 0 0 20px 0; font-size: 24px; font-weight: 700;">
-                Dear ${applicant.name},
-              </h2>
-              
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Thank you for your interest in the internship position at Global Vision Solutions and for taking the time to apply.
-              </p>
-
-              ${customMessage ? `
-                <div style="background-color: #F9FAFB; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">${customMessage}</p>
-                </div>
-              ` : `
-                <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                  After careful consideration, we regret to inform you that we will not be moving forward with your application at this time.
-                </p>
-              `}
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0 0 0;">
-                We appreciate your interest in GVS and wish you all the best in your future endeavors.
-              </p>
-
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #F3F4F6;">
-                <p style="color: #000000; font-size: 14px; margin: 0;">
-                  Best regards,<br>
-                  <strong style="color: #0284C7;">GVS Internship Team</strong>
-                </p>
-              </div>
-            </div>
-
-            ${emailFooter}
-          </div>
-        </body>
-        </html>
+        <p>Dear ${applicant.name},</p>
+        
+        <p>Thank you for your interest in the internship position at Global Vision Solutions and for taking the time to apply.</p>
+        
+        ${customMessage ? `<p>${customMessage}</p>` : `<p>After careful consideration, we regret to inform you that we will not be moving forward with your application at this time.</p>`}
+        
+        <p>We appreciate your interest in GVS and wish you all the best in your future endeavors.</p>
+        
+        <p>Best regards,<br>
+        GVS Internship Team<br>
+        Global Vision Solutions</p>
       `
     },
     'Completion': {
       subject: 'Internship Completion - GVS',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F3F4F6;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            ${emailHeader}
-            
-            <div style="padding: 40px 30px;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <div style="display: inline-block; background: linear-gradient(135deg, #0284C7 0%, #0284C7 100%); color: white; padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: 700;">
-                  🎓 CONGRATULATIONS! 🎓
-                </div>
-              </div>
-
-              <h2 style="color: #0284C7; margin: 0 0 20px 0; font-size: 24px; font-weight: 700;">
-                Dear ${applicant.name},
-              </h2>
-              
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Congratulations on successfully completing your internship with GVS in the 
-                <strong style="color: #0284C7;">${applicant.department}</strong> department!
-              </p>
-
-              ${customMessage ? `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">${customMessage}</p>
-                </div>
-              ` : `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">
-                    We appreciate your hard work and dedication during your time with us.
-                  </p>
-                </div>
-              `}
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0 0 0;">
-                We wish you all the best in your future career!
-              </p>
-
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #F3F4F6;">
-                <p style="color: #000000; font-size: 14px; margin: 0;">
-                  Best regards,<br>
-                  <strong style="color: #0284C7;">GVS Internship Team</strong>
-                </p>
-              </div>
-            </div>
-
-            ${emailFooter}
-          </div>
-        </body>
-        </html>
+        <p>Dear ${applicant.name},</p>
+        
+        <p>Congratulations on successfully completing your internship with GVS in the ${applicant.department} department!</p>
+        
+        ${customMessage ? `<p>${customMessage}</p>` : `<p>We appreciate your hard work and dedication during your time with us.</p>`}
+        
+        <p>We wish you all the best in your future career!</p>
+        
+        <p>Best regards,<br>
+        GVS Internship Team<br>
+        Global Vision Solutions</p>
       `
     },
     'Certification': {
       subject: 'Your Internship Certificate - GVS',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F3F4F6;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            ${emailHeader}
-            
-            <div style="padding: 40px 30px;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <div style="display: inline-block; background: linear-gradient(135deg, #0284C7 0%, #0284C7 100%); color: white; padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: 700;">
-                  📜 CERTIFICATE ATTACHED 📜
-                </div>
-              </div>
-
-              <h2 style="color: #0284C7; margin: 0 0 20px 0; font-size: 24px; font-weight: 700;">
-                Dear ${applicant.name},
-              </h2>
-              
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                Please find attached your internship completion certificate for your successful completion of the internship program at Global Vision Solutions.
-              </p>
-
-              ${customMessage ? `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">${customMessage}</p>
-                </div>
-              ` : `
-                <div style="background-color: #F0F9FF; border-left: 4px solid #0284C7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                  <p style="color: #000000; font-size: 15px; line-height: 1.6; margin: 0;">
-                    We are proud of your achievements and wish you continued success in your career.
-                  </p>
-                </div>
-              `}
-
-              <p style="color: #000000; font-size: 16px; line-height: 1.6; margin: 20px 0 0 0;">
-                Thank you for being a part of GVS!
-              </p>
-
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #F3F4F6;">
-                <p style="color: #000000; font-size: 14px; margin: 0;">
-                  Best regards,<br>
-                  <strong style="color: #0284C7;">GVS Internship Team</strong>
-                </p>
-              </div>
-            </div>
-
-            ${emailFooter}
-          </div>
-        </body>
-        </html>
+        <p>Dear ${applicant.name},</p>
+        
+        <p>Please find attached your internship completion certificate for your successful completion of the internship program at Global Vision Solutions.</p>
+        
+        ${customMessage ? `<p>${customMessage}</p>` : `<p>We are proud of your achievements and wish you continued success in your career.</p>`}
+        
+        <p>Thank you for being a part of GVS!</p>
+        
+        <p>Best regards,<br>
+        GVS Internship Team<br>
+        Global Vision Solutions</p>
       `
     }
   };

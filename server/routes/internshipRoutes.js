@@ -13,11 +13,18 @@ const upload = multer({
     fileSize: 1 * 1024 * 1024 // 1MB limit
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    const allowedTypes = [
+      'application/pdf',
+      'image/jpeg',
+      'image/png',
+      'image/jpg',
+      'application/msword', // .doc
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // .docx
+    ];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only PDF and images are allowed.'));
+      cb(new Error('Invalid file type. Only PDF, DOCX, and images are allowed.'));
     }
   }
 });

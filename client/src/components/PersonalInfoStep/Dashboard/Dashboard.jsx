@@ -13,6 +13,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showPDF, setShowPDF] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -1157,153 +1161,215 @@ const Dashboard = () => {
                 animate={{ opacity: 1 }}
                 className="text-center py-12"
               >
-                {/* No results message */}
+                <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  No candidates found
+                </p>
               </motion.div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
-                <AnimatePresence>
-                  {filteredEntries.map((entry) => (
-                    <motion.div
-                      key={entry.id}
-                      layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.3 }}
-                      className={`rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl ${
-                        darkMode ? 'bg-gray-800' : 'bg-white'
-                      }`}
-                    >
-                      <div className={`p-5 ${entry.isBlacklisted ? 'opacity-40 blur-sm' : ''}`}>
-                        <div className="flex items-start">
-                          <div className={`flex-shrink-0 h-12 w-12 rounded-full flex items-center justify-center ${
-                            darkMode ? 'bg-indigo-900' : 'bg-red-50'
-                          }`}>
-                            <span className={darkMode ? 'text-indigo-300' : 'text-[#DC2626]'}>
-                              {entry.fullName?.charAt(0) || '?'}
-                            </span>
-                          </div>
-                          <div className="ml-4">
-                            <h2 className={`font-semibold text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                              {entry.fullName || 'No Name'}
-                            </h2>
-                            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                              {entry.nationality} • {String(entry.currentlyEmployed).toUpperCase() === 'YES' ? 'Employed' : 'Not Employed'}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="mt-4 space-y-2">
-                          {renderField('Email', entry.email)}
-                          {renderField('Contact', entry.mobileContact)}
-                          {renderField('Education', entry.educationLevel)}
-                          
-                          {entry.skills && (
-                            <div className="mt-2">
-                              <p className={`text-xs ${darkMode ? 'text-[#DC2626]' : 'text-[#DC2626]'}`}>SKILLS</p>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {entry.skills.split(',').slice(0, 3).map((skill, i) => (
-                                  <span 
-                                    key={i} 
-                                    className={`text-xs px-2 py-1 rounded-full ${
-                                      darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
-                                    }`}
-                                  >
-                                    {skill.trim()}
-                                  </span>
-                                ))}
-                                {entry.skills.split(',').length > 3 && (
-                                  <span className={`text-xs px-2 py-1 rounded-full ${
-                                    darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-500'
-                                  }`}>
-                                    +{entry.skills.split(',').length - 3} more
-                                  </span>
-                                )}
+              <>
+              <div className={`overflow-x-auto rounded-xl shadow-lg ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <table className="w-full">
+                  <thead className={`${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                    <tr>
+                      <th className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Name
+                      </th>
+                      <th className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Email
+                      </th>
+                      <th className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Nationality
+                      </th>
+                      <th className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Contact
+                      </th>
+                      <th className={`px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+                    <AnimatePresence>
+                      {filteredEntries
+                        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                        .map((entry) => (
+                        <motion.tr
+                          key={entry.id}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className={`transition-colors hover:bg-opacity-50 ${
+                            darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'
+                          } ${entry.isBlacklisted ? 'opacity-40' : ''}`}
+                        >
+                          <td className={`px-4 py-4 whitespace-nowrap ${darkMode ? 'text-gray-300' : 'text-gray-900'}`}>
+                            <div className="flex items-center">
+                              <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${
+                                darkMode ? 'bg-indigo-900' : 'bg-red-50'
+                              }`}>
+                                <span className={`font-semibold ${darkMode ? 'text-indigo-300' : 'text-[#DC2626]'}`}>
+                                  {entry.fullName?.charAt(0) || '?'}
+                                </span>
+                              </div>
+                              <div className="ml-3">
+                                <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                                  {entry.fullName || 'No Name'}
+                                </div>
                               </div>
                             </div>
-                          )}
-                        </div>
-                        <div className={`mt-6 pt-4 ${
-                          darkMode ? 'border-gray-700' : 'border-gray-200'
-                        } border-t`}>
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center space-x-2">
-                              {entry.resumeFile && (
-                                <a
-                                  href={entry.resumeFile}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className={`text-xs flex items-center ${
-                                    darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-[#DC2626] hover:text-[#DC2626]/80'
-                                  }`}
-                                >
-                                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                  </svg>
-                                  Resume
-                                </a>
-                              )}
-                            </div>
-                            <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                              {new Date(entry.submittedAt).toLocaleDateString()}
+                          </td>
+                          <td className={`px-4 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            <div className="text-sm">{entry.email || '-'}</div>
+                          </td>
+                          <td className={`px-4 py-4 whitespace-nowrap ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            <span className={`px-2 py-1 text-xs rounded-full ${
+                              darkMode ? 'bg-blue-900 text-blue-200' : 'bg-red-50 text-[#DC2626]'
+                            }`}>
+                              {entry.nationality || '-'}
                             </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Buttons outside blur */}
-                      <div className={`px-5 pb-5 ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-                        <div className="flex items-center justify-between space-x-2">
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleBlacklistToggle(entry);
-                              }}
-                              className={`p-2 cursor-pointer rounded-lg transition-colors ${
-                                entry.isBlacklisted 
-                                  ? 'bg-[#DC2626] text-white hover:bg-[#DC2626]/80' 
-                                  : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              title={entry.isBlacklisted ? 'Remove from Blacklist' : 'Add to Blacklist'}
-                            >
-                              <FiShield className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openModal(entry);
-                                setTimeout(() => setIsEditMode(true), 100);
-                              }}
-                              className={`p-2 cursor-pointer rounded-lg transition-colors ${
-                                darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                              }`}
-                              title="Edit"
-                            >
-                              <FiEdit2 className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openDeleteModal(entry);
-                              }}
-                              className="p-2 cursor-pointer bg-[#DC2626] text-white rounded-lg hover:bg-[#DC2626]/80 transition-colors"
-                              title="Delete"
-                            >
-                              <FiTrash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <button
-                            onClick={() => openModal(entry)}
-                            className="px-4 py-2 cursor-pointer bg-[#DC2626] text-white text-sm rounded-lg hover:bg-[#DC2626]/80 transition-colors"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+                          </td>
+                          <td className={`px-4 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            <div className="text-sm">{entry.mobileContact || '-'}</div>
+                          </td>
+                          <td className="px-4 py-4 whitespace-nowrap text-center">
+                            <div className="flex items-center justify-center space-x-2">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleBlacklistToggle(entry);
+                                }}
+                                className={`p-2 cursor-pointer rounded-lg transition-colors ${
+                                  entry.isBlacklisted 
+                                    ? 'bg-[#DC2626] text-white hover:bg-[#DC2626]/80' 
+                                    : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                }`}
+                                title={entry.isBlacklisted ? 'Remove from Blacklist' : 'Add to Blacklist'}
+                              >
+                                <FiShield className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openModal(entry);
+                                  setTimeout(() => setIsEditMode(true), 100);
+                                }}
+                                className={`p-2 cursor-pointer rounded-lg transition-colors ${
+                                  darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                }`}
+                                title="Edit"
+                              >
+                                <FiEdit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openDeleteModal(entry);
+                                }}
+                                className="p-2 cursor-pointer bg-[#DC2626] text-white rounded-lg hover:bg-[#DC2626]/80 transition-colors"
+                                title="Delete"
+                              >
+                                <FiTrash2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => openModal(entry)}
+                                className="px-3 py-2 cursor-pointer bg-[#DC2626] text-white text-xs rounded-lg hover:bg-[#DC2626]/80 transition-colors"
+                              >
+                                View
+                              </button>
+                            </div>
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </AnimatePresence>
+                  </tbody>
+                </table>
               </div>
+              
+              {/* Pagination Controls */}
+              <div className={`flex items-center justify-between px-6 py-4 rounded-b-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className="flex items-center space-x-2">
+                  <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Show
+                  </span>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => {
+                      setItemsPerPage(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className={`px-3 py-1 rounded-lg border text-sm ${
+                      darkMode 
+                        ? 'bg-gray-700 border-gray-600 text-white' 
+                        : 'bg-white border-gray-300 text-gray-800'
+                    }`}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                  </select>
+                  <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    per page
+                  </span>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Page {currentPage} of {Math.ceil(filteredEntries.length / itemsPerPage)}
+                  </span>
+                  
+                  <div className="flex space-x-1">
+                    <button
+                      onClick={() => setCurrentPage(1)}
+                      disabled={currentPage === 1}
+                      className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                        currentPage === 1
+                          ? darkMode ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      First
+                    </button>
+                    
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                        currentPage === 1
+                          ? darkMode ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      Previous
+                    </button>
+                    
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredEntries.length / itemsPerPage)))}
+                      disabled={currentPage === Math.ceil(filteredEntries.length / itemsPerPage)}
+                      className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                        currentPage === Math.ceil(filteredEntries.length / itemsPerPage)
+                          ? darkMode ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      Next
+                    </button>
+                    
+                    <button
+                      onClick={() => setCurrentPage(Math.ceil(filteredEntries.length / itemsPerPage))}
+                      disabled={currentPage === Math.ceil(filteredEntries.length / itemsPerPage)}
+                      className={`px-3 py-1 rounded-lg text-sm transition-colors ${
+                        currentPage === Math.ceil(filteredEntries.length / itemsPerPage)
+                          ? darkMode ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      Last
+                    </button>
+                  </div>
+                </div>
+              </div>
+              </>
             )}
           </>
         )}

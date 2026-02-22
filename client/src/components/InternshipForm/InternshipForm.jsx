@@ -353,7 +353,6 @@ const InternshipForm = () => {
                       <option value="">Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Other">Other</option>
                     </select>
                     {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
                   </div>
@@ -450,7 +449,7 @@ const InternshipForm = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Hours per Week
+                      Total Hours
                     </label>
                     <input
                       type="number"
@@ -458,7 +457,7 @@ const InternshipForm = () => {
                       value={formData.hours}
                       onChange={handleChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0284C7] focus:border-transparent"
-                      placeholder="e.g., 20"
+                      placeholder="e.g., 160"
                     />
                   </div>
 
@@ -520,13 +519,13 @@ const InternshipForm = () => {
               {/* Resume Upload */}
               <div className="mb-8">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload Resume (PDF/Image, Max 1MB) <span className="text-red-500">*</span>
+                  Upload Resume (PDF/DOCX/Image, Max 1MB) <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
                     type="file"
                     onChange={handleFileChange}
-                    accept=".pdf,image/*"
+                    accept=".pdf,.doc,.docx,image/*"
                     className="hidden"
                     id="resume-upload"
                   />
