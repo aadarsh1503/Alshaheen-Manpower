@@ -444,25 +444,53 @@ const Dashboard = () => {
     fetchSettings();
   }, []);
 
-  const renderField = (label, value) => {
+  const formatDate = (dateString) => {
+    if (!dateString) return null;
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit' 
+      });
+    } catch (error) {
+      return dateString;
+    }
+  };
+
+  const renderField = (label, value, isDate = false) => {
     if (!value) return null;
+    const displayValue = isDate ? formatDate(value) : value;
     return (
       <p className={`mt-1 text-sm font-noto-serif ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-        <strong className={darkMode ? 'text-[#DC2626]' : 'text-[#DC2626]'}>{label}:</strong> {value}
+        <strong className={darkMode ? 'text-[#DC2626]' : 'text-[#DC2626]'}>{label}:</strong> {displayValue}
       </p>
     );
   };
 
   const renderEditableField = (label, field, value, type = 'text') => {
+    const isDateField = type === 'date' || field.includes('Validity') || field.includes('dateOfBirth') || field.includes('Date');
+    
     if (isEditMode) {
+      // For date inputs, format the value to YYYY-MM-DD
+      let inputValue = value || '';
+      if (isDateField && value) {
+        try {
+          const date = new Date(value);
+          inputValue = date.toISOString().split('T')[0];
+        } catch (error) {
+          inputValue = value;
+        }
+      }
+      
       return (
         <div className="mt-2">
           <label className={`text-sm font-semibold ${darkMode ? 'text-[#DC2626]' : 'text-[#DC2626]'}`}>
             {label}:
           </label>
           <input
-            type={type}
-            value={value || ''}
+            type={isDateField ? 'date' : type}
+            value={inputValue}
             onChange={(e) => handleInputChange(field, e.target.value)}
             className={`w-full mt-1 px-3 py-2 rounded-lg border ${
               darkMode ? 'bg-gray-600 border-gray-500 text-white' : 'bg-white border-gray-300 text-gray-800'
@@ -471,7 +499,7 @@ const Dashboard = () => {
         </div>
       );
     }
-    return renderField(label, value);
+    return renderField(label, value, isDateField);
   };
 
   const exportData = (format) => {
@@ -520,7 +548,7 @@ const Dashboard = () => {
         'Name': entry.fullName,
         'Email': entry.email,
         'Nationality': entry.nationality,
-        'Date of Birth': entry.dateOfBirth ? new Date(entry.dateOfBirth).toISOString().split('T')[0] : '',
+        'Date of Birth': entry.dateOfBirth ? new Date(entry.dateOfBirth).toLocaleDateString('en-GB') : '',
         'Gender': entry.gender,
         'Mobile Contact': entry.mobileContact,
         'WhatsApp': entry.whatsapp,
@@ -530,7 +558,7 @@ const Dashboard = () => {
         'Current Address': entry.currentAddress,
         'CPR/National ID': entry.cprNationalId,
         'Passport ID': entry.passportId,
-        'Passport Validity': entry.passportValidity,
+        'Passport Validity': entry.passportValidity ? new Date(entry.passportValidity).toLocaleDateString('en-GB') : '',
         'Education Level': entry.educationLevel,
         'Course/Degree': entry.courseDegree,
         'Currently Employed': entry.currentlyEmployed === 'YES' ? 'Employed' : 'Not Employed',
@@ -542,7 +570,7 @@ const Dashboard = () => {
         'Driving License': entry.drivingLicense,
         'Skills': entry.skills,
         'Visa Status': entry.visaStatus,
-        'Visa Validity': entry.visaValidity ? new Date(entry.visaValidity).toISOString().split('T')[0] : '',
+        'Visa Validity': entry.visaValidity ? new Date(entry.visaValidity).toLocaleDateString('en-GB') : '',
         'Expected Salary': entry.expectedSalary,
         'Client Leads Strategy': entry.clientLeadsStrategy,
         'Reference 1 Name': entry.ref1Name,
@@ -718,6 +746,8 @@ const Dashboard = () => {
           value = value === 'YES' ? 'Employed' : 'Not Employed';
         } else if (key === 'submittedAt') {
           value = new Date(value).toLocaleString();
+        } else if (key === 'dateOfBirth' || key === 'passportValidity' || key === 'visaValidity') {
+          value = value ? new Date(value).toLocaleDateString('en-GB') : '';
         } else if (key === 'resumeFile') {
           value = value ? entry.resumeFile : '';
         }
@@ -748,8 +778,7 @@ const Dashboard = () => {
         'Name': entry.fullName,
         'Email': entry.email,
         'Nationality': entry.nationality,
-        'Date of Birth': entry.dateOfBirth ? new Date(entry.dateOfBirth).toISOString().split('T')[0] : '',
-
+        'Date of Birth': entry.dateOfBirth ? new Date(entry.dateOfBirth).toLocaleDateString('en-GB') : '',
         'Gender': entry.gender,
         'Mobile Contact': entry.mobileContact,
         'WhatsApp': entry.whatsapp,
@@ -759,7 +788,7 @@ const Dashboard = () => {
         'Current Address': entry.currentAddress,
         'CPR/National ID': entry.cprNationalId,
         'Passport ID': entry.passportId,
-        'Passport Validity': entry.passportValidity,
+        'Passport Validity': entry.passportValidity ? new Date(entry.passportValidity).toLocaleDateString('en-GB') : '',
         'Education Level': entry.educationLevel,
         'Course/Degree': entry.courseDegree,
         'Currently Employed': entry.currentlyEmployed === 'YES' ? 'Employed' : 'Not Employed',
@@ -771,7 +800,7 @@ const Dashboard = () => {
         'Driving License': entry.drivingLicense,
         'Skills': entry.skills,
         'Visa Status': entry.visaStatus,
-        'Visa Validity': entry.visaValidity ? new Date(entry.visaValidity).toISOString().split('T')[0] : '',
+        'Visa Validity': entry.visaValidity ? new Date(entry.visaValidity).toLocaleDateString('en-GB') : '',
 
         'Expected Salary': entry.expectedSalary,
         'Client Leads Strategy': entry.clientLeadsStrategy,
@@ -905,7 +934,7 @@ const Dashboard = () => {
         const details = [
           `Email: ${entry.email || '-'}`,
           `Nationality: ${entry.nationality || '-'}`,
-          `Date of Birth: ${entry.dateOfBirth || '-'}`,
+          `Date of Birth: ${entry.dateOfBirth ? new Date(entry.dateOfBirth).toLocaleDateString('en-GB') : '-'}`,
           `Gender: ${entry.gender || '-'}`,
 `Years of Experience: ${entry.yearsOfExperience || '-'} years`,
           `Contact: ${entry.mobileContact || '-'}`,
@@ -915,8 +944,8 @@ const Dashboard = () => {
           `Country: ${entry.country || '-'}`,
           `Address: ${entry.currentAddress || '-'}`,
           `CPR/National ID: ${entry.cprNationalId || '-'}`,
-          `Passport: ${entry.passportId || '-'} (Valid until: ${entry.passportValidity || '-'})`,
-          `Visa: ${entry.visaStatus || '-'} (Valid until: ${entry.visaValidity || '-'})`,
+          `Passport: ${entry.passportId || '-'} (Valid until: ${entry.passportValidity ? new Date(entry.passportValidity).toLocaleDateString('en-GB') : '-'})`,
+          `Visa: ${entry.visaStatus || '-'} (Valid until: ${entry.visaValidity ? new Date(entry.visaValidity).toLocaleDateString('en-GB') : '-'})`,
           `Education: ${entry.educationLevel || '-'}`,
           `Course/Degree: ${entry.courseDegree || '-'}`,
           `Skills: ${entry.skills || '-'}`,
