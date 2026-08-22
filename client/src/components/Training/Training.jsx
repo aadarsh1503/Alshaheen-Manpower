@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import i87 from "./i87.png"
 
 import BrochureSection from "../BrochureSection/BrochureSection";
-import ProcessSteps from "./ProcessSteps.JSX";
+import ProcessSteps from "./ProcessSteps.jsx";
 import Process from "./Process";
 import TechnicalSkillsTraining from "./TechnicalSkillsTraining";
 import TechnicalSkills from "./TechnicalSkills";
