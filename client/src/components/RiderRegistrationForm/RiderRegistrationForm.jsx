@@ -52,8 +52,19 @@ const DeliveryOption = ({ icon, label, isSelected, onSelect }) => (
 
 
 const RegistrationPage = () => {
-  const [countries, setCountries] = useState([]);
-  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
+  const ALLOWED_COUNTRIES = [
+    "Algeria", "Armenia", "Bahrain", "Bangladesh", "Belarus", "Cameroon", "China", "Egypt", 
+    "Eritrea", "Ethiopia", "Ghana", "India", "Indonesia", "Iran", "Iraq", 
+    "Jordan", "Kenya", "Kuwait", "Lebanon", "Libya", "Morocco", "Nepal", 
+    "Nigeria", "Oman", "Pakistan", "Palestine", "Panama", "Philippines", 
+    "Qatar", "Romania", "Russia", "Saudi Arabia", "Singapore", "Slovakia", 
+    "South Africa", "Sri Lanka", "Sudan", "Syria", "Tanzania", "Thailand", 
+    "Tunisia", "Turkey", "United Arab Emirates", "United Kingdom", 
+    "United States", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+  ].sort();
+
+  const [countries, setCountries] = useState(ALLOWED_COUNTRIES);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(false);
 
   // --- MODIFICATION START ---
   // Updated formData state: 'title' -> 'gender', removed 'residenceCountry' and 'originDestination'
@@ -86,34 +97,8 @@ const RegistrationPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // --- MODIFICATION START: Country list is now filtered ---
-  useEffect(() => {
-    const allowedCountriesSet = new Set([
-      "Algeria", "Armenia", "Bahrain","Bangladesh", "Belarus", "Cameroon", "China", "Egypt", 
-      "Eritrea", "Ethiopia", "Ghana", "India", "Indonesia", "Iran", "Iraq", 
-      "Jordan", "Kenya", "Kuwait", "Lebanon", "Libya", "Morocco", "Nepal", 
-      "Nigeria", "Oman", "Pakistan", "Palestine", "Panama", "Philippines", 
-      "Qatar", "Romania", "Russia", "Saudi Arabia", "Singapore", "Slovakia", 
-      "South Africa", "Sri Lanka", "Sudan", "Syria", "Tanzania", "Thailand", 
-      "Tunisia", "Turkey", "United Arab Emirates", "United Kingdom", 
-      "United States", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-    ]);
-
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca3');
-        if (!response.ok) throw new Error('Network response was not ok');
-        let data = await response.json();
-        
-        const filteredData = data.filter(country => allowedCountriesSet.has(country.name.common));
-
-        filteredData.sort((a, b) => a.name.common.localeCompare(b.name.common));
-        setCountries(filteredData);
-      } catch (error) { console.error("Failed to fetch countries:", error); }
-      finally { setIsLoadingCountries(false); }
-    };
-    fetchCountries();
-  }, []);
+  // --- MODIFICATION START: Removed API call, using static country list ---
+  // No useEffect needed for countries anymore
   // --- MODIFICATION END ---
 
   const handleInputChange = (e) => {
@@ -306,7 +291,7 @@ const RegistrationPage = () => {
                 </div></div>
                 {/* --- MODIFICATION START: Destination/Origin removed --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div><div className="relative"><select name="nationality" value={formData.nationality} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.nationality ? 'border-red-500' : ''}`} required><option value="" disabled>Nationality *</option>{isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((c) => <option key={c.cca3} value={c.name.common}>{c.name.common}</option>)}</select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>{errors.nationality && <p className="text-red-500 text-xs mt-1">{errors.nationality}</p>}</div>
+                  <div><div className="relative"><select name="nationality" value={formData.nationality} onChange={handleInputChange} className={`${inputStyle} appearance-none ${errors.nationality ? 'border-red-500' : ''}`} required><option value="" disabled>Nationality *</option>{isLoadingCountries ? <option disabled>Loading countries...</option> : countries.map((countryName) => <option key={countryName} value={countryName}>{countryName}</option>)}</select><div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div></div>{errors.nationality && <p className="text-red-500 text-xs mt-1">{errors.nationality}</p>}</div>
                   <div><div className="relative"><label className="absolute top-[-10px] left-4 bg-white px-1 text-xs text-gray-400">Visa Expiry Date *</label><input type="date" name="visaExpiry" value={formData.visaExpiry} onChange={handleInputChange} className={`${inputStyle} ${errors.visaExpiry ? 'border-red-500' : ''}`} required /></div>{errors.visaExpiry && <p className="text-red-500 text-xs mt-1">{errors.visaExpiry}</p>}</div>
                 </div>
                 {/* --- MODIFICATION END --- */}

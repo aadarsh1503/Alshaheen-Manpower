@@ -2,10 +2,37 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-// const baseUrl = import.meta.env.VITE_API_BASE_URL; // This is no longer needed for the IP lookup
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+
+// Complete list of countries
+const ALL_COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", 
+  "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", 
+  "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", 
+  "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", 
+  "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", 
+  "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", 
+  "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", 
+  "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", 
+  "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", 
+  "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", 
+  "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", 
+  "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", 
+  "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", 
+  "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", 
+  "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", 
+  "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", 
+  "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", 
+  "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", 
+  "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", 
+  "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", 
+  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", 
+  "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
 
 const PersonalInfoStep = ({ formData, errors, handleChange }) => {
-  const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState(ALL_COUNTRIES);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
   const [defaultCountry, setDefaultCountry] = useState('us'); // Default to 'us' initially
@@ -17,47 +44,25 @@ const PersonalInfoStep = ({ formData, errors, handleChange }) => {
   const locationInputRef = useRef(null);
 
 
-    // Fetch country data and detect user's location
+    // Detect user's country for phone input default
     useEffect(() => {
-      // Fetch country list for nationality and country dropdowns
-      fetch('https://restcountries.com/v3.1/all?fields=name')
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) {
-            const countryNames = data
-              .map(c => c.name?.common)
-              .filter(Boolean) // Remove undefined/null names
-              .sort();
-            setCountries(countryNames);
-          } else {
-            console.error("Country API did not return an array", data);
-            setCountries([]);
-          }
-        })
-        .catch(err => {
-          console.error("Error fetching countries:", err);
-          setCountries([]);
-        });
-    
-      // Detect user's country code for phone input default using ipapi.co
       const fetchUserCountry = async () => {
         try {
           const response = await fetch('https://ipapi.co/json/');
           const data = await response.json();
-          // ipapi.co provides 'country_code' (e.g., "US", "IN")
           if (data && data.country_code) {
             setDefaultCountry(data.country_code.toLowerCase());
           } else {
-            setDefaultCountry('bh'); // Fallback to 'bh' (Bahrain) if detection fails
+            setDefaultCountry('bh');
           }
         } catch (error) {
           console.error("Error fetching user's country:", error);
-          setDefaultCountry('bh'); // Fallback to 'bh' (Bahrain) on error
+          setDefaultCountry('bh');
         }
       };
       
       fetchUserCountry();
-    }, []); // Empty dependency array ensures this runs only once on mount
+    }, []);
     
 
   const fetchLocationSuggestions = async (query, type) => {
