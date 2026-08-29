@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSave, FaPlus, FaEdit, FaTrash, FaImage, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaSave, FaPlus, FaEdit, FaTrash, FaImage, FaTimes, FaEye, FaEyeSlash, FaKey } from 'react-icons/fa';
 import axios from 'axios';
 
 const SettingsManager = () => {
@@ -18,6 +18,18 @@ const SettingsManager = () => {
     social_twitter: ''
   });
 
+  // Google Credentials State
+  const [googleCreds, setGoogleCreds] = useState({
+    google_client_email: '',
+    google_private_key: '',
+    google_sheet_id: '',
+    google_project_id: '',
+    google_private_key_id: '',
+    google_client_id: ''
+  });
+  const [googleSaving, setGoogleSaving] = useState(false);
+  const [showPrivateKey, setShowPrivateKey] = useState(false);
+
   // News/Events State
   const [newsEvents, setNewsEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +47,42 @@ const SettingsManager = () => {
   useEffect(() => {
     fetchSettings();
     fetchNewsEvents();
+    fetchGoogleCreds();
   }, []);
+
+  const fetchGoogleCreds = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get('/api/settings/google-credentials', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setGoogleCreds(prev => ({ ...prev, ...response.data }));
+    } catch (error) {
+      console.error('Error fetching Google credentials:', error);
+    }
+  };
+
+  const handleGoogleCredsChange = (e) => {
+    const { name, value } = e.target;
+    setGoogleCreds(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveGoogleCreds = async () => {
+    setGoogleSaving(true);
+    try {
+      const token = localStorage.getItem('adminToken');
+      await axios.put('/api/settings/google-credentials', googleCreds, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('✅ Google credentials saved successfully!');
+      fetchGoogleCreds(); // refresh to show masked key
+    } catch (error) {
+      console.error('Error saving Google credentials:', error);
+      alert('❌ Error saving Google credentials');
+    } finally {
+      setGoogleSaving(false);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -246,12 +293,136 @@ const SettingsManager = () => {
           >
             News & Events
           </button>
+          <button
+            onClick={() => setActiveTab('google')}
+            className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
+              activeTab === 'google'
+                ? 'bg-[#B91C1C] text-white shadow-lg'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            🔑 Google Keys
+          </button>
         </div>
       </div>
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 pb-8">
-        {activeTab === 'contact' ? (
+        {activeTab === 'google' ? (
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <FaKey className="text-[#B91C1C]" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Google Credentials</h2>
+                <p className="text-sm text-gray-500">Used for Rider Registration Form → Google Sheets integration</p>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-6 text-sm text-yellow-800">
+              ⚠️ These credentials are stored securely in the database. The private key is masked after saving. Paste the full key including <code>-----BEGIN PRIVATE KEY-----</code> and <code>-----END PRIVATE KEY-----</code>.
+            </div>
+
+            <div className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Google Sheet ID</label>
+                  <input
+                    type="text"
+                    name="google_sheet_id"
+                    value={googleCreds.google_sheet_id}
+                    onChange={handleGoogleCredsChange}
+                    placeholder="e.g. 16R8oVM_03Pa7P0G4VFJ..."
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Client Email</label>
+                  <input
+                    type="email"
+                    name="google_client_email"
+                    value={googleCreds.google_client_email}
+                    onChange={handleGoogleCredsChange}
+                    placeholder="service-account@project.iam.gserviceaccount.com"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Project ID</label>
+                  <input
+                    type="text"
+                    name="google_project_id"
+                    value={googleCreds.google_project_id}
+                    onChange={handleGoogleCredsChange}
+                    placeholder="my-project-123456"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Private Key ID</label>
+                  <input
+                    type="text"
+                    name="google_private_key_id"
+                    value={googleCreds.google_private_key_id}
+                    onChange={handleGoogleCredsChange}
+                    placeholder="a3048cdd6bbb..."
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-900 mb-2">Client ID</label>
+                  <input
+                    type="text"
+                    name="google_client_id"
+                    value={googleCreds.google_client_id}
+                    onChange={handleGoogleCredsChange}
+                    placeholder="100749853660528..."
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-900 mb-2">
+                  Private Key
+                  <span className="text-xs text-gray-500 font-normal ml-2">(Leave blank to keep existing key)</span>
+                </label>
+                <div className="relative">
+                  <textarea
+                    name="google_private_key"
+                    value={googleCreds.google_private_key}
+                    onChange={handleGoogleCredsChange}
+                    rows={showPrivateKey ? 8 : 3}
+                    placeholder="-----BEGIN PRIVATE KEY-----&#10;MIIEvAIBADA...&#10;-----END PRIVATE KEY-----"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B91C1C] focus:border-[#B91C1C] transition-all font-mono text-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPrivateKey(!showPrivateKey)}
+                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
+                  >
+                    {showPrivateKey ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t">
+                <button
+                  onClick={handleSaveGoogleCreds}
+                  disabled={googleSaving}
+                  className="bg-[#B91C1C] hover:bg-[#991515] text-white px-8 py-3 rounded-lg flex items-center gap-2 transition-all font-bold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {googleSaving ? (
+                    <><div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div> Saving...</>
+                  ) : (
+                    <><FaSave /> Save Google Credentials</>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : activeTab === 'contact' ? (
           <div className="bg-white rounded-xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information & Social Media</h2>
             

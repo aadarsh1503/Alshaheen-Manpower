@@ -4,10 +4,9 @@ const multer = require('multer');
 const { v2: cloudinary } = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { google } = require('googleapis');
-const path = require('path');
-const fs = require('fs');
+const db = require('../config/db');
 
-// Cloudinary and Multer config remains the same...
+// Cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -19,30 +18,45 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage, limits: { fileSize: 1 * 1024 * 1024 }, fileFilter: (req, file, cb) => { if (file.mimetype.startsWith('image/')) { cb(null, true); } else { cb(new Error('Invalid file type. Only images are allowed!'), false); } } });
 
-// Google Sheets setup using JWT (compatible with Node 22 + OpenSSL 3)
-let sheetsAuth;
-let sheets;
-try {
-  if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
-    throw new Error('Google credentials environment variables not set.');
+// Helper: get Google Sheets client from DB credentials
+const getGoogleSheetsClient = async () => {
+  const keys = ['google_client_email', 'google_private_key'];
+  const [rows] = await db.query(
+    `SELECT setting_key, setting_value FROM site_settings WHERE setting_key IN (${keys.map(() => '?').join(',')})`,
+    keys
+  );
+
+  const creds = {};
+  rows.forEach(r => { creds[r.setting_key] = r.setting_value; });
+
+  if (!creds.google_client_email || !creds.google_private_key) {
+    throw new Error('Google credentials not configured in admin settings.');
   }
 
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY
-    .replace(/\\n/g, '\n')
-    .replace(/\\r/g, '');
+  // Normalize private key: handle both literal \n and real newlines from DB
+  const privateKey = creds.google_private_key
+    .replace(/\\n/g, '\n')   // literal \n -> real newline
+    .trim();
 
-  sheetsAuth = new google.auth.JWT({
-    email: process.env.GOOGLE_CLIENT_EMAIL,
+  const auth = new google.auth.JWT({
+    email: creds.google_client_email,
     key: privateKey,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
-  sheets = google.sheets({ version: 'v4', auth: sheetsAuth });
-  console.log('✅ Google Sheets API client initialized successfully (JWT mode).');
+  return google.sheets({ version: 'v4', auth });
+};
 
-} catch (error) {
-  console.error('❌ Error initializing Google Sheets API client:', error.message);
-}
+// Helper: get Google Sheet ID from DB
+const getSheetId = async () => {
+  const [rows] = await db.query(
+    "SELECT setting_value FROM site_settings WHERE setting_key = 'google_sheet_id'"
+  );
+  if (!rows.length || !rows[0].setting_value) {
+    throw new Error('Google Sheet ID not configured in admin settings.');
+  }
+  return rows[0].setting_value;
+};
 
 router.post(
   '/register',
@@ -53,21 +67,11 @@ router.post(
   ]),
   async (req, res) => {
     console.log('📥 [RiderRoute] POST /register received');
-    console.log('📥 [RiderRoute] sheets initialized:', !!sheets);
-
-    if (!sheets) {
-      console.error('❌ [RiderRoute] Google Sheets not initialized - check env vars');
-      console.error('❌ [RiderRoute] GOOGLE_CLIENT_EMAIL:', process.env.GOOGLE_CLIENT_EMAIL ? '✅ set' : '❌ missing');
-      console.error('❌ [RiderRoute] GOOGLE_PRIVATE_KEY:', process.env.GOOGLE_PRIVATE_KEY ? '✅ set' : '❌ missing');
-      console.error('❌ [RiderRoute] GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID ? '✅ set' : '❌ missing');
-      return res.status(500).json({ message: 'Server configuration error: Google Sheets service is not available.' });
-    }
 
     try {
       const { files } = req;
 
       console.log('📥 [RiderRoute] req.body keys:', Object.keys(req.body));
-      console.log('📥 [RiderRoute] req.body:', req.body);
       console.log('📥 [RiderRoute] files received:', Object.keys(files || {}));
 
       const {
@@ -87,7 +91,10 @@ router.post(
       const licenseFrontUrl = files['licenseFrontDoc'] ? files['licenseFrontDoc'][0].path : '';
       const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
-      console.log('📤 [RiderRoute] Cloudinary upload URLs:', { applicantPhotoUrl, vehicleRegUrl, cprFrontUrl, cprBackUrl, licenseFrontUrl, licenseBackUrl });
+      console.log('📤 [RiderRoute] Fetching Google credentials from DB...');
+      const sheets = await getGoogleSheetsClient();
+      const sheetId = await getSheetId();
+      console.log('📤 [RiderRoute] Appending row to Google Sheet ID:', sheetId);
 
       const newRow = [
         new Date().toISOString(),
@@ -100,13 +107,8 @@ router.post(
         licenseFrontUrl, licenseBackUrl, vehicleRegUrl,
       ];
 
-      console.log('📤 [RiderRoute] Appending row to Google Sheet ID:', process.env.GOOGLE_SHEET_ID);
-
-      // Explicitly authorize JWT before making the API call
-      await sheetsAuth.authorize();
-
       await sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.GOOGLE_SHEET_ID,
+        spreadsheetId: sheetId,
         range: 'Sheet1!A1',
         valueInputOption: 'USER_ENTERED',
         resource: { values: [newRow] },

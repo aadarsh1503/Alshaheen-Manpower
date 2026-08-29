@@ -199,6 +199,55 @@ const deleteNewsEvent = async (req, res) => {
   }
 };
 
+// Get Google credentials (admin only - returns masked private key)
+const getGoogleCredentials = async (req, res) => {
+  try {
+    const keys = ['google_client_email', 'google_private_key', 'google_sheet_id', 'google_project_id', 'google_private_key_id', 'google_client_id'];
+    const [rows] = await db.query(
+      `SELECT setting_key, setting_value FROM site_settings WHERE setting_key IN (${keys.map(() => '?').join(',')})`,
+      keys
+    );
+    const result = {};
+    rows.forEach(r => {
+      // Never return the private key value — show placeholder so frontend can't accidentally re-save it
+      if (r.setting_key === 'google_private_key') {
+        result[r.setting_key] = r.setting_value ? '••••••••[KEY STORED - leave blank to keep]' : '';
+        result['google_private_key_exists'] = !!r.setting_value;
+      } else {
+        result[r.setting_key] = r.setting_value || '';
+      }
+    });
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching Google credentials:', error);
+    res.status(500).json({ message: 'Error fetching Google credentials' });
+  }
+};
+
+// Update Google credentials (admin only)
+const updateGoogleCredentials = async (req, res) => {
+  try {
+    const { google_client_email, google_private_key, google_sheet_id, google_project_id, google_private_key_id, google_client_id } = req.body;
+    
+    const updates = { google_client_email, google_private_key, google_sheet_id, google_project_id, google_private_key_id, google_client_id };
+
+    for (const [key, value] of Object.entries(updates)) {
+      // Skip if empty or if it's the display placeholder for private key
+      if (!value || value === '') continue;
+      if (key === 'google_private_key' && value.startsWith('••••')) continue;
+      await db.query(
+        'INSERT INTO site_settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = ?',
+        [key, value, value]
+      );
+    }
+
+    res.json({ message: 'Google credentials updated successfully' });
+  } catch (error) {
+    console.error('Error updating Google credentials:', error);
+    res.status(500).json({ message: 'Error updating Google credentials' });
+  }
+};
+
 module.exports = {
   getSiteSettings,
   updateSiteSettings,
@@ -207,5 +256,7 @@ module.exports = {
   addNewsEvent,
   updateNewsEvent,
   deleteNewsEvent,
-  upload
+  upload,
+  getGoogleCredentials,
+  updateGoogleCredentials
 };

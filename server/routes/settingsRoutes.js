@@ -23,4 +23,8 @@ router.post('/news-events/admin', authenticateAdmin, upload.single('image'), add
 router.put('/news-events/admin/:id', authenticateAdmin, upload.single('image'), updateNewsEvent);
 router.delete('/news-events/admin/:id', authenticateAdmin, deleteNewsEvent);
 
+// Google credentials routes (admin only)
+router.get('/google-credentials', authenticateAdmin, require('../controllers/settingsController').getGoogleCredentials);
+router.put('/google-credentials', authenticateAdmin, require('../controllers/settingsController').updateGoogleCredentials);
+
 module.exports = router;
