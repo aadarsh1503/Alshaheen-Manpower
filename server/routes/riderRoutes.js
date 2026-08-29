@@ -19,37 +19,26 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage, limits: { fileSize: 1 * 1024 * 1024 }, fileFilter: (req, file, cb) => { if (file.mimetype.startsWith('image/')) { cb(null, true); } else { cb(new Error('Invalid file type. Only images are allowed!'), false); } } });
 
-// Google Sheets setup remains the same...
+// Google Sheets setup using JWT (compatible with Node 22 + OpenSSL 3)
+let sheetsAuth;
 let sheets;
 try {
-  // Check if essential environment variables are loaded
   if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
     throw new Error('Google credentials environment variables not set.');
   }
 
-  // Construct the credentials object from environment variables
-  const credentials = {
-    type: process.env.GOOGLE_TYPE,
-    project_id: process.env.GOOGLE_PROJECT_ID,
-    private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-    // Replace literal \n with actual newlines for production environments
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    client_id: process.env.GOOGLE_CLIENT_ID,
-    // These are standard URLs and can be hardcoded or put in .env if you prefer
-    auth_uri: "https://accounts.google.com/o/oauth2/auth",
-    token_uri: "https://oauth2.googleapis.com/token",
-    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-    client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.GOOGLE_CLIENT_EMAIL)}`
-  };
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY
+    .replace(/\\n/g, '\n')
+    .replace(/\\r/g, '');
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  sheetsAuth = new google.auth.JWT({
+    email: process.env.GOOGLE_CLIENT_EMAIL,
+    key: privateKey,
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
-  sheets = google.sheets({ version: 'v4', auth });
-  console.log('✅ Google Sheets API client initialized successfully from environment variables.');
+  sheets = google.sheets({ version: 'v4', auth: sheetsAuth });
+  console.log('✅ Google Sheets API client initialized successfully (JWT mode).');
 
 } catch (error) {
   console.error('❌ Error initializing Google Sheets API client:', error.message);
@@ -112,6 +101,9 @@ router.post(
       ];
 
       console.log('📤 [RiderRoute] Appending row to Google Sheet ID:', process.env.GOOGLE_SHEET_ID);
+
+      // Explicitly authorize JWT before making the API call
+      await sheetsAuth.authorize();
 
       await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
