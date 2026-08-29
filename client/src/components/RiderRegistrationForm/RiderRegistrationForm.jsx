@@ -187,7 +187,7 @@ const RegistrationPage = () => {
     const submissionData = new FormData();
     const finalCompanyName = formData.companyName === 'Others' ? formData.otherCompanyName : formData.companyName;
     submissionData.append('companyName', isFresher ? 'Fresher' : finalCompanyName);
-    submissionData.append('previousExperience', isFresher ? 'N/A' : formData.previousExperience); // Use 'N/A' for fresher, dropdown value otherwise
+    submissionData.append('previousExperience', isFresher ? 'N/A' : formData.previousExperience);
     submissionData.append('experience', isFresher ? 'N/A' : formData.experience);
     Object.keys(formData).forEach(key => { if (!['companyName', 'otherCompanyName', 'previousExperience', 'experience'].includes(key)) { submissionData.append(key, formData[key]); } });
     submissionData.append('phone', `+${phone}`);
@@ -199,13 +199,29 @@ const RegistrationPage = () => {
     if (applicantPhotoFile) submissionData.append('applicantPhoto', applicantPhotoFile);
     if (vehicleRegFile) submissionData.append('vehicleRegDoc', vehicleRegFile);
 
+    // Debug: log all form data being sent
+    console.log('🚀 [RiderForm] Submitting form...');
+    console.log('🚀 [RiderForm] formData fields:', Object.fromEntries(submissionData.entries().filter(([k]) => !['cprFrontDoc','cprBackDoc','licenseFrontDoc','licenseBackDoc','applicantPhoto','vehicleRegDoc'].includes(k))));
+    console.log('🚀 [RiderForm] Files attached:', {
+      applicantPhoto: !!applicantPhotoFile,
+      vehicleRegDoc: !!vehicleRegFile,
+      cprFrontDoc: !!cprFrontFile,
+      cprBackDoc: !!cprBackFile,
+      licenseFrontDoc: !!licenseFrontFile,
+      licenseBackDoc: !!licenseBackFile,
+    });
+
     try {
-      const API_URL = `/api/riders/register`; 
-      await axios.post(API_URL, submissionData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const API_URL = `/api/riders/register`;
+      console.log('🚀 [RiderForm] Sending POST to:', API_URL);
+      const response = await axios.post(API_URL, submissionData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      console.log('✅ [RiderForm] Submission successful:', response.data);
       setShowSuccessModal(true);
       setTimeout(() => { window.location.reload(); }, 3500);
     } catch (error) {
-      console.error("Submission failed:", error);
+      console.error('❌ [RiderForm] Submission failed:', error.message);
+      console.error('❌ [RiderForm] Response status:', error.response?.status);
+      console.error('❌ [RiderForm] Response data:', error.response?.data);
       const message = error.response?.data?.error || error.response?.data?.message || 'Submission failed. Please check your details and try again.';
       toast.error(message);
       setIsSubmitting(false);

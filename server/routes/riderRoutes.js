@@ -32,8 +32,8 @@ try {
     type: process.env.GOOGLE_TYPE,
     project_id: process.env.GOOGLE_PROJECT_ID,
     private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-    // The dotenv package handles the \n characters correctly when the key is quoted.
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
+    // Replace literal \n with actual newlines for production environments
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
     client_id: process.env.GOOGLE_CLIENT_ID,
     // These are standard URLs and can be hardcoded or put in .env if you prefer
@@ -63,14 +63,24 @@ router.post(
     { name: 'licenseFrontDoc', maxCount: 1 }, { name: 'licenseBackDoc', maxCount: 1 },
   ]),
   async (req, res) => {
-    if (!sheets) { return res.status(500).json({ message: 'Server configuration error: Google Sheets service is not available.' }); }
+    console.log('📥 [RiderRoute] POST /register received');
+    console.log('📥 [RiderRoute] sheets initialized:', !!sheets);
+
+    if (!sheets) {
+      console.error('❌ [RiderRoute] Google Sheets not initialized - check env vars');
+      console.error('❌ [RiderRoute] GOOGLE_CLIENT_EMAIL:', process.env.GOOGLE_CLIENT_EMAIL ? '✅ set' : '❌ missing');
+      console.error('❌ [RiderRoute] GOOGLE_PRIVATE_KEY:', process.env.GOOGLE_PRIVATE_KEY ? '✅ set' : '❌ missing');
+      console.error('❌ [RiderRoute] GOOGLE_SHEET_ID:', process.env.GOOGLE_SHEET_ID ? '✅ set' : '❌ missing');
+      return res.status(500).json({ message: 'Server configuration error: Google Sheets service is not available.' });
+    }
 
     try {
       const { files } = req;
 
-      // --- MODIFICATION START ---
-      // Changed 'title' to 'gender'
-      // Removed 'residenceCountry' and 'originDestination'
+      console.log('📥 [RiderRoute] req.body keys:', Object.keys(req.body));
+      console.log('📥 [RiderRoute] req.body:', req.body);
+      console.log('📥 [RiderRoute] files received:', Object.keys(files || {}));
+
       const {
         gender, firstName, lastName, email, phone,
         nationality, visaExpiry, licenseExpiry, experience,
@@ -78,9 +88,6 @@ router.post(
         currentAddress_flat, currentAddress_road, currentAddress_block, currentAddress_town,
         companyName, isVehicleOwner, readyToStartDate, previousExperience
       } = req.body;
-      // --- MODIFICATION END ---
-
-    
 
       const fullCurrentAddress = `Flat: ${currentAddress_flat}, Road: ${currentAddress_road}, Block: ${currentAddress_block}, Town: ${currentAddress_town}`;
 
@@ -91,37 +98,21 @@ router.post(
       const licenseFrontUrl = files['licenseFrontDoc'] ? files['licenseFrontDoc'][0].path : '';
       const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
-      // --- MODIFICATION START ---
-      // Updated the newRow array to match the new form fields
+      console.log('📤 [RiderRoute] Cloudinary upload URLs:', { applicantPhotoUrl, vehicleRegUrl, cprFrontUrl, cprBackUrl, licenseFrontUrl, licenseBackUrl });
+
       const newRow = [
         new Date().toISOString(),
-        gender,
-        firstName,
-        lastName,
-        email,
-        phone,
+        gender, firstName, lastName, email, phone,
         alternatePhone || 'N/A',
-        nationality,
-        fullCurrentAddress,
-        vehicleType,
-        isVehicleOwner,
-        visaExpiry,
-        licenseExpiry,
-        readyToStartDate,
-        companyName,
-        previousExperience,
-        experience,
-        applicantPhotoUrl,
-        cprFrontUrl,
-        cprBackUrl,
-        licenseFrontUrl,
-        licenseBackUrl,
-        vehicleRegUrl,
+        nationality, fullCurrentAddress, vehicleType, isVehicleOwner,
+        visaExpiry, licenseExpiry, readyToStartDate,
+        companyName, previousExperience, experience,
+        applicantPhotoUrl, cprFrontUrl, cprBackUrl,
+        licenseFrontUrl, licenseBackUrl, vehicleRegUrl,
       ];
-      // --- MODIFICATION END ---
 
-    
-      
+      console.log('📤 [RiderRoute] Appending row to Google Sheet ID:', process.env.GOOGLE_SHEET_ID);
+
       await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID,
         range: 'Sheet1!A1',
@@ -129,11 +120,12 @@ router.post(
         resource: { values: [newRow] },
       });
 
-    
+      console.log('✅ [RiderRoute] Row appended to Google Sheet successfully');
       res.status(200).json({ message: 'Registration successful!' });
 
     } catch (error) {
-      console.error('❌ Registration Error:', error);
+      console.error('❌ [RiderRoute] Registration Error:', error.message);
+      console.error('❌ [RiderRoute] Full error:', error);
       let errMsg = 'An error occurred during the registration process.';
       if (error.code === 'LIMIT_FILE_SIZE') { errMsg = 'File is too large. Each image must be 1MB or less.'; }
       else if (error.message && error.message.includes('Invalid file type')) { errMsg = 'Invalid file type. Please upload only images (JPG, JPEG, PNG).'; }
