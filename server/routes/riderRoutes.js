@@ -32,9 +32,10 @@ const createServiceAccountToken = async (clientEmail, privateKey, scope) => {
   })).toString('base64url');
 
   const signingInput = `${header}.${payload}`;
-  const sign = crypto.createSign('RSA-SHA256');
-  sign.update(signingInput);
-  const signature = sign.sign(privateKey, 'base64url');
+  const signature = crypto.sign('RSA-SHA256', Buffer.from(signingInput), {
+    key: privateKey,
+    padding: crypto.constants.RSA_PKCS1_PADDING,
+  }).toString('base64url');
   const jwt = `${signingInput}.${signature}`;
 
   const response = await fetch('https://oauth2.googleapis.com/token', {
