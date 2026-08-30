@@ -38,13 +38,16 @@ const getGoogleSheetsClient = async () => {
     .replace(/\\n/g, '\n')   // literal \n -> real newline
     .trim();
 
-  const auth = new google.auth.JWT({
-    email: creds.google_client_email,
-    key: privateKey,
+  const auth = new google.auth.GoogleAuth({
+    credentials: {
+      client_email: creds.google_client_email,
+      private_key: privateKey,
+    },
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
-  return google.sheets({ version: 'v4', auth });
+  const authClient = await auth.getClient();
+  return google.sheets({ version: 'v4', auth: authClient });
 };
 
 // Helper: get Google Sheet ID from DB
