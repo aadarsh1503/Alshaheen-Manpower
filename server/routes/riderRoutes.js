@@ -17,7 +17,41 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage, limits: { fileSize: 1 * 1024 * 1024 }, fileFilter: (req, file, cb) => { if (file.mimetype.startsWith('image/')) { cb(null, true); } else { cb(new Error('Invalid file type. Only images are allowed!'), false); } } });
 
-// Helper: get Google Sheets client from DB credentials
+// Helper: create JWT token manually using Node crypto (no gtoken, no OpenSSL legacy needed)
+const createServiceAccountToken = async (clientEmail, privateKey, scope) => {
+  const crypto = require('crypto');
+
+  const now = Math.floor(Date.now() / 1000);
+  const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({
+    iss: clientEmail,
+    scope: scope,
+    aud: 'https://oauth2.googleapis.com/token',
+    exp: now + 3600,
+    iat: now,
+  })).toString('base64url');
+
+  const signingInput = `${header}.${payload}`;
+  const sign = crypto.createSign('RSA-SHA256');
+  sign.update(signingInput);
+  const signature = sign.sign(privateKey, 'base64url');
+  const jwt = `${signingInput}.${signature}`;
+
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
+  });
+
+  const data = await response.json();
+  if (!data.access_token) throw new Error(`Token error: ${JSON.stringify(data)}`);
+  return data.access_token;
+};
+
+// Helper: get Google Sheets access token from DB credentials
 const getGoogleSheetsClient = async () => {
   const keys = ['google_client_email', 'google_private_key'];
   const [rows] = await db.query(
@@ -32,23 +66,13 @@ const getGoogleSheetsClient = async () => {
     throw new Error('Google credentials not configured in admin settings.');
   }
 
-  const privateKey = creds.google_private_key
-    .replace(/\\n/g, '\n')
-    .trim();
+  const privateKey = creds.google_private_key.replace(/\\n/g, '\n').trim();
+  const accessToken = await createServiceAccountToken(
+    creds.google_client_email,
+    privateKey,
+    'https://www.googleapis.com/auth/spreadsheets'
+  );
 
-  // Use google-auth-library JWT directly - compatible with Node 22
-  const { JWT } = require('google-auth-library');
-  const jwtClient = new JWT({
-    email: creds.google_client_email,
-    key: privateKey,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-
-  // Get access token manually and use fetch to call Sheets API
-  const tokenResponse = await jwtClient.getAccessToken();
-  const accessToken = tokenResponse.token;
-
-  // Return a simple append function instead of sheets client
   return { accessToken };
 };
 
