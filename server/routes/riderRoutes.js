@@ -3,7 +3,6 @@ const router = express.Router();
 const multer = require('multer');
 const { v2: cloudinary } = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const { google } = require('googleapis');
 const db = require('../config/db');
 
 // Cloudinary config
@@ -33,21 +32,24 @@ const getGoogleSheetsClient = async () => {
     throw new Error('Google credentials not configured in admin settings.');
   }
 
-  // Normalize private key: handle both literal \n and real newlines from DB
   const privateKey = creds.google_private_key
-    .replace(/\\n/g, '\n')   // literal \n -> real newline
+    .replace(/\\n/g, '\n')
     .trim();
 
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      client_email: creds.google_client_email,
-      private_key: privateKey,
-    },
+  // Use google-auth-library JWT directly - compatible with Node 22
+  const { JWT } = require('google-auth-library');
+  const jwtClient = new JWT({
+    email: creds.google_client_email,
+    key: privateKey,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
 
-  const authClient = await auth.getClient();
-  return google.sheets({ version: 'v4', auth: authClient });
+  // Get access token manually and use fetch to call Sheets API
+  const tokenResponse = await jwtClient.getAccessToken();
+  const accessToken = tokenResponse.token;
+
+  // Return a simple append function instead of sheets client
+  return { accessToken };
 };
 
 // Helper: get Google Sheet ID from DB
@@ -95,7 +97,7 @@ router.post(
       const licenseBackUrl = files['licenseBackDoc'] ? files['licenseBackDoc'][0].path : '';
 
       console.log('📤 [RiderRoute] Fetching Google credentials from DB...');
-      const sheets = await getGoogleSheetsClient();
+      const { accessToken } = await getGoogleSheetsClient();
       const sheetId = await getSheetId();
       console.log('📤 [RiderRoute] Appending row to Google Sheet ID:', sheetId);
 
@@ -110,12 +112,20 @@ router.post(
         licenseFrontUrl, licenseBackUrl, vehicleRegUrl,
       ];
 
-      await sheets.spreadsheets.values.append({
-        spreadsheetId: sheetId,
-        range: 'Sheet1!A1',
-        valueInputOption: 'USER_ENTERED',
-        resource: { values: [newRow] },
+      const appendUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:append?valueInputOption=USER_ENTERED`;
+      const appendRes = await fetch(appendUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ values: [newRow] }),
       });
+
+      if (!appendRes.ok) {
+        const errBody = await appendRes.text();
+        throw new Error(`Sheets API error ${appendRes.status}: ${errBody}`);
+      }
 
       console.log('✅ [RiderRoute] Row appended to Google Sheet successfully');
       res.status(200).json({ message: 'Registration successful!' });
